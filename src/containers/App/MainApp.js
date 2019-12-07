@@ -4,6 +4,7 @@ import { Divider, Layout } from 'antd'
 import Sidebar from '../Sidebar/index'
 import Topbar from '../Topbar/index'
 import InsideHeader from '../Topbar/InsideHeader'
+import BannerBar from '../BannerBar'
 import FooterMenu from '../FooterMenu'
 import AppRoute from '../../routes/index'
 import {
@@ -68,7 +69,7 @@ export class MainApp extends Component {
         <Layout>
           {this.getNavStyles(navStyle)}
           <Content className={`gx-layout-content ${this.getContainerClass(navStyle)} `}>
-            {/*<BannerBar/>*/}
+            <BannerBar/>
             <AppRoute match={match}/>
             <Footer>
               <div className="gx-layout-footer-content gx-text-center">
