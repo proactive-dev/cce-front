@@ -5,6 +5,7 @@ import Deposit from './main/Deposit'
 import Withdrawal from './main/Withdrawal'
 import Transactions from './main/Transactions'
 import UserCenter from './main/UserCenter'
+import ChangePassword from './common/ChangePassword'
 import IdVerification from './main/IdVerification'
 import OpenOrders from './main/OpenOrders'
 import OrderHistory from './main/OrderHistory'
@@ -26,6 +27,7 @@ const AppRoute = ({match}) => (
       <Route exact path={`${match.url}wallet/withdrawal`} component={Withdrawal}/>
       <Route exact path={`${match.url}wallet/transactions`} component={Transactions}/>
       <Route exact path={`${match.url}user`} component={UserCenter}/>
+      <Route exact path={`${match.url}user/change-password`} component={ChangePassword}/>
       <Route exact path={`${match.url}user/verification`} component={IdVerification}/>
       <Route exact path={`${match.url}history/open-order`} component={OpenOrders}/>
       <Route exact path={`${match.url}history/order`} component={OrderHistory}/>

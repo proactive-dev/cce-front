@@ -21,6 +21,8 @@ import {
 import Login from '../../routes/common/Login'
 import Register from '../../routes/common/Register'
 import TFAuthentication from '../../routes/common/TFAuthentication'
+import ForgotPassword from '../../routes/common/ForgotPassword'
+import ResetPassword from '../../routes/common/ResetPassword'
 
 class RootApp extends Component {
 
@@ -105,6 +107,8 @@ class RootApp extends Component {
         <Route exact path='/login' component={Login}/>
         <Route exact path='/register' component={Register}/>
         <Route exact path='/authenticate' component={TFAuthentication}/>
+        <Route exact path='/forgot-password' component={ForgotPassword}/>
+        <Route exact path='/reset-password' component={ResetPassword}/>
         <Route path={match.url} component={MainApp}/>
       </Switch>
     )
