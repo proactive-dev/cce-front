@@ -22,7 +22,7 @@ export const ERROR = 'error'
 export const NOTIFICATION_TIMEOUT = 5 // seconds
 
 export const PRODUCTION_URL = 'https://crypto.365-exchange.com'
-export const HOST_URL = process.env.NODE_ENV !== 'production' ? `${PRODUCTION_URL}:8443` : 'http://localhost:4000'
+export const HOST_URL = process.env.NODE_ENV === 'production' ? `${PRODUCTION_URL}:8443` : 'http://localhost:4000'
 export const EX_URL = process.env.NODE_ENV === 'production' ? PRODUCTION_URL : 'http://localhost:3000'
 export const API_DOC_URL = `${HOST_URL}/api`
 export const CC_LINK = process.env.NODE_ENV === 'production' ? 'https://cc.365-exchange.com' : 'http://localhost:3002'
