@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import { getAuthStatus } from '../../appRedux/actions/User'
-import { Button, Form, Input, Spin } from 'antd'
+import { Alert, Button, Form, Icon, Input, Spin } from 'antd'
 import { changePassword } from '../../api/axiosAPIs'
 import { IconNotification } from '../../components/IconNotification'
 import { ERROR, SUCCESS } from '../../constants/AppConfigs'
@@ -28,7 +28,7 @@ class ChangePassword extends Component {
   }
 
   componentDidMount() {
-    this.props.getAuthStatus()
+    // this.props.getAuthStatus()
   }
 
   handleSubmit = (e) => {
@@ -82,27 +82,33 @@ class ChangePassword extends Component {
   }
 
   render() {
-    const {getFieldDecorator} = this.props.form
     const {intl} = this.props
     const {loader} = this.state
+    const {getFieldDecorator} = this.props.form
 
     return (
-      <div className=" gx-text-center">
-        <h2 className="title gx-mb-4"><FormattedMessage id="password.change"/></h2>
-        <Spin className="gx-login-container" spinning={loader} size="large">
-          <Form className="gx-login-content" onSubmit={this.handleSubmit}>
-            <FormItem
-              label={intl.formatMessage({id: 'password.old'})}>
+      <div className="gx-text-center">
+        <h1 className="gx-m-5"><FormattedMessage id="password.change"/></h1>
+        <Spin className="gx-auth-container" spinning={loader} size="large">
+          <Form
+            className="gx-auth-content gx-text-left"
+            onSubmit={this.handleSubmit}>
+            <Alert
+              className='gx-mt-2 gx-mb-4'
+              type="warning"
+              showIcon
+              message={intl.formatMessage({id: 'password.must.be'})}/>
+            <FormItem>
               {getFieldDecorator('oldPassword', {
                 rules: [{
                   required: true, message: intl.formatMessage({id: 'alert.fieldRequired'})
                 }]
               })(
-                <Input.Password/>
+                <Input.Password prefix={<Icon type="lock" style={{color: 'rgba(0,0,0,.25)'}}/>}
+                                placeholder={intl.formatMessage({id: 'password.old'})}/>
               )}
             </FormItem>
-            <FormItem
-              label={intl.formatMessage({id: 'password.new'})}>
+            <FormItem>
               {getFieldDecorator('newPassword', {
                 rules: [{
                   required: true, message: intl.formatMessage({id: 'alert.fieldRequired'})
@@ -110,11 +116,11 @@ class ChangePassword extends Component {
                   validator: this.validateToConfirm
                 }]
               })(
-                <Input.Password/>
+                <Input.Password prefix={<Icon type="lock" style={{color: 'rgba(0,0,0,.25)'}}/>}
+                                placeholder={intl.formatMessage({id: 'password.new'})}/>
               )}
             </FormItem>
-            <FormItem
-              label={intl.formatMessage({id: 'password.confirm'})}>
+            <FormItem>
               {getFieldDecorator('confirmPassword', {
                 rules: [{
                   required: true, message: intl.formatMessage({id: 'alert.fieldRequired'})
@@ -122,11 +128,13 @@ class ChangePassword extends Component {
                   validator: this.confirmPassword
                 }]
               })(
-                <Input.Password onBlur={this.handleConfirmBlur}/>
+                <Input.Password prefix={<Icon type="lock" style={{color: 'rgba(0,0,0,.25)'}}/>}
+                                onBlur={this.handleConfirmBlur}
+                                placeholder={intl.formatMessage({id: 'password.confirm'})}/>
               )}
             </FormItem>
             <FormItem>
-              <Button className="gx-w-100" type="primary" htmlType="submit">
+              <Button className="auth-form-button" type="primary" htmlType="submit">
                 <FormattedMessage id="update"/>
               </Button>
             </FormItem>

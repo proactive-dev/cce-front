@@ -48,21 +48,21 @@ class ResetPassword extends Component {
     const {getFieldDecorator} = this.props.form
 
     return (
-      <div className="gx-login-container">
-        <div className="gx-login-content">
-          <div className="gx-login-header gx-text-center">
+      <div className="gx-auth-container">
+        <div className="gx-auth-content">
+          <div className="gx-auth-header gx-text-center">
             <img src={require('assets/images/logo-white.png')} alt={SITE_NAME} title={SITE_NAME}/>
             <Link to="/">
               <img src={require('assets/images/logo-white.png')} alt={SITE_NAME} title={SITE_NAME}/>
             </Link>
           </div>
           <div className="gx-text-center">
-            <h2 className="gx-login-title"><FormattedMessage id="auth.resetPassword"/></h2>
+            <h2 className="gx-auth-title"><FormattedMessage id="auth.resetPassword"/></h2>
           </div>
           <div className="gx-mb-4">
             <p><FormattedMessage id="auth.resetPassword.desc"/></p>
           </div>
-          <Form onSubmit={this.handleSubmit} className="gx-login-form gx-form-row0">
+          <Form onSubmit={this.handleSubmit} className="gx-auth-form gx-form-row0">
             <FormItem>
               {getFieldDecorator('password', {
                 rules: [{
@@ -89,7 +89,7 @@ class ResetPassword extends Component {
               )}
             </FormItem>
             <FormItem>
-              <Button type="primary" className="login-form-button" htmlType="submit">
+              <Button type="primary" className="auth-form-button" htmlType="submit">
                 <FormattedMessage id="reset"/>
               </Button>
             </FormItem>

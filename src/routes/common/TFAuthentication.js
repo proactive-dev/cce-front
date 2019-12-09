@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { FormattedMessage, injectIntl } from 'react-intl'
-import { Link } from 'react-router-dom'
-import { Button, Form, Input, Spin } from 'antd'
+import { Alert, Button, Form, Icon, Input, Spin } from 'antd'
 import _ from 'lodash'
-import { SITE_NAME, SUCCESS } from '../../constants/AppConfigs'
+import { SUCCESS } from '../../constants/AppConfigs'
 import { verifyTFA } from '../../api/axiosAPIs'
 import { IconNotification } from '../../components/IconNotification'
 
@@ -55,33 +54,32 @@ class TFAuthentication extends Component {
     const {getFieldDecorator} = this.props.form
 
     return (
-      <div className="gx-login-container">
-        <div className="gx-login-content">
-          <div className="gx-login-header gx-text-center">
-            <Link to="/">
-              <img src={require('assets/images/logo-white.png')} alt={SITE_NAME} title={SITE_NAME}/>
-            </Link>
-          </div>
-          <div className="gx-text-center">
-            <h2 className="gx-login-title"><FormattedMessage id="auth.code.verification"/></h2>
-          </div>
-          <Spin spinning={loader} size="large">
-            <Form layout="vertical" onSubmit={this.handleSubmit} className="gx-login-form gx-form-row0">
-              <FormItem>
-                {getFieldDecorator('code', {
-                  rules: [{required: true, message: intl.formatMessage({id: 'alert.fieldRequired'})}]
-                })(
-                  <Input placeholder={intl.formatMessage({id: 'verificationCode'})}/>
-                )}
-              </FormItem>
-              <FormItem>
-                <Button type="primary" className="login-form-button" htmlType="submit">
-                  <FormattedMessage id="send"/>
-                </Button>
-              </FormItem>
-            </Form>
-          </Spin>
-        </div>
+      <div className="gx-text-center">
+        <h1 className="gx-m-5"><FormattedMessage id="auth.code.verification"/></h1>
+        <Spin className="gx-auth-container" spinning={loader} size="large">
+          <Form
+            className="gx-auth-content gx-text-left"
+            onSubmit={this.handleSubmit}>
+            <Alert
+              className='gx-mt-2 gx-mb-4 gx-fs-md'
+              type="info"
+              showIcon
+              message={intl.formatMessage({id: 'auth.code.verification.auth.app.desc'})}/>
+            <FormItem>
+              {getFieldDecorator('code', {
+                rules: [{required: true, message: intl.formatMessage({id: 'alert.fieldRequired'})}]
+              })(
+                <Input prefix={<Icon type="google" style={{color: 'rgba(0,0,0,.25)'}}/>}
+                       placeholder={intl.formatMessage({id: 'googleAuthCode'})}/>
+              )}
+            </FormItem>
+            <FormItem>
+              <Button className="auth-form-button" type="primary" htmlType="submit">
+                <FormattedMessage id="send"/>
+              </Button>
+            </FormItem>
+          </Form>
+        </Spin>
       </div>
     )
   }
