@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import { getAuthStatus } from '../../appRedux/actions/User'
-import { Button, Form, Input } from 'antd'
+import { Button, Form, Input, Spin } from 'antd'
 import { changePassword } from '../../api/axiosAPIs'
 import { IconNotification } from '../../components/IconNotification'
 import { ERROR, SUCCESS } from '../../constants/AppConfigs'
@@ -50,7 +50,7 @@ class ChangePassword extends Component {
     changePassword(formData)
       .then(response => {
         this.props.form.resetFields()
-        IconNotification(SUCCESS, this.props.intl.formatMessage({id: 'auth.register.success'}))
+        IconNotification(SUCCESS, this.props.intl.formatMessage({id: 'password.change.success'}))
         this.props.history.push('/login')
       }).catch(error => {
       if (error.response) {
@@ -87,10 +87,10 @@ class ChangePassword extends Component {
     const {loader} = this.state
 
     return (
-      <div>
+      <div className=" gx-text-center">
         <h2 className="title gx-mb-4"><FormattedMessage id="password.change"/></h2>
-        <div className="gx-login-content">
-          <Form onSubmit={this.handleSubmit}>
+        <Spin className="gx-login-container" spinning={loader} size="large">
+          <Form className="gx-login-content" onSubmit={this.handleSubmit}>
             <FormItem
               label={intl.formatMessage({id: 'password.old'})}>
               {getFieldDecorator('oldPassword', {
@@ -126,12 +126,12 @@ class ChangePassword extends Component {
               )}
             </FormItem>
             <FormItem>
-              <Button type="primary" htmlType="submit">
+              <Button className="gx-w-100" type="primary" htmlType="submit">
                 <FormattedMessage id="update"/>
               </Button>
             </FormItem>
           </Form>
-        </div>
+        </Spin>
       </div>
     )
   }
