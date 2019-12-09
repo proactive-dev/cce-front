@@ -64,7 +64,7 @@ export const resetPassword = (token, data) => {
 }
 
 export const changePassword = (data) => {
-  return axiosRequest('post', axiosConfig.CHANGE_PWD_URL, data)
+  return axiosRequest('put', axiosConfig.CHANGE_PWD_URL, data)
 }
 
 export const getAuthStatus = (needLoader = false) => {
