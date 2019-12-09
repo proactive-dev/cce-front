@@ -14,7 +14,7 @@ import {
   NAV_STYLE_MINI_SIDEBAR,
   TAB_SIZE
 } from '../../constants/ThemeSetting'
-import { COPYRIGHT_COMPANY } from '../../constants/AppConfigs'
+import { BANNERS, COPYRIGHT_COMPANY } from '../../constants/AppConfigs'
 
 const {Content, Footer} = Layout
 
@@ -60,16 +60,19 @@ export class MainApp extends Component {
   }
 
   render() {
-    const {match, width, navStyle} = this.props
+    const {match, pathname, width, navStyle} = this.props
 
-    console.log(match)
     return (
       <Layout className="gx-app-layout">
         {this.getSidebar(navStyle, width)}
         <Layout>
           {this.getNavStyles(navStyle)}
           <Content className={`gx-layout-content ${this.getContainerClass(navStyle)} `}>
-            <BannerBar/>
+            {
+              // show only for home page
+              '/'.localeCompare(pathname) === 0 &&
+              <BannerBar banners={BANNERS}/>
+            }
             <AppRoute match={match}/>
             <Footer>
               <div className="gx-layout-footer-content gx-text-center">
@@ -86,8 +89,8 @@ export class MainApp extends Component {
 }
 
 const mapStateToProps = ({settings}) => {
-  const {width, navStyle} = settings
-  return {width, navStyle}
+  const {width, navStyle, pathname} = settings
+  return {width, navStyle, pathname}
 }
 export default connect(mapStateToProps)(MainApp)
 
