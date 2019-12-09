@@ -91,6 +91,10 @@ export const getMarkets = (needLoader = false) => {
   return axiosRequest('get', axiosConfig.MARKETS_URL, null, needLoader)
 }
 
+export const getTickers = (needLoader = false) => {
+  return axiosRequest('get', axiosConfig.TICKERS_URL, null, needLoader)
+}
+
 export const getTicker = (market, needLoader = false) => {
   return axiosRequest('get', `${axiosConfig.TICKERS_URL}/${market}`, null, needLoader)
 }

@@ -31,6 +31,8 @@ export const PRIZE_CENTER_LINK = 'https://lend.365-exchange.com/orderlist/index.
 
 export const SITE_CONTACT = 'support@365-exchange.com'
 
+export const TICKER_INTERVAL = 30000
+
 export const BANNERS = [
   {
     img: 'intro.png',

@@ -1,0 +1,1 @@
+export const GET_TICKERS = 'GET_TICKERS'
