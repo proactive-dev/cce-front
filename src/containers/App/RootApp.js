@@ -58,7 +58,7 @@ class RootApp extends Component {
     }
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     // Add a request interceptor
     if (axios.interceptors.request.handlers.length < 1) {
       axios.interceptors.request.use(config => {

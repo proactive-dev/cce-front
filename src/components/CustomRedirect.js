@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 class CustomRedirect extends Component {
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     window.location = this.props.link || '/'
   }
 

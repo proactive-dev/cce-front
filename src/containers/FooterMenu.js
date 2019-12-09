@@ -15,7 +15,7 @@ class FooterMenu extends Component {
         <Divider type="vertical"/>
         <Link to="/fees"><FormattedMessage id='fees'/></Link>
         <Divider type="vertical"/>
-        <Link to="/trading-rules"><FormattedMessage id='trading-rules'/></Link>
+        <Link to="/trading-rules"><FormattedMessage id='trading.rules'/></Link>
         <Divider type="vertical"/>
         <a href={API_DOC_URL}><FormattedMessage id='api'/></a>
         <Divider type="vertical"/>

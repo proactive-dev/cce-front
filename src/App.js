@@ -28,7 +28,7 @@ class App extends Component {
     }
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     const {location} = this.props
     const params = new URLSearchParams(location.search)
 
