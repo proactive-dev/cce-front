@@ -7,8 +7,7 @@
 
 // To learn more about the benefits of this model, read https://goo.gl/KwvDNy.
 // This link also includes instructions on opting out of this behavior.
-const SW_VERSION_CACHE_KEY = '/_sw-version'
-const SW_VERSION = 'v0.1.0'
+
 const isLocalhost = Boolean(
   window.location.hostname === 'localhost' ||
   // [::1] is the IPv6 localhost address.
@@ -18,47 +17,6 @@ const isLocalhost = Boolean(
     /^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/
   )
 )
-
-const WORKBOX_CACHE_KEY = `workbox-precache-https://${window.location.hostname}/`
-
-const clearFromCache = async (requests: string[]) => {
-  const cache = await caches.open(WORKBOX_CACHE_KEY)
-  if (cache) {
-    await Promise.all(requests.map(r =>
-      cache.delete(r)
-    ))
-
-    requests.forEach(r => {
-      console.log(`Cache => delete[${r}]`)
-    })
-  }
-}
-
-const setValueToCache = async (key: string, value: Respone) => {
-  const cache = await caches.open(WORKBOX_CACHE_KEY)
-  if (cache) {
-    cache.put(key, value)
-  }
-}
-
-caches.open(WORKBOX_CACHE_KEY).then(cache => {
-  cache.match(new Request(SW_VERSION_CACHE_KEY)).then(response => {
-    if (!response) {
-      console.log('Unregister all service workers')
-      clearFromCache(['index.html'])
-      unregisterAll()
-    } else {
-      response.text().then(version => {
-        console.log('Current Version : ', version)
-        if (version !== SW_VERSION) {
-          console.log('Unregister all service workers')
-          clearFromCache(['index.html'])
-          unregisterAll()
-        }
-      })
-    }
-  })
-})
 
 export default function register() {
   if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
@@ -100,7 +58,7 @@ function registerValidSW(swUrl) {
     .then(registration => {
       registration.onupdatefound = () => {
         const installingWorker = registration.installing
-        installingWorker.onstatechange = (event) => {
+        installingWorker.onstatechange = () => {
           if (installingWorker.state === 'installed') {
             if (navigator.serviceWorker.controller) {
               // At this point, the old content will have been purged and
@@ -108,17 +66,12 @@ function registerValidSW(swUrl) {
               // It's the perfect time to display a "New content is
               // available; please refresh." message in your web app.
               console.log('New content is available; please refresh.')
-              clearFromCache(['index.html'])
-              unregister()
             } else {
               // At this point, everything has been precached.
               // It's the perfect time to display a
               // "Content is cached for offline use." message.
               console.log('Content is cached for offline use.')
             }
-          } else if (installingWorker.state === 'activated') {
-            console.log('Setting Version')
-            setValueToCache(SW_VERSION_CACHE_KEY, new Response(SW_VERSION))
           }
         }
       }
@@ -159,16 +112,6 @@ export function unregister() {
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.ready.then(registration => {
       registration.unregister()
-    })
-  }
-}
-
-export function unregisterAll() {
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.getRegistrations().then(function (registrations) {
-      registrations.forEach(function (v) {
-        v.unregister()
-      })
     })
   }
 }

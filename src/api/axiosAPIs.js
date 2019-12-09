@@ -1,5 +1,6 @@
 import axios from 'axios'
 import * as axiosConfig from './axiosConfig'
+import { HOST_URL } from '../constants/AppConfigs'
 
 const getHeaders = {
   // 'Access-Control-Allow-Origin': '*',
@@ -20,7 +21,7 @@ export const axiosRequest = (method, url, reqData = null, needLoader = true) => 
   let reqConfig = {
     url: url,
     method: method,
-    baseURL: axiosConfig.HOST_URL,
+    baseURL: HOST_URL,
     withCredentials: true,
     needLoader: needLoader, // custom config for show loader
     headers: getHeaders // default: get

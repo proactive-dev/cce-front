@@ -1,10 +1,8 @@
-import { PRODUCTION_URL } from '../constants/AppConfigs'
+import { HOST_URL } from '../constants/AppConfigs'
 
 /**
  * Axios related configurations here
  */
-
-export const HOST_URL = process.env.NODE_ENV === 'production' ? `${PRODUCTION_URL}:8443` : 'http://localhost:4000'
 
 export const HOST_API_URL = `${HOST_URL}/api/v2`
 export const REGISTER_URL = `${HOST_URL}/auth/identity/register`
