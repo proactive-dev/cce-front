@@ -18,11 +18,6 @@ import {
   LOGIN_REQUIRED,
   TFA_REQUIRED
 } from '../../constants/ResponseCode'
-import Login from '../../routes/common/Login'
-import Register from '../../routes/common/Register'
-import TFAuthentication from '../../routes/common/TFAuthentication'
-import ForgotPassword from '../../routes/common/ForgotPassword'
-import ResetPassword from '../../routes/common/ResetPassword'
 
 class RootApp extends Component {
 
@@ -104,11 +99,6 @@ class RootApp extends Component {
       <Switch>
         <Route exact path='/404' component={Error404}/>
         <Route exact path='/500' component={Error500}/>
-        <Route exact path='/login' component={Login}/>
-        <Route exact path='/register' component={Register}/>
-        <Route exact path='/authenticate' component={TFAuthentication}/>
-        <Route exact path='/forgot-password' component={ForgotPassword}/>
-        <Route exact path='/reset-password' component={ResetPassword}/>
         <Route path={match.url} component={MainApp}/>
       </Switch>
     )

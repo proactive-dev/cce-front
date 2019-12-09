@@ -17,11 +17,21 @@ import EnableGoogleAuth from './main/EnableGoogleAuth'
 import DisableGoogleAuth from './main/DisableGoogleAuth'
 import Affiliate from './main/Affiliate'
 import Balances from './main/Balances'
+import Login from './common/Login'
+import Register from './common/Register'
+import TFAuthentication from './common/TFAuthentication'
+import ForgotPassword from './common/ForgotPassword'
+import ResetPassword from './common/ResetPassword'
 
 const AppRoute = ({match}) => (
   <div className="gx-main-content-wrapper">
     <Switch>
       <Route exact path={`${match.url}`} component={Home}/>
+      <Route exact path={`${match.url}login`} component={Login}/>
+      <Route exact path={`${match.url}register`} component={Register}/>
+      <Route exact path={`${match.url}authenticate`} component={TFAuthentication}/>
+      <Route exact path={`${match.url}forgot-password`} component={ForgotPassword}/>
+      <Route exact path={`${match.url}reset-password`} component={ResetPassword}/>
       <Route exact path={`${match.url}wallet/balances`} component={Balances}/>
       <Route exact path={`${match.url}wallet/deposit`} component={Deposit}/>
       <Route exact path={`${match.url}wallet/withdrawal`} component={Withdrawal}/>
