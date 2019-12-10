@@ -1,4 +1,4 @@
-import { GET_AUTH_STATUS, INIT_SETTINGS } from '../../constants/ActionTypes'
+import { GET_AUTH_STATUS, INIT_SETTINGS, SET_AUTH_STATUS } from '../../constants/ActionTypes'
 
 const INIT_STATE = {
   authStatus: false
@@ -16,6 +16,8 @@ export default (state = INIT_STATE, action) => {
       } else {
         return state
       }
+    case SET_AUTH_STATUS:
+      return {...state, authStatus: !!action.status}
     default:
       return state
   }
