@@ -7,6 +7,18 @@ import CustomScrollbars from '../../components/CustomScrollbars'
 import SidebarLogo from './SidebarLogo'
 import Auxiliary from 'util/Auxiliary'
 import { THEME_TYPE_LITE } from '../../constants/ThemeSetting'
+import {
+  BALANCES,
+  DEPOSIT,
+  EXCHANGE,
+  MARKETS,
+  OPEN_ORDERS,
+  ORDER_HISTORY,
+  REFERRAL,
+  TRADE_HISTORY,
+  TRANSACTIONS,
+  WITHDRAWAL
+} from '../../constants/Paths'
 
 const SubMenu = Menu.SubMenu
 
@@ -26,13 +38,13 @@ class SidebarContent extends Component {
               selectedKeys={[selectedKeys]}
               theme={themeType === THEME_TYPE_LITE ? 'lite' : 'dark'}
               mode="inline">
-              <Menu.Item key="markets">
-                <Link to="/markets">
+              <Menu.Item key={MARKETS}>
+                <Link to={`/${MARKETS}`}>
                   <FormattedMessage id="markets"/>
                 </Link>
               </Menu.Item>
-              <Menu.Item key="exchange">
-                <Link to="/exchange">
+              <Menu.Item key={EXCHANGE}>
+                <Link to={`/${EXCHANGE}`}>
                   <FormattedMessage id="exchange"/>
                 </Link>
               </Menu.Item>
@@ -41,24 +53,24 @@ class SidebarContent extends Component {
                 title={
                   <FormattedMessage id="wallet"/>
                 }>
-                <Menu.Item key="wallet/balances">
-                  <Link to="/wallet/balances">
+                <Menu.Item key={BALANCES}>
+                  <Link to={`/${BALANCES}`}>
                     <FormattedMessage id="balances"/>
                   </Link>
                 </Menu.Item>
-                <Menu.Item key="wallet/deposit">
-                  <Link to="/wallet/deposit">
+                <Menu.Item key={DEPOSIT}>
+                  <Link to={`/${DEPOSIT}`}>
                     <FormattedMessage id="deposit"/>
                   </Link>
                 </Menu.Item>
-                <Menu.Item key="wallet/withdrawal">
-                  <Link to="/wallet/withdrawal">
+                <Menu.Item key={WITHDRAWAL}>
+                  <Link to={`/${WITHDRAWAL}`}>
                     <FormattedMessage id="withdrawal"/>
                   </Link>
                 </Menu.Item>
-                <Menu.Item key="wallet/transactions">
-                  <Link to="/wallet/transactions">
-                    <FormattedMessage id="transactions"/>
+                <Menu.Item key={TRANSACTIONS}>
+                  <Link to={`/${TRANSACTIONS}`}>
+                    <FormattedMessage id="transaction.history"/>
                   </Link>
                 </Menu.Item>
               </SubMenu>
@@ -67,24 +79,24 @@ class SidebarContent extends Component {
                 title={
                   <FormattedMessage id="orders"/>
                 }>
-                <Menu.Item key="history/open-order">
-                  <Link to="/history/open-order">
+                <Menu.Item key={OPEN_ORDERS}>
+                  <Link to={`/${OPEN_ORDERS}`}>
                     <FormattedMessage id="open.orders"/>
                   </Link>
                 </Menu.Item>
-                <Menu.Item key="history/order">
-                  <Link to="/history/order">
+                <Menu.Item key={ORDER_HISTORY}>
+                  <Link to={`/${ORDER_HISTORY}`}>
                     <FormattedMessage id="order.history"/>
                   </Link>
                 </Menu.Item>
-                <Menu.Item key="history/trade">
-                  <Link to="/history/trade">
+                <Menu.Item key={TRADE_HISTORY}>
+                  <Link to={`/${TRADE_HISTORY}`}>
                     <FormattedMessage id="trade.history"/>
                   </Link>
                 </Menu.Item>
               </SubMenu>
-              <Menu.Item key="referral">
-                <Link to="/referral">
+              <Menu.Item key={REFERRAL}>
+                <Link to={`/${REFERRAL}`}>
                   <FormattedMessage id="referral"/>
                 </Link>
               </Menu.Item>

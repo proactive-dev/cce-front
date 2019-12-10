@@ -4,16 +4,13 @@ import { withRouter } from 'react-router-dom'
 import { Table } from 'antd'
 import _ from 'lodash'
 import { getCoinNameBySymbol, getPointFixed, priceChange } from '../../src/util/helpers'
+import { EXCHANGE } from '../constants/Paths'
 
 class SimpleMarketInfo extends React.Component {
   constructor(props) {
     super(props)
     this.prevData = []
   }
-
-  // componentDidMount() {
-  //
-  // }
 
   getColumns() {
     const {symbol, intl} = this.props
@@ -50,7 +47,6 @@ class SimpleMarketInfo extends React.Component {
         }
       },
       {
-        //title: intl.formatMessage({id: '24h.change'}),
         title: intl.formatMessage({id: 'change'}),
         dataIndex: 'change',
         align: 'center',
@@ -74,7 +70,7 @@ class SimpleMarketInfo extends React.Component {
   }
 
   handleClick = (market) => {
-    this.props.history.push(`/trade/${market}`)
+    this.props.history.push(`/${EXCHANGE}/${market}`)
   }
 
   render() {
@@ -111,7 +107,6 @@ class SimpleMarketInfo extends React.Component {
         }
       })
       this.prevData = lastData
-      //data = Helper.stableSort(data, order, orderBy)
     }
 
     return (
@@ -130,7 +125,6 @@ class SimpleMarketInfo extends React.Component {
       </div>
     )
   }
-
 }
 
 export default withRouter(injectIntl(SimpleMarketInfo))
