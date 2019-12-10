@@ -249,7 +249,7 @@
   "confirm.cancel.bids": "Are you sure to cancel all BIDS?",
   "confirm.cancel.asks": "Are you sure to cancel all ASKS?",
   "confirm.cancel.order": "Are you sure to cancel order?",
-  "wrong.id.or.password": "Wrong customer ID or password, please try again.",
+  "wrong.id.or.password": "Wrong user ID or password, please try again.",
   "login.failed.many": "Too many failed login attempts. To ensure the safety of your account, we have locked your account. To unlock, reset your password by clicking on \"Forgot Password\"",
   "account.disabled": "You account has been disabled, contact admin if you have any problem.",
   "session.expired": "Session expired. Try again.",

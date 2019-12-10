@@ -55,7 +55,7 @@ const AppRoute = ({match}) => (
       <Route exact path={`${match.url}${REGISTER}`} component={Register}/>
       <Route exact path={`${match.url}${LOGIN_AUTH}`} component={TFAuthentication}/>
       <Route exact path={`${match.url}${FORGOT_PWD}`} component={ForgotPassword}/>
-      <Route exact path={`${match.url}${RESET_PWD}`} component={ResetPassword}/>
+      <Route exact path={`${match.url}${RESET_PWD}/:token`} component={ResetPassword}/>
       <Route exact path={`${match.url}${BALANCES}`} component={Balances}/>
       <Route exact path={`${match.url}${DEPOSIT}`} component={Deposit}/>
       <Route exact path={`${match.url}${WITHDRAWAL}`} component={Withdrawal}/>

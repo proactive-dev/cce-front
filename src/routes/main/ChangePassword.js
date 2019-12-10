@@ -6,6 +6,7 @@ import { Alert, Button, Form, Icon, Input, Spin } from 'antd'
 import { changePassword } from '../../api/axiosAPIs'
 import { IconNotification } from '../../components/IconNotification'
 import { ERROR, SUCCESS } from '../../constants/AppConfigs'
+import { LOGIN } from '../../constants/Paths'
 
 const FormItem = Form.Item
 
@@ -51,7 +52,7 @@ class ChangePassword extends Component {
       .then(response => {
         this.props.form.resetFields()
         IconNotification(SUCCESS, this.props.intl.formatMessage({id: 'password.change.success'}))
-        this.props.history.push('/login')
+        this.props.history.push(`/${LOGIN}`)
       }).catch(error => {
       if (error.response) {
         IconNotification(ERROR, error.response.data.message)
