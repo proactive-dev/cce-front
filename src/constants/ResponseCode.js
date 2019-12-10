@@ -15,7 +15,7 @@ export const HTTP_INTERNAL_SERVER_ERROR = 500
 // Response Codes
 export const LOGGED_IN = 2000
 export const REGISTERED = 2000
-export const RESET_PWD = 2002
+export const RESET_PWD_SUCCESS = 2002
 export const LOGGED_OUT = 2003
 export const GOOGLE_AUTH_PASSED = 2010
 export const TFA_VERIFIED = 2012
