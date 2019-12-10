@@ -1,14 +1,28 @@
 import React, { Component } from 'react'
 import { FormattedMessage, injectIntl } from 'react-intl'
-import { Link } from 'react-router-dom'
-import { Button, Form, Icon, Input } from 'antd'
-import { SITE_NAME, SUCCESS } from '../../constants/AppConfigs'
+import { Alert, Button, Form, Icon, Input, Spin } from 'antd'
+import { SUCCESS } from '../../constants/AppConfigs'
 import { forgotPassword } from '../../api/axiosAPIs'
 import { IconNotification } from '../../components/IconNotification'
+import { connect } from 'react-redux'
+import { RESET_PWD } from '../../constants/ResponseCode'
 
 const FormItem = Form.Item
 
 class ForgotPassword extends Component {
+
+  state = {
+    confirmDirty: false,
+    loader: false
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const {loader} = nextProps
+    if (loader !== prevState.loader) {
+      return {loader}
+    }
+    return null
+  }
 
   handleSubmit = (e) => {
     e.preventDefault()
@@ -21,41 +35,44 @@ class ForgotPassword extends Component {
 
   doForgotPassword = (data) => {
     let formData = new FormData()
-    formData.append('userId', data.id)
+    formData.append('reset_password[email]', data.email)
     forgotPassword(formData)
       .then(response => {
-        IconNotification(SUCCESS, this.props.intl.formatMessage({id: 'auth.forgotPassword.success'}))
+        const {code} = response.data
+        if (code === RESET_PWD) {
+          IconNotification(SUCCESS, this.props.intl.formatMessage({id: 'auth.forgotPassword.success'}))
+        }
       })
   }
 
   render() {
     const {intl} = this.props
+    const {loader} = this.state
     const {getFieldDecorator} = this.props.form
 
     return (
-      <div className="gx-auth-container">
-        <div className="gx-auth-content">
-          <div className="gx-auth-header gx-text-center">
-            <Link to="/">
-              <img src={require('assets/images/logo-white.png')} alt={SITE_NAME} title={SITE_NAME}/>
-            </Link>
-          </div>
-          <div className="gx-text-center">
-            <h2 className="gx-auth-title"><FormattedMessage id="auth.forgotPassword"/></h2>
-          </div>
-          <div className="gx-mb-4">
-            <p><FormattedMessage id="auth.forgotPassword.desc"/></p>
-          </div>
-
-          <Form layout="vertical" onSubmit={this.handleSubmit} className="gx-auth-form gx-form-row0">
+      <div className="gx-text-center">
+        <h1 className="gx-m-5"><FormattedMessage id="auth.forgotPassword"/></h1>
+        <Spin className="gx-auth-container" spinning={loader} size="large">
+          <Form
+            className="gx-auth-content gx-text-left"
+            layout="vertical"
+            onSubmit={this.handleSubmit}>
+            <Alert
+              className='gx-mt-2 gx-mb-4'
+              type="warning"
+              showIcon
+              message={intl.formatMessage({id: 'auth.forgotPassword.desc'})}/>
             <FormItem>
-              {getFieldDecorator('id', {
+              {getFieldDecorator('email', {
                 rules: [{
+                  type: 'email', message: intl.formatMessage({id: 'alert.invalidEmail'})
+                }, {
                   required: true, message: intl.formatMessage({id: 'alert.fieldRequired'})
                 }]
               })(
-                <Input prefix={<Icon type="user" style={{color: 'rgba(0,0,0,.25)'}}/>}
-                       placeholder={intl.formatMessage({id: 'user.id.or.email'})}/>
+                <Input prefix={<Icon type="mail" style={{color: 'rgba(0,0,0,.25)'}}/>}
+                       placeholder={intl.formatMessage({id: 'email'})}/>
               )}
             </FormItem>
             <FormItem>
@@ -64,8 +81,7 @@ class ForgotPassword extends Component {
               </Button>
             </FormItem>
           </Form>
-
-        </div>
+        </Spin>
       </div>
     )
   }
@@ -73,4 +89,15 @@ class ForgotPassword extends Component {
 
 const WrappedForgotPasswordForm = Form.create()(ForgotPassword)
 
-export default injectIntl(WrappedForgotPasswordForm)
+const mapStateToProps = ({progress}) => {
+  return {
+    loader: progress.loader
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  null
+)(
+  injectIntl(WrappedForgotPasswordForm)
+)
