@@ -1,22 +1,30 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { FormattedMessage, injectIntl } from 'react-intl'
+import { injectIntl } from 'react-intl'
 import { getAuthStatus } from '../../appRedux/actions/User'
-import { Spin } from 'antd'
+import { Col, Row, Spin } from 'antd'
+import SimpleMarketInfo from '../../components/SimpleMarketInfo'
+import _ from 'lodash'
 
 class Home extends React.Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      loader: false
+      loader: false,
+      tickers: {}
     }
+    this.baseFilter = ['bchusdt', 'btcusdt', 'ethusdt', 'xrpusdt', 'ltcusdt']
+    this.symbolMap = {'bchusdt': 'bch', 'btcusdt': 'btc', 'ethusdt': 'eth', 'xrpusdt': 'xrp', 'ltcusdt': 'ltc'}
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const {loader} = nextProps
+    const {loader, tickers} = nextProps
     if (loader !== prevState.loader) {
       return {loader}
+    }
+    if (!_.isEmpty(tickers) && tickers !== prevState.tickers) {
+      return {tickers}
     }
     return null
   }
@@ -26,15 +34,18 @@ class Home extends React.Component {
   }
 
   render() {
+    const {loader, tickers} = this.state
     const {intl} = this.props
-    const {loader} = this.state
-
     return (
       <div>
-        <h2 className="title gx-mb-4"><FormattedMessage id="home"/></h2>
+        <SimpleMarketInfo tickers={tickers} baseFilter={this.baseFilter} symbolMap={this.symbolMap} symbol={'$'}/>
         <Spin spinning={loader} size="large">
           {/* Components */}
         </Spin>
+        <br/>
+        <Row type="flex" align="center">
+          <Col><a href="/trade" className="text-active f-fl">{intl.formatMessage({id: 'view.all'})}</a></Col>
+        </Row>
       </div>
     )
   }
@@ -44,9 +55,10 @@ const mapDispatchToProps = {
   getAuthStatus
 }
 
-const mapStateToProps = ({progress}) => {
+const mapStateToProps = ({progress, markets}) => {
   return {
-    loader: progress.loader
+    loader: progress.loader,
+    tickers: markets.tickers
   }
 }
 

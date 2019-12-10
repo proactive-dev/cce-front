@@ -14,12 +14,16 @@ export const HTTP_INTERNAL_SERVER_ERROR = 500
 
 // Response Codes
 export const LOGGED_IN = 2000
+export const REGISTERED = 2000
 export const RESET_PWD_SUCCESS = 2002
 export const LOGGED_OUT = 2003
 export const GOOGLE_AUTH_PASSED = 2010
 export const TFA_VERIFIED = 2012
 
-export const RESET_PWD_FREQUENT = 4005
+export const LOGIN_FAIL = 4000
+export const RESET_PWD_FAIL = 4005
 export const LOGIN_REQUIRED = 4010
 export const TFA_REQUIRED = 4012
+export const ADMIN_ROLE_REQUIRED = 4014
+export const TFA_FAIL = 4021
 

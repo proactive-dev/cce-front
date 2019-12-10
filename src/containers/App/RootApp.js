@@ -15,7 +15,10 @@ import {
   HTTP_INTERNAL_SERVER_ERROR,
   HTTP_NOT_FOUND,
   HTTP_UNAUTHORIZED,
+  LOGIN_FAIL,
   LOGIN_REQUIRED,
+  RESET_PWD_FAIL,
+  TFA_FAIL,
   TFA_REQUIRED
 } from '../../constants/ResponseCode'
 import { E_404, E_500, LOGIN, LOGIN_AUTH } from '../../constants/Paths'
@@ -23,6 +26,8 @@ import { E_404, E_500, LOGIN, LOGIN_AUTH } from '../../constants/Paths'
 class RootApp extends Component {
 
   processError = (error) => {
+    const {intl} = this.props
+
     let msg = null
     if (error.response) {
       const {status, statusText, data} = error.response
@@ -32,10 +37,23 @@ class RootApp extends Component {
           if (!!data && !!data.code) {
             switch (data.code) {
               case LOGIN_REQUIRED:
-                this.props.history.push(`/${LOGIN}`)
+                if (!this.props.pathname || !this.props.pathname.includes(LOGIN)) {
+                  this.props.history.push(`/${LOGIN}`)
+                } else {
+                  msg = intl.formatMessage({id: 'wrong.id.or.password'})
+                }
                 break
               case TFA_REQUIRED:
                 this.props.history.push(`/${LOGIN_AUTH}`)
+                break
+              case LOGIN_FAIL:
+                msg = intl.formatMessage({id: 'wrong.id.or.password'})
+                break
+              case TFA_FAIL:
+                msg = intl.formatMessage({id: 'TFA_CODE_INCORRECT'})
+                break
+              case RESET_PWD_FAIL:
+                msg = intl.formatMessage({id: 'INVALID_PARAMS'})
                 break
               default:
                 msg = data.code
@@ -55,7 +73,7 @@ class RootApp extends Component {
       }
     }
     if (!_.isEmpty(msg)) {
-      IconNotification(ERROR, msg)
+      IconNotification(ERROR, intl.formatMessage({id: msg}))
     }
   }
 
