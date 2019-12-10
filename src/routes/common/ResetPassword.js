@@ -3,10 +3,10 @@ import { FormattedMessage, injectIntl } from 'react-intl'
 import { Alert, Button, Form, Icon, Input, Spin } from 'antd'
 import { connect } from 'react-redux'
 import { resetPassword, validatePwdToken } from '../../api/axiosAPIs'
-import { RESET_PWD } from '../../constants/ResponseCode'
-import { FORGOT_PWD, LOGIN } from '../../constants/Paths'
+import { RESET_PWD_SUCCESS } from '../../constants/ResponseCode'
+import { FORGOT_PWD, LOGIN, RESET_PWD } from '../../constants/Paths'
 import { IconNotification } from '../../components/IconNotification'
-import { ERROR, SUCCESS } from '../../constants/AppConfigs'
+import { SUCCESS } from '../../constants/AppConfigs'
 
 const FormItem = Form.Item
 
@@ -29,21 +29,25 @@ class ResetPassword extends Component {
     this.doValidatePwdToken()
   }
 
+  goForgotPwdPage = () => {
+    this.props.history.push(`/${FORGOT_PWD}`)
+  }
+
   doValidatePwdToken = () => {
     const token = this.props.match.params.token
     if (!!token) {
       validatePwdToken(token)
         .then(response => {
           const {code} = response.data
-          if (code !== RESET_PWD) {
-            this.props.history.push(`/${FORGOT_PWD}`)
+          if (code !== RESET_PWD_SUCCESS) {
+            this.goForgotPwdPage()
           }
         })
         .catch(error => {
-          this.props.history.push(`/${FORGOT_PWD}`)
+          this.goForgotPwdPage()
         })
     } else {
-      this.props.history.push(`/${FORGOT_PWD}`)
+      this.goForgotPwdPage()
     }
   }
 
@@ -61,16 +65,12 @@ class ResetPassword extends Component {
     if (!!token) {
       let formData = new FormData()
       formData.append('reset_password[password]', data.password)
-      formData.append('commit', 'Reset Log in Password')
+      formData.append('commit', RESET_PWD)
 
       resetPassword(token, formData)
         .then(response => {
           IconNotification(SUCCESS, this.props.intl.formatMessage({id: 'reset.password.success'}))
           this.props.history.push(`/${LOGIN}`)
-        })
-        .catch(error => {
-          IconNotification(ERROR, this.props.intl.formatMessage({id: 'reset.password.failed'}))
-          this.props.history.push(`/${FORGOT_PWD}`)
         })
     }
   }

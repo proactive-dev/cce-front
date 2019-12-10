@@ -5,7 +5,7 @@ import { SUCCESS } from '../../constants/AppConfigs'
 import { forgotPassword } from '../../api/axiosAPIs'
 import { IconNotification } from '../../components/IconNotification'
 import { connect } from 'react-redux'
-import { RESET_PWD } from '../../constants/ResponseCode'
+import { RESET_PWD_SUCCESS } from '../../constants/ResponseCode'
 
 const FormItem = Form.Item
 
@@ -39,7 +39,7 @@ class ForgotPassword extends Component {
     forgotPassword(formData)
       .then(response => {
         const {code} = response.data
-        if (code === RESET_PWD) {
+        if (code === RESET_PWD_SUCCESS) {
           IconNotification(SUCCESS, this.props.intl.formatMessage({id: 'auth.forgotPassword.success'}))
         }
       })
