@@ -1,6 +1,6 @@
 /*Login Styles*/
 
-.@{class-prefix}-login-container {
+.@{class-prefix}-auth-container {
   position: relative;
   height: 100%;
   padding-bottom: @size-30;
@@ -11,7 +11,7 @@
   .justify-content(center);
 }
 
-.@{class-prefix}-login-content {
+.@{class-prefix}-auth-content {
   max-width: 420px;
   width: 94%;
   margin: auto;
@@ -45,7 +45,7 @@
   }
 }
 
-.@{class-prefix}-login-header {
+.@{class-prefix}-auth-header {
   margin-bottom: 30px;
 
   @media screen and (max-width: @screen-xs-max) {
@@ -53,10 +53,14 @@
   }
 }
 
-.login-form-button {
+.auth-form-button {
   width: 100%;
 }
 
-.login-form-right {
+.auth-form-left {
+  float: left;
+}
+
+.auth-form-right {
   float: right;
 }
