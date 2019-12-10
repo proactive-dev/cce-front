@@ -18,6 +18,7 @@ import {
   LOGIN_REQUIRED,
   TFA_REQUIRED
 } from '../../constants/ResponseCode'
+import { E_404, E_500, LOGIN, LOGIN_AUTH } from '../../constants/Paths'
 
 class RootApp extends Component {
 
@@ -31,10 +32,10 @@ class RootApp extends Component {
           if (!!data && !!data.code) {
             switch (data.code) {
               case LOGIN_REQUIRED:
-                this.props.history.push('/login')
+                this.props.history.push(`/${LOGIN}`)
                 break
               case TFA_REQUIRED:
-                this.props.history.push('/authenticate')
+                this.props.history.push(`/${LOGIN_AUTH}`)
                 break
               default:
                 msg = data.code
@@ -44,10 +45,10 @@ class RootApp extends Component {
           }
           break
         case HTTP_NOT_FOUND:
-          this.props.history.push('/404')
+          this.props.history.push(`/${E_404}`)
           break
         case HTTP_INTERNAL_SERVER_ERROR:
-          this.props.history.push('/500')
+          this.props.history.push(`/${E_500}`)
           break
         default:
           msg = statusText
@@ -97,8 +98,8 @@ class RootApp extends Component {
 
     return (
       <Switch>
-        <Route exact path='/404' component={Error404}/>
-        <Route exact path='/500' component={Error500}/>
+        <Route exact path={`/${E_404}`} component={Error404}/>
+        <Route exact path={`/${E_500}`} component={Error500}/>
         <Route path={match.url} component={MainApp}/>
       </Switch>
     )
