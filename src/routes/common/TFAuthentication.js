@@ -6,13 +6,24 @@ import _ from 'lodash'
 import { SUCCESS } from '../../constants/AppConfigs'
 import { verifyTFA } from '../../api/axiosAPIs'
 import { IconNotification } from '../../components/IconNotification'
+import { LOGGED_IN } from '../../constants/ResponseCode'
+import { USER } from '../../constants/Paths'
+import { setAuthStatus } from '../../appRedux/actions/User'
 
 const FormItem = Form.Item
 
 class TFAuthentication extends Component {
 
   state = {
-    loader: false
+    loader: false,
+    email: null
+  }
+
+  componentDidMount() {
+    const {location} = this.props
+    if (!_.isEmpty(location.state) && !_.isEmpty(location.state.email)) {
+      this.setState({email: location.state.email})
+    }
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -33,17 +44,21 @@ class TFAuthentication extends Component {
   }
 
   doVerifyTFA = (data) => {
+    const {email} = this.state
     let formData = new FormData()
-    formData.append('codeTFA', data.code)
+    formData.append('google_auth[otp]', data.code)
+    if (!_.isEmpty(email)) {
+      formData.append('email', email)
+    }
 
     verifyTFA(formData)
       .then(response => {
-        const {intl, location} = this.props
-        IconNotification(SUCCESS, intl.formatMessage({id: 'auth.code.verification.success'}))
-        if (!_.isEmpty(location.state) && !_.isEmpty(location.state.prevPath)) {
-          this.props.history.push(location.state.prevPath)
-        } else {
-          this.props.history.push('/')
+        const {code} = response.data
+        const status = (code === LOGGED_IN)
+        this.props.setAuthStatus({status})
+        if (status) {
+          IconNotification(SUCCESS, this.props.intl.formatMessage({id: 'auth.login.success'}))
+          this.props.history.push(`/${USER}`)
         }
       })
   }
@@ -87,6 +102,10 @@ class TFAuthentication extends Component {
 
 const WrappedTFAuthenticationForm = Form.create()(TFAuthentication)
 
+const mapDispatchToProps = {
+  setAuthStatus
+}
+
 const mapStateToProps = ({progress, settings}) => {
   const {pathname} = settings
   const {loader} = progress
@@ -95,7 +114,7 @@ const mapStateToProps = ({progress, settings}) => {
 
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(
   injectIntl(WrappedTFAuthenticationForm)
 )

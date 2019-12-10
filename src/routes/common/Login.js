@@ -5,8 +5,10 @@ import { Link } from 'react-router-dom'
 import { Button, Divider, Form, Icon, Input, Spin, Tag } from 'antd'
 import { EX_URL, SUCCESS } from '../../constants/AppConfigs'
 import { login } from '../../api/axiosAPIs'
-import { initSettings } from '../../appRedux/actions/User'
+import { initSettings, setAuthStatus } from '../../appRedux/actions/User'
 import { initAccounts } from '../../appRedux/actions/Accounts'
+import { FORGOT_PWD, REGISTER, USER } from '../../constants/Paths'
+import { LOGGED_IN } from '../../constants/ResponseCode'
 import { IconNotification } from '../../components/IconNotification'
 
 const FormItem = Form.Item
@@ -40,13 +42,18 @@ class Login extends Component {
     this.props.initAccounts()
 
     let formData = new FormData()
-    formData.append('userId', data.id)
+    formData.append('auth_key', data.id)
     formData.append('password', data.password)
 
     login(formData)
       .then(response => {
-        IconNotification(SUCCESS, this.props.intl.formatMessage({id: 'auth.login.success'}))
-        this.props.history.push('/dashboard')
+        const {code} = response.data
+        const status = (code === LOGGED_IN)
+        this.props.setAuthStatus({status})
+        if (status) {
+          IconNotification(SUCCESS, this.props.intl.formatMessage({id: 'auth.login.success'}))
+          this.props.history.push(`/${USER}`)
+        }
       })
   }
 
@@ -74,6 +81,8 @@ class Login extends Component {
             <FormItem>
               {getFieldDecorator('id', {
                 rules: [{
+                  type: 'email', message: intl.formatMessage({id: 'alert.invalidEmail'})
+                }, {
                   required: true, message: intl.formatMessage({id: 'alert.fieldRequired'})
                 }]
               })(
@@ -97,13 +106,13 @@ class Login extends Component {
               </Button>
             </FormItem>
             <FormItem>
-              <Link className='auth-form-left' to="/forgot-password">
+              <Link className='auth-form-left' to={`/${FORGOT_PWD}`}>
                 <FormattedMessage id="auth.forgotPassword"/>
               </Link>
               <div className='auth-form-right'>
                 <FormattedMessage id="not.registered.yet"/>
                 &nbsp;
-                <Link to="/register"><FormattedMessage id="auth.register"/></Link>
+                <Link to={`/${REGISTER}`}><FormattedMessage id="auth.register"/></Link>
               </div>
             </FormItem>
           </Form>
@@ -116,7 +125,7 @@ class Login extends Component {
 const WrappedNormalLoginForm = Form.create()(Login)
 
 const mapDispatchToProps = {
-  initSettings, initAccounts
+  initSettings, initAccounts, setAuthStatus
 }
 
 const mapStateToProps = ({settings, progress}) => {
