@@ -28,6 +28,14 @@ export const getFeeSymbol = (symbol) => {
   }
 }
 
+export const getCoinNameBySymbol = (symbol) => {
+  try {
+    return getCoinBySymbol(symbol).name
+  } catch (err) {
+    return null
+  }
+}
+
 export const getCoinBySymbol = (symbol) => {
   return COINS.find(coin => coin.symbol.toLowerCase() === symbol.toLowerCase())
 }
@@ -153,6 +161,14 @@ export const dataURItoU8Array = (dataURI) => {
   return [mime, [u8Arr]]
 }
 
+export const priceChange = (open, last) => {
+  let change = last - open
+  change = (open !== 0) ? change / open * 100.0 : 0.0
+  return change
+}
+
 export function numberFormat(inputNumber) {
   return inputNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 }
+
+
