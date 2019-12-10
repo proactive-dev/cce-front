@@ -1,5 +1,6 @@
 import React from 'react'
 import { injectIntl } from 'react-intl'
+import { withRouter } from 'react-router-dom'
 import { Table } from 'antd'
 import _ from 'lodash'
 import { getCoinNameBySymbol, getPointFixed, priceChange } from '../../src/util/helpers'
@@ -7,17 +8,15 @@ import { getCoinNameBySymbol, getPointFixed, priceChange } from '../../src/util/
 class SimpleMarketInfo extends React.Component {
   constructor(props) {
     super(props)
-    // this.state = {
-    //   selectedRecord: null,
-    //   isModalOpened: false
-    // }
-    this.base_filter = ['bchusdt', 'btcusdt', 'ethusdt', 'xrpusdt', 'ltcusdt']
-    this.symbol_map = {'bchusdt': 'bch', 'btcusdt': 'btc', 'ethusdt': 'eth', 'xrpusdt': 'xrp', 'ltcusdt': 'ltc'}
-    this.prev_data = []
+    this.prevData = []
   }
 
+  // componentDidMount() {
+  //
+  // }
+
   getColumns() {
-    const {intl} = this.props
+    const {symbol, intl} = this.props
     return [
       {
         title: intl.formatMessage({id: 'name'}),
@@ -25,9 +24,9 @@ class SimpleMarketInfo extends React.Component {
         align: 'left',
         render: (value, record) => {
           return <div><img src={require(`assets/images/coins/${record.symbol.toLowerCase()}.png`)}
-                           alt={record.symbol} title={record.symbol} style={{maxWidth: 16}}/><span
-            className="gx-fs-lg gx-p-2">{record.symbol.toUpperCase()}</span>&nbsp;<span
-            className={'gx-text-muted'}>{getCoinNameBySymbol(record.symbol)}</span></div>
+                           alt={record.symbol} title={record.symbol} style={{maxWidth: 16}}/>
+            <span className="gx-fs-lg gx-p-2">{record.symbol.toUpperCase()}</span>&nbsp;
+            <span className={'gx-text-muted'}>{getCoinNameBySymbol(record.symbol)}</span></div>
         }
       },
       {
@@ -37,15 +36,15 @@ class SimpleMarketInfo extends React.Component {
         render: (value, record) => {
           if (record.last_trend > 0) {
             return <div className={'gx-text-green'}>
-              $&nbsp;{getPointFixed(value, 2)}
+              {symbol}&nbsp;{getPointFixed(value, 2)}
             </div>
           } else if (record.last_trend < 0) {
             return <div className={'gx-text-red'}>
-              $&nbsp;{getPointFixed(value, 2)}
+              {symbol}&nbsp;{getPointFixed(value, 2)}
             </div>
           } else {
             return <div>
-              $&nbsp;{getPointFixed(value, 2)}
+              {symbol}&nbsp;{getPointFixed(value, 2)}
             </div>
           }
         }
@@ -74,29 +73,32 @@ class SimpleMarketInfo extends React.Component {
     ]
   }
 
-  render() {
-    const {tickers} = this.props
-    let data = []
+  handleClick = (market) => {
+    this.props.history.push(`/trade/${market}`)
+  }
 
+  render() {
+    const {tickers, baseFilter, symbolMap} = this.props
+    let data = []
     if (!_.isEmpty(tickers)) {
-      let filteredTickers = this.base_filter.reduce(function (obj, key) {
+      let filteredTickers = baseFilter.reduce(function (obj, key) {
         if (tickers.hasOwnProperty(key)) obj[key] = tickers[key]
         return obj
       }, {})
 
-      let symbol_map = this.symbol_map
-      let prev_data = this.prev_data
-      let last_data = {}
+      let prevData = this.prevData
+      let lastData = {}
       _.forEach(filteredTickers, function (value, key) {
         const ticker = value.ticker
-        const sym = symbol_map[key]
+        const sym = symbolMap[key]
         if (ticker) {
           const open = parseFloat(ticker.open)
           const last = parseFloat(ticker.last)
           const change = priceChange(open, last)
-          const last_trend = !_.isEmpty(prev_data) ? last - prev_data[sym] : 0
-          last_data[sym] = last
+          const lastTrend = !_.isEmpty(prevData) ? last - prevData[sym] : 0
+          lastData[sym] = last
           data.push({
+            market: key,
             symbol: sym,
             last: last,
             open: open,
@@ -104,21 +106,26 @@ class SimpleMarketInfo extends React.Component {
 //            low: parseFloat(ticker.low),
 //            vol: parseFloat(ticker.vol),
             change: change,
-            last_trend: last_trend
+            last_trend: lastTrend
           })
         }
       })
-      this.prev_data = last_data
+      this.prevData = lastData
       //data = Helper.stableSort(data, order, orderBy)
     }
 
     return (
       <div>
-        <Table className={'gx-table-responsible'}
+        <Table className={'gx-table-responsible '}
                columns={this.getColumns()}
                dataSource={data}
                pagination={false}
                rowKey="at"
+               onRow={(record) => ({
+                 onClick: () => {
+                   this.handleClick(record.market)
+                 }
+               })}
                size='middle'/>
       </div>
     )
@@ -126,4 +133,4 @@ class SimpleMarketInfo extends React.Component {
 
 }
 
-export default injectIntl(SimpleMarketInfo)
+export default withRouter(injectIntl(SimpleMarketInfo))
