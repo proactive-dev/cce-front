@@ -128,7 +128,7 @@ export const isThisMonth = (dateTimeString) => {
 export const gerRefLink = (refId) => {
   return _.isEmpty(refId) ?
     '' :
-    `${EX_URL}/?refId=${refId}`
+    `${EX_URL}/?ref=${refId}`
 }
 
 export const dataURItoFile = (dataURI, fileName) => {

@@ -3,8 +3,12 @@ import { FormattedMessage, injectIntl } from 'react-intl'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Alert, Button, Checkbox, Form, Icon, Input, Spin } from 'antd'
-import { SUCCESS } from '../../constants/AppConfigs'
+import _ from 'lodash'
 import { register } from '../../api/axiosAPIs'
+import { REGISTERED } from '../../constants/ResponseCode'
+import { setAuthStatus } from '../../appRedux/actions/User'
+import { LOGIN, TERMS } from '../../constants/Paths'
+import { SUCCESS } from '../../constants/AppConfigs'
 import { IconNotification } from '../../components/IconNotification'
 
 const FormItem = Form.Item
@@ -27,8 +31,6 @@ class Register extends Component {
   handleSubmit = (e) => {
     e.preventDefault()
     this.props.form.validateFields((err, values) => {
-      console.log(err)
-      console.log(values)
       if (!err) {
         this.doRegister(values)
       }
@@ -37,15 +39,23 @@ class Register extends Component {
 
   doRegister = (data) => {
     let formData = new FormData()
-    formData.append('userId', data.id)
     formData.append('email', data.email)
     formData.append('password', data.password)
-    formData.append('phone', data.dialCode + data.phone)
+    formData.append('password_confirmation', data.confirmPassword)
+    // check if referral?
+    const refId = sessionStorage.getItem('refId') || ''
+    if (!_.isEmpty(refId)) {
+      formData.append('refId', refId)
+    }
 
     register(formData)
       .then(response => {
-        IconNotification(SUCCESS, this.props.intl.formatMessage({id: 'auth.register.success'}))
-        this.props.history.push('/login')
+        const {code} = response.data
+        const status = (code === REGISTERED)
+        if (status) {
+          IconNotification(SUCCESS, this.props.intl.formatMessage({id: 'auth.register.success'}))
+          this.props.history.push(`/${LOGIN}`)
+        }
       })
   }
 
@@ -134,7 +144,7 @@ class Register extends Component {
               })(
                 <Checkbox><FormattedMessage id="i.agree"/></Checkbox>
               )}
-              <Link to="/terms"><FormattedMessage id="terms"/></Link>
+              <Link to={`/${TERMS}`}><FormattedMessage id="terms"/></Link>
             </FormItem>
             <FormItem>
               <Button type="primary" className="auth-form-button" htmlType="submit">
@@ -145,7 +155,7 @@ class Register extends Component {
               <div className='gx-text-center'>
                 <FormattedMessage id="already.registered"/>
                 &nbsp;
-                <Link to="/login"><FormattedMessage id="auth.login"/></Link>
+                <Link to={`/${LOGIN}`}><FormattedMessage id="auth.login"/></Link>
               </div>
             </FormItem>
           </Form>
@@ -157,6 +167,10 @@ class Register extends Component {
 
 const WrappedNormalRegisterForm = Form.create()(Register)
 
+const mapDispatchToProps = {
+  setAuthStatus
+}
+
 const mapStateToProps = ({progress}) => {
   return {
     loader: progress.loader
@@ -165,7 +179,7 @@ const mapStateToProps = ({progress}) => {
 
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(
   injectIntl(WrappedNormalRegisterForm)
 )
