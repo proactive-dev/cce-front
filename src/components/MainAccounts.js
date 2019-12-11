@@ -1,7 +1,7 @@
 import React from 'react'
-import { Link, withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import { injectIntl } from 'react-intl'
-import { Dropdown, Menu, Table } from 'antd'
+import { Button, Popover, Table } from 'antd'
 import { getCoinFixed, getFixed } from '../util/helpers'
 import { ESTIMATE_SYMBOL } from '../constants/AppConfigs'
 
@@ -73,37 +73,35 @@ class MainAccounts extends React.Component {
         title: '',
         align: 'center',
         render: (record) => {
-          const menu = (
-            <Menu>
-              {record.markets.map(market =>
-                <Menu.Item>
-                  <a href={`/trade/${market.name}`}>
+          const menuContents = (
+            <ul className="gx-sub-popover">
+              {
+                record.markets.map((market) =>
+                  <li className="gx-media gx-pointer gx-p-2"
+                      key={market.code}
+                      onClick={() => this.props.onWithdrawal(market)}>
                     {market.name}
-                  </a>
-                </Menu.Item>
-              )
+                  </li>
+                )
               }
-            </Menu>
+            </ul>
           )
           return <div className={'equalValue f-right'}>
-            <Link
-              className="gx-m-2 gx-text-underline"
-              to="#"
-              onClick={() => this.props.onDeposit(record.symbol)}>
-              {intl.formatMessage({id: 'deposit'})}
-            </Link>
-            <Link
-              className="gx-m-2 gx-text-underline"
-              to="#"
-              onClick={() => this.props.onWithdrawal(record.symbol)}>
-              {intl.formatMessage({id: 'withdrawal'})}
-            </Link>
-            {/*<Link onClick={() => this.props.onTrade(record.symbol)}>{intl.formatMessage({id: 'trade'})}</Link>*/}
-            <Dropdown overlay={menu}>
-              <a className="ant-dropdown-link gx-text-underline" href="#">
-                {intl.formatMessage({id: 'trade'})}
-              </a>
-            </Dropdown>
+            <Button type="link" className="gx-m-2"
+                    onClick={() => this.props.onDeposit(record.symbol)}>
+              <u>{intl.formatMessage({id: 'deposit'})}</u>
+            </Button>
+            <Button type="link" className="gx-m-2"
+                    onClick={() => this.props.onWithdrawal(record.symbol)}>
+              <u>{intl.formatMessage({id: 'withdrawal'})}</u>
+            </Button>
+            <Popover
+              overlayClassName="gx-popover-horizontal"
+              placement="bottomRight"
+              content={menuContents}
+              trigger="click">
+              <u className={'gx-link'}>{intl.formatMessage({id: 'trade'})}</u>
+            </Popover>
           </div>
         }
       }
