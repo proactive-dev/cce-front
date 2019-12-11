@@ -1,10 +1,10 @@
 import _ from 'lodash'
 import { BigNumber } from 'bignumber.js'
 import Moment from 'moment'
-import { COINS, DEFAULT_PRECISION, EX_URL, QUOTE_SYMBOL } from '../constants/AppConfigs'
+import { DEFAULT_PRECISION, EX_URL, QUOTE_SYMBOL } from '../constants/AppConfigs'
+import { CURRENCIES } from '../constants/Currencies'
 
 // main helper functions
-
 export const removeDuplicates = (array) => {
   return (array === undefined || array.length === 0) ? [] : array.filter((v, i) => array.indexOf(v) === i)
 }
@@ -37,7 +37,7 @@ export const getCoinNameBySymbol = (symbol) => {
 }
 
 export const getCoinBySymbol = (symbol) => {
-  return COINS.find(coin => coin.symbol.toLowerCase() === symbol.toLowerCase())
+  return CURRENCIES.find(coin => coin.symbol.toLowerCase() === symbol.toLowerCase())
 }
 
 export const getFixed = (value, precision = null) => {
