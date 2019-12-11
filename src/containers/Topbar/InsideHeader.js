@@ -2,16 +2,32 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Layout } from 'antd'
+import { FormattedMessage } from 'react-intl'
 import HorizontalNav from './HorizontalNav'
 import { toggleCollapsedSideNav } from '../../appRedux/actions/Setting'
 import LanguageMenu from '../../components/LanguageMenu'
+import TopUserMenu from '../../components/TopUserMenu'
+import { AUTH_MENUS } from '../../constants/Menus'
 
 const {Header} = Layout
 
 class InsideHeader extends Component {
 
+  state = {
+    authStatus: false
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const {authStatus} = nextProps
+    if (authStatus !== prevState.authStatus) {
+      return {authStatus}
+    }
+    return null
+  }
+
   render() {
     const {navCollapsed} = this.props
+    const {authStatus} = this.state
 
     return (
       <div className="gx-header-horizontal gx-header-horizontal-dark gx-inside-header-horizontal">
@@ -37,9 +53,25 @@ class InsideHeader extends Component {
                 <HorizontalNav/>
               </div>
               <ul className="gx-header-notifications gx-ml-auto">
+                {
+                  !authStatus &&
+                  AUTH_MENUS.map(({path, title}) =>
+                    <li className="gx-d-none gx-d-lg-block gx-language" key={path}>
+                      <Link to={`/${path}`}>
+                        <FormattedMessage id={title}/>
+                      </Link>
+                    </li>
+                  )
+                }
                 <li className="gx-language">
                   <LanguageMenu/>
                 </li>
+                {
+                  authStatus &&
+                  <li className="gx-language gx-d-none gx-d-lg-block">
+                    <TopUserMenu/>
+                  </li>
+                }
               </ul>
             </div>
           </div>
@@ -49,8 +81,9 @@ class InsideHeader extends Component {
   }
 }
 
-const mapStateToProps = ({settings}) => {
+const mapStateToProps = ({settings, user}) => {
   const {navCollapsed} = settings
-  return {navCollapsed}
+  const {authStatus} = user
+  return {navCollapsed, authStatus}
 }
 export default connect(mapStateToProps, {toggleCollapsedSideNav})(InsideHeader)

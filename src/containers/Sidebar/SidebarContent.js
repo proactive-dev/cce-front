@@ -7,8 +7,8 @@ import CustomScrollbars from '../../components/CustomScrollbars'
 import SidebarLogo from './SidebarLogo'
 import Auxiliary from 'util/Auxiliary'
 import { THEME_TYPE_LITE } from '../../constants/ThemeSetting'
-import { EXCHANGE, LOGIN, LOGOUT, MARKETS, REGISTER } from '../../constants/Paths'
-import { ORDER_MENUS, USER_MENUS, WALLET_MENUS } from '../../constants/Menus'
+import { EXCHANGE, LOGOUT, MARKETS } from '../../constants/Paths'
+import { AUTH_MENUS, ORDER_MENUS, USER_MENUS, WALLET_MENUS } from '../../constants/Menus'
 import LogoutMenu from '../../components/LogoutMenu'
 
 const SubMenu = Menu.SubMenu
@@ -108,19 +108,13 @@ class SidebarContent extends Component {
               }
               {
                 !authStatus &&
-                <Menu.Item key={LOGIN}>
-                  <Link to={`/${LOGIN}`}>
-                    <FormattedMessage id="auth.login"/>
-                  </Link>
-                </Menu.Item>
-              }
-              {
-                !authStatus &&
-                <Menu.Item key={REGISTER}>
-                  <Link to={`/${REGISTER}`}>
-                    <FormattedMessage id="auth.register"/>
-                  </Link>
-                </Menu.Item>
+                AUTH_MENUS.map(({path, title}) =>
+                  <Menu.Item key={path}>
+                    <Link to={`/${path}`}>
+                      <FormattedMessage id={title}/>
+                    </Link>
+                  </Menu.Item>
+                )
               }
               {
                 authStatus &&

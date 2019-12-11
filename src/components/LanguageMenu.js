@@ -48,7 +48,7 @@ class LanguageMenu extends React.Component {
         content={this.languageMenu()}
         visible={popoverVisible}
         onVisibleChange={this.handleVisibleChange}
-        trigger="hover">
+        trigger="click">
         <span className="gx-pointer gx-flex-row gx-align-items-center">
           <i className={`flag flag-24 flag-${locale}`}/>
           <i className="icon icon-chevron-down gx-pl-2"/>

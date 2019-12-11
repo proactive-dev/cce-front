@@ -3,9 +3,11 @@ import {
   BALANCES,
   CHANGE_PWD,
   DEPOSIT,
+  LOGIN,
   OPEN_ORDERS,
   ORDER_HISTORY,
   REFERRAL,
+  REGISTER,
   TRADE_HISTORY,
   TRANSACTIONS,
   USER,
@@ -62,5 +64,16 @@ export const USER_MENUS = [
   {
     path: REFERRAL,
     title: 'referral'
+  }
+]
+
+export const AUTH_MENUS = [
+  {
+    path: LOGIN,
+    title: 'auth.login'
+  },
+  {
+    path: REGISTER,
+    title: 'auth.register'
   }
 ]
