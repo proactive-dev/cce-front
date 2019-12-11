@@ -23,7 +23,7 @@ export const TICKERS_URL = `${HOST_API_URL}/tickers`
 export const OHLC_URL = `${HOST_API_URL}/k`
 export const REF_DATA_URL = `${HOST_URL}/referrals?simple=true`
 export const ALL_ACCOUNTS_URL = `${HOST_URL}/accounts`
-export const ACCOUNTS_URL = `${HOST_URL}/accounts/main?simple=true`
+export const ACCOUNTS_URL = `${HOST_URL}/accounts/main`
 export const MAIN_ACCOUNTS_URL = `${HOST_URL}/accounts/main`
 export const CURRENCIES_URL = `${HOST_URL}/configs/currencies`
 export const LEVELS_URL = `${HOST_URL}/configs/levels`
