@@ -55,7 +55,7 @@ class TFAuthentication extends Component {
       .then(response => {
         const {code} = response.data
         const status = (code === LOGGED_IN)
-        this.props.setAuthStatus({status})
+        this.props.setAuthStatus(status)
         if (status) {
           IconNotification(SUCCESS, this.props.intl.formatMessage({id: 'auth.login.success'}))
           this.props.history.push(`/${USER}`)

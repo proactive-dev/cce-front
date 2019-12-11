@@ -27,6 +27,10 @@ class Login extends Component {
     return null
   }
 
+  componentDidMount() {
+    this.props.setAuthStatus(false)
+  }
+
   handleSubmit = (e) => {
     e.preventDefault()
     this.props.form.validateFields((err, values) => {
@@ -49,7 +53,7 @@ class Login extends Component {
       .then(response => {
         const {code} = response.data
         const status = (code === LOGGED_IN)
-        this.props.setAuthStatus({status})
+        this.props.setAuthStatus(status)
         if (status) {
           IconNotification(SUCCESS, this.props.intl.formatMessage({id: 'auth.login.success'}))
           this.props.history.push(`/${USER}`)

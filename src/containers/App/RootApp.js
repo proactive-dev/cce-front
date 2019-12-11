@@ -73,11 +73,7 @@ class RootApp extends Component {
           if (!!data && !!data.code) {
             switch (data.code) {
               case LOGIN_REQUIRED:
-                if (!this.props.pathname || !this.props.pathname.includes(LOGIN)) {
-                  this.props.history.push(`/${LOGIN}`)
-                } else {
-                  msg = intl.formatMessage({id: 'wrong.id.or.password'})
-                }
+                this.props.history.push(`/${LOGIN}`)
                 break
               case TFA_REQUIRED:
                 this.props.history.push(`/${LOGIN_AUTH}`)
