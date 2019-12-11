@@ -1,14 +1,17 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { FormattedMessage, injectIntl } from 'react-intl'
+import { Checkbox, Col, Form, Input, Row, Tabs } from 'antd'
+import _ from 'lodash'
+import MainAccounts from '../../components/MainAccounts'
 import { getAuthStatus } from '../../appRedux/actions/User'
 import { getAccounts } from '../../appRedux/actions/Accounts'
-import { Checkbox, Col, Form, Input, Row, Spin, Tabs } from 'antd'
-import MainAccounts from '../../components/MainAccounts'
-import _ from 'lodash'
+import { DEFAULT_PRECISION, ESTIMATE_SYMBOL } from '../../constants/AppConfigs'
+import { DEPOSIT, WITHDRAWAL } from '../../constants/Paths'
 
 const Search = Input.Search
 
+const MARKETS = [{name: 'XRP/BTC', code: 'xrpbtc'}, {name: 'BTC/ETH', code: 'btceth'}]
 
 class Balances extends React.Component {
   constructor(props) {
@@ -46,6 +49,24 @@ class Balances extends React.Component {
     this.setState({hideZero: !e.target.checked})
   }
 
+  goTrade = (pair) => {
+    // TODO
+  }
+
+  goDeposit = (symbol) => {
+    this.props.history.push({
+      pathname: `/${DEPOSIT}`,
+      state: {currency: symbol}
+    })
+  }
+
+  goWithdrawal = (symbol) => {
+    this.props.history.push({
+      pathname: `/${WITHDRAWAL}`,
+      state: {currency: symbol}
+    })
+  }
+
   render() {
     const {intl} = this.props
     const {loader, accounts, searchText, hideZero} = this.state
@@ -65,57 +86,64 @@ class Balances extends React.Component {
     let data = []
     let mainEstimated = 0
     _.forEach(filteredAccounts, function (value) {
-      let btcEstimated = parseFloat(value.estimated)
-      data.push({
-        name: value.currency.name,
-        symbol: value.currency.code,
-        infoUrl: value.currency.info_url,
-        locked: parseFloat(value.locked),
-        availableBalance: parseFloat(value.balance),
-        totalBalance: parseFloat(value.balance) + parseFloat(value.locked),
-        precesion: parseInt(value.currency.precision),
-        btcVal: btcEstimated
-      })
-      mainEstimated += btcEstimated
+      if (value.currency.visible) {
+        let estimation = parseFloat(value.estimated)
+        data.push({
+          name: value.currency.name,
+          symbol: value.currency.code,
+          infoUrl: value.currency.info_url,
+          locked: parseFloat(value.locked),
+          available: parseFloat(value.balance),
+          total: parseFloat(value.balance) + parseFloat(value.locked),
+          precision: parseInt(value.currency.precision),
+          estimation: estimation,
+          markets: MARKETS.filter(market => {
+            return market.name.toLowerCase().includes(value.currency.code.toLowerCase())
+          })
+        })
+        mainEstimated += estimation
+      }
     })
 
     return (
       <div>
-        <h2 className="title gx-mb-4"><FormattedMessage id="Balances"/></h2>
-        <Spin spinning={loader} size="large">
-          {/* Components */}
-        </Spin>
+        <h1 className="gx-mt-4 gx-mb-4"><FormattedMessage id="balances"/></h1>
         <Tabs defaultActiveKey="1">
           {/*<TabPane tab={intl.formatMessage({id: 'accounts.all'})} key="1">*/}
           {/*  Content of Tab Pane 1*/}
           {/*</TabPane>*/}
           <TabPane tab={intl.formatMessage({id: 'accounts.main'})} key="2">
-            <div>
-              <Row>
-                <Col span={16}>
-                  <Form layout="inline">
-                    <Form.Item>
-                      <Search
-                        className="gx-mb-3"
-                        onSearch={this.onSearch}
-                        style={{maxWidth: '180px'}}
-                        enterButton/>
-                    </Form.Item>
-                    <Form.Item>
-                      <Checkbox checked={!this.state.hideZero}
-                                onChange={this.handleHideZero}>{intl.formatMessage({id: 'balance.zero'})}</Checkbox>
-                    </Form.Item>
-                  </Form>
-                </Col>
-                <Col span={8}>
-                  <div style={{float: 'right'}}>
-                    <label>{intl.formatMessage({id: 'estimated.value'})}</label>：
-                    <span><strong>{mainEstimated ? parseFloat(mainEstimated).toFixed(8) : 0.00000000} BTC</strong></span>
-                  </div>
-                </Col>
-              </Row>
-            </div>
-            <MainAccounts accountData={data}/>
+            <Row className="gx-m-2">
+              <Col span={16} xl={16} lg={16} md={16} sm={24} xs={24}>
+                <Form layout="inline">
+                  <Form.Item>
+                    <Search
+                      onSearch={this.onSearch}
+                      style={{maxWidth: '200px'}}
+                      enterButton/>
+                  </Form.Item>
+                  <Form.Item>
+                    <Checkbox
+                      checked={!this.state.hideZero}
+                      onChange={this.handleHideZero}>{
+                      intl.formatMessage({id: 'balance.zero'})}
+                    </Checkbox>
+                  </Form.Item>
+                </Form>
+              </Col>
+              <Col span={8} xl={8} lg={8} md={8} sm={24} xs={24}
+                   className='gx-float-right gx-m-auto'>
+                <label>{intl.formatMessage({id: 'estimated.value'})}</label>：
+                <strong>
+                  {mainEstimated ? parseFloat(mainEstimated).toFixed(DEFAULT_PRECISION) : 0.00000000} {ESTIMATE_SYMBOL}
+                </strong>
+              </Col>
+            </Row>
+            <MainAccounts
+              dataSource={data}
+              onDeposit={this.goDeposit}
+              onWithdrawal={this.goWithdrawal}
+              onTrade={this.goTrade}/>
           </TabPane>
           {/*<TabPane tab={intl.formatMessage({id: 'accounts.lending'})} key="3">*/}
           {/*  Content of Tab Pane 3*/}

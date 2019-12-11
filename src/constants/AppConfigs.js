@@ -230,6 +230,7 @@ export const COINS = [
 ]
 
 export const QUOTE_SYMBOL = 'USDT'
+export const ESTIMATE_SYMBOL = 'BTC'
 
 export const DEFAULT_PRECISION = 8
 
