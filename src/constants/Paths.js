@@ -1,5 +1,6 @@
 export const REGISTER = 'register'
 export const LOGIN = 'login'
+export const LOGOUT = 'logout'
 export const LOGIN_AUTH = 'authenticate'
 export const FORGOT_PWD = 'forgot-password'
 export const RESET_PWD = 'reset-password'
