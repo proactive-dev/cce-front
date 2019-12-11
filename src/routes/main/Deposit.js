@@ -79,13 +79,15 @@ class Deposit extends React.Component {
                   // filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                 >
                   {
-                    CURRENCIES.map(currency =>
-                      <Option value={currency.symbol}>
-                        {/*<img src={require(`assets/images/coins/${currency.symbol.toLowerCase()}.png`)}*/}
-                        {/*     style={{maxWidth: 16}} alt={currency.code}/>*/}
-                        &nbsp;<strong>{currency.symbol.toUpperCase()}</strong>&nbsp;-&nbsp;{currency.name}
-                      </Option>
-                    )}
+                    CURRENCIES.map((coin) => {
+                      if (coin.visible)
+                        return <Option value={coin.symbol} key={coin.symbol}>
+                          {/*<img src={require(`assets/images/coins/${coin.symbol.toLowerCase()}.png`)}*/}
+                          {/*     style={{maxWidth: 16}} alt={coin.code}/>*/}
+                          &nbsp;<strong>{coin.symbol.toUpperCase()}</strong>&nbsp;-&nbsp;{coin.name}
+                        </Option>
+                    }
+                  )}
                 </Select>
                 <div style={{marginTop: 10}}>
                   <Row>
