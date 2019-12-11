@@ -45,6 +45,10 @@ export const getFixed = (value, precision = null) => {
   return BigNumber(value).toFixed(fixed).toString()
 }
 
+export const convertToDate = d => {
+  return Moment(d).format('YYYY-MM-DD')
+}
+
 export const getTableLocaleData = (intl) => {
   return {
     filterTitle: intl.formatMessage({id: 'filter'}),
