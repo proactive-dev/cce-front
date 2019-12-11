@@ -40,41 +40,47 @@ class DepositAddress extends React.Component {
     const depositAddress = this.getDepositeAddress(account, '')
     return (
       <div>
-        <Text type="warning"><FormattedMessage id="important"/></Text>
-        <Text type="warning">
-          <ul>
-            <li><FormattedMessage id="deposit.important"/></li>
-          </ul>
-        </Text>
-        <Text strong>{symbol.toUpperCase()} <FormattedMessage id="deposit.address"/>:</Text><br/>
-        <Title strong type='warning' level={4}>{account.payment_address.deposit_address}</Title><br/>
-        <div style={{float: 'right'}}>
-          <Button type="normal" onClick={this.showQRCode}>
-            <Icon type="qrcode"/>
-            <FormattedMessage id="show.qrcode"/>
-          </Button>
-          <CopyToClipboard
-            text={depositAddress}
-            onCopy={() => this.copyQRCode()}
-          >
-            <Button type="normal">
-              <Icon type="copy"/>
-              <FormattedMessage id="copy.address"/>
-            </Button>
-          </CopyToClipboard>
+        <div>
+          <Text strong>{symbol.toUpperCase()} <FormattedMessage id="deposit.address"/>:</Text><br/>
         </div>
-
+        <div className={'gx-mt-2 gx-text-warning gx-fs-lg'}>
+          <strong>{account.payment_address.deposit_address}</strong>
+        </div>
+        <Row type="flex" justify='center' className={'gx-mt-3'}>
+          <Col>
+            <Button type="normal" onClick={this.showQRCode}>
+              <Icon type="qrcode"/>
+              <FormattedMessage id="show.qrcode"/>
+            </Button>
+            <CopyToClipboard
+              text={depositAddress}
+              onCopy={() => this.copyQRCode()}
+            >
+              <Button type="normal">
+                <Icon type="copy"/>
+                <FormattedMessage id="copy.address"/>
+              </Button>
+            </CopyToClipboard>
+          </Col>
+        </Row>
+        <div>
+          <Text type="warning"><FormattedMessage id="important"/></Text>
+          <ul type='warning' className={'gx-mt-2'}>
+            <li className={'gx-text-warning'}><FormattedMessage id="deposit.important"/></li>
+          </ul>
+        </div>
         <Modal
           visible={this.state.visibleQRCode}
           footer={null}
           onOk={this.closeQRCode}
           onCancel={this.closeQRCode}
         >
-          <Row type="flex" align="center">
-            <Col><Text strong>{symbol.toUpperCase()} {intl.formatMessage({id: 'deposit.address'})}</Text></Col>
+          <Row type="flex" justify='center'>
+            <Col align={'center'}><Text
+              strong>{symbol.toUpperCase()} {intl.formatMessage({id: 'deposit.address'})}</Text></Col>
           </Row>
           <br/>
-          <Row type="flex" align="center">
+          <Row type="flex" justify='center'>
             <Col>
               <QRCode
                 value={this.getDepositeAddress(account, intl.formatMessage({id: 'alert.emptyData'}))}
@@ -84,7 +90,7 @@ class DepositAddress extends React.Component {
             </Col>
           </Row>
           <br/>
-          <Row type="flex" align="center">
+          <Row type="flex" justify='center'>
             <Col><Text strong>{depositAddress}</Text></Col>
           </Row>
         </Modal>

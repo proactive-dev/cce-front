@@ -1,7 +1,7 @@
 import { GET_ACCOUNTS, INIT_ACCOUNTS } from '../../constants/ActionTypes'
 
 const INIT_STATE = {
-  accounts: {}
+  accounts: []
 }
 
 export default (state = INIT_STATE, action) => {
@@ -11,7 +11,8 @@ export default (state = INIT_STATE, action) => {
       return INIT_STATE
     case GET_ACCOUNTS:
       if (!!action.payload) {
-        return {...state, accounts: action.payload}
+        const {accounts} = action.payload
+        return {...state, accounts: accounts || []}
       } else {
         return state
       }

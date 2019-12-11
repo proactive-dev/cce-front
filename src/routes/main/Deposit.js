@@ -20,7 +20,7 @@ class Deposit extends React.Component {
 
     this.state = {
       loader: false,
-      accounts: {},
+      accounts: [],
       currentSymbol: 'btc'
     }
   }
@@ -52,11 +52,13 @@ class Deposit extends React.Component {
   render() {
     const {intl} = this.props
     const {loader, accounts, currentSymbol} = this.state
-    const result = accounts.accounts.find(account => account.currency.code === currentSymbol)
+    const result = accounts.find(account => account.currency.code === currentSymbol)
     const account = result === undefined ? {} : result
-    const balance = getFixed(parseFloat(account.balance), parseInt(account.currency.precision))
-    const locked = getFixed(parseFloat(account.locked), parseInt(account.currency.precision))
-    const total = getFixed(parseFloat(account.balance) + parseFloat(account.locked), parseInt(account.currency.precision))
+    const balance = !_.isEmpty(account) ? getFixed(parseFloat(account.balance), parseInt(account.currency.precision)) : 0.0
+    const locked = !_.isEmpty(account) ? getFixed(parseFloat(account.locked), parseInt(account.currency.precision)) : 0.0
+    const total = !_.isEmpty(account) ? getFixed(parseFloat(account.balance) + parseFloat(account.locked), parseInt(account.currency.precision)) : 0.0
+    const infoUrl = !_.isEmpty(account) ? account.currency.info_url : ''
+    const confirm = !_.isEmpty(account) ? account.currency.confirmation : 0
     return (
       <div>
         <h2 className="title gx-mb-4"><FormattedMessage id="deposit"/></h2>
@@ -64,9 +66,9 @@ class Deposit extends React.Component {
           {/* Components */}
         </Spin>
         <div>
-          <Row>
-            <Col span={12} xxl={12} xl={12} lg={12} md={24} sm={24} xs={24}>
-              <Card bordered={false}>
+          <Row type='flex' gutter={12}>
+            <Col span={12} xxl={12} xl={12} lg={12} md={24} sm={24} xs={24} className={'gx-mb-2'}>
+              <Card bordered={false} style={{height: '100%'}}>
                 <Select
                   showSearch
                   style={{width: '100%'}}
@@ -80,56 +82,45 @@ class Deposit extends React.Component {
                 >
                   {
                     CURRENCIES.map((coin) => {
-                      if (coin.visible)
-                        return <Option value={coin.symbol} key={coin.symbol}>
-                          {/*<img src={require(`assets/images/coins/${coin.symbol.toLowerCase()}.png`)}*/}
-                          {/*     style={{maxWidth: 16}} alt={coin.code}/>*/}
-                          &nbsp;<strong>{coin.symbol.toUpperCase()}</strong>&nbsp;-&nbsp;{coin.name}
-                        </Option>
-                    }
-                  )}
+                        if (coin.visible)
+                          return <Option value={coin.symbol} key={coin.symbol}>
+                            {/*<img src={require(`assets/images/coins/${coin.symbol.toLowerCase()}.png`)}*/}
+                            {/*     style={{maxWidth: 16}} alt={coin.code}/>*/}
+                            &nbsp;<strong>{coin.symbol.toUpperCase()}</strong>&nbsp;-&nbsp;{coin.name}
+                          </Option>
+                      }
+                    )}
                 </Select>
-                <div style={{marginTop: 10}}>
+                <div className={'gx-mt-3'}>
                   <Row>
-                    <Col span={8}>
+                    <Col span={12}>
                       <p><FormattedMessage id="balance.total"/></p>
                     </Col>
-                    <Col span={8}>
+                    <Col span={12}>
                       <p>{total}&nbsp;{currentSymbol.toUpperCase()}</p>
                     </Col>
                   </Row>
                   <Row>
-                    <Col span={8}>
+                    <Col span={12}>
                       <p><FormattedMessage id="balance.available"/></p>
                     </Col>
-                    <Col span={8}>
+                    <Col span={12}>
                       <p>{balance}&nbsp;{currentSymbol.toUpperCase()}</p>
                     </Col>
                   </Row>
                   <Row>
-                    <Col span={8}>
+                    <Col span={12}>
                       <p><FormattedMessage id="locked"/></p>
                     </Col>
-                    <Col span={8}>
+                    <Col span={12}>
                       <p>{locked}&nbsp;{currentSymbol.toUpperCase()}</p>
-                    </Col>
-                    <Col span={8}>
-                      <a
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        href={account.currency.info_url}>
-                        <Text type={'warning'}><Icon type="info-circle" theme="filled"/>&nbsp;<FormattedMessage
-                          id="what's"/> {currentSymbol.toUpperCase()}?</Text>
-                      </a>
                     </Col>
                   </Row>
                 </div>
-
-                <div style={{marginTop: 10}}>
-                  <Text strong><FormattedMessage id="please.note"/></Text>
+                <div className={'gx-mt-2'}>
                   <ul>
                     <li><FormattedMessage id="deposit.note.1.first"/> <Text
-                      type={'warning'}>{account.currency.confirmation}</Text> <FormattedMessage
+                      type={'warning'}>{confirm}</Text> <FormattedMessage
                       id="deposit.note.1.second"/>
                     </li>
                     <li><FormattedMessage id="deposit.note.2.first"/>
@@ -139,11 +130,23 @@ class Deposit extends React.Component {
                     </li>
                   </ul>
                 </div>
+                <div className={'gx-mt-2'}>
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={infoUrl}>
+                    <Text type={'warning'}><Icon type="info-circle" theme="filled"/>&nbsp;<FormattedMessage
+                      id="what's"/> {currentSymbol.toUpperCase()}?</Text>
+                  </a>
+                </div>
               </Card>
             </Col>
             <Col span={12} xxl={12} xl={12} lg={12} md={24} sm={24} xs={24}>
-              <Card bordered={false}>
-                <DepositAddress symbol={currentSymbol} account={account} onCopyQRCode={this.handleCopyQRCode}/>
+              <Card bordered={false} style={{height: '100%'}}>
+                {
+                  !_.isEmpty(account) &&
+                  <DepositAddress symbol={currentSymbol} account={account} onCopyQRCode={this.handleCopyQRCode}/>
+                }
               </Card>
             </Col>
           </Row>
