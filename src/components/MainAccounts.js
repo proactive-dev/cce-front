@@ -2,7 +2,7 @@ import React from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import { injectIntl } from 'react-intl'
 import { getCoinFixed, getFixed } from '../util/helpers'
-import { Table } from 'antd'
+import { Dropdown, Icon, Menu, Table } from 'antd'
 
 
 class MainAccounts extends React.Component {
@@ -10,7 +10,13 @@ class MainAccounts extends React.Component {
     super(props)
 
     this.state = {}
+
+    this.markets = [{name: 'XRP/BTC', code: 'xrpbtc'}, {name: 'BTC/ETH', code: 'btceth'}, {
+      name: 'ADA/ETH',
+      code: 'adaeth'
+    }]
   }
+
 
   componentDidMount() {
 //    this.props.getAccounts()
@@ -41,9 +47,10 @@ class MainAccounts extends React.Component {
         dataIndex: 'symbol',
         align: 'left',
         render: (value) => {
-          return <div><img src={require(`assets/images/coins/${value.toLowerCase()}.png`)}
-                           alt={value} title={value} style={{maxWidth: 16}}/>
-            <span className="gx-fs-lg gx-p-2">{value.toUpperCase()}</span>
+          return <div>
+            <img src={require(`assets/images/coins/${value.toLowerCase()}.png`)}
+                 alt={value} style={{maxWidth: 16, verticalalign: 'middle', marginRight: 8}}/>
+            {value.toUpperCase()}
           </div>
         }
       },
@@ -96,12 +103,32 @@ class MainAccounts extends React.Component {
         title: '',
         align: 'center',
         render: (record) => {
+          let filteredMarkets = this.markets.filter(market => {
+            return market.name.toLowerCase().includes(record.symbol.toLowerCase())
+          })
+          const menu = (
+            <Menu>
+              {filteredMarkets.map(market =>
+                <Menu.Item>
+                  <a href={`/trade/${market.name}`}>
+                    {market.name}
+                  </a>
+                </Menu.Item>
+              )
+              }
+            </Menu>
+          )
           return <div className={'equalValue f-right'}>
             <Link
               onClick={() => this.handleClickDeposit(record.symbol)}>{intl.formatMessage({id: 'deposits'})}</Link>&nbsp;&nbsp;&nbsp;
             <Link
               onClick={() => this.handleClickWithdraw(record.symbol)}>{intl.formatMessage({id: 'withdraws'})}</Link>&nbsp;&nbsp;&nbsp;
-            <Link onClick={() => this.handleClickTrade(record.symbol)}>{intl.formatMessage({id: 'trade'})}</Link>
+            {/*<Link onClick={() => this.handleClickTrade(record.symbol)}>{intl.formatMessage({id: 'trade'})}</Link>*/}
+            <Dropdown overlay={menu}>
+              <a className="ant-dropdown-link" href="#">
+                {intl.formatMessage({id: 'trade'})} <Icon type="down"/>
+              </a>
+            </Dropdown>
           </div>
         }
       }

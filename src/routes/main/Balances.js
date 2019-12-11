@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import { getAuthStatus } from '../../appRedux/actions/User'
 import { getAccounts } from '../../appRedux/actions/Accounts'
-import { Checkbox, Form, Input, Spin, Tabs } from 'antd'
+import { Checkbox, Col, Form, Input, Row, Spin, Tabs } from 'antd'
 import MainAccounts from '../../components/MainAccounts'
 import _ from 'lodash'
 
@@ -63,7 +63,9 @@ class Balances extends React.Component {
       })
     }
     let data = []
+    let mainEstimated = 0
     _.forEach(filteredAccounts, function (value) {
+      let btcEstimated = parseFloat(value.estimated)
       data.push({
         name: value.currency.name,
         symbol: value.currency.code,
@@ -72,8 +74,9 @@ class Balances extends React.Component {
         availableBalance: parseFloat(value.balance),
         totalBalance: parseFloat(value.balance) + parseFloat(value.locked),
         precesion: parseInt(value.currency.precision),
-        btcVal: parseFloat(value.estimated)
+        btcVal: btcEstimated
       })
+      mainEstimated += btcEstimated
     })
 
     return (
@@ -88,19 +91,29 @@ class Balances extends React.Component {
           {/*</TabPane>*/}
           <TabPane tab={intl.formatMessage({id: 'accounts.main'})} key="2">
             <div>
-              <Form layout="inline">
-                <Form.Item>
-                  <Search
-                    className="gx-mb-3"
-                    onSearch={this.onSearch}
-                    style={{maxWidth: '180px'}}
-                    enterButton/>
-                </Form.Item>
-                <Form.Item>
-                  <Checkbox checked={!this.state.hideZero}
-                            onChange={this.handleHideZero}>{intl.formatMessage({id: 'balance.zero'})}</Checkbox>
-                </Form.Item>
-              </Form>
+              <Row>
+                <Col span={16}>
+                  <Form layout="inline">
+                    <Form.Item>
+                      <Search
+                        className="gx-mb-3"
+                        onSearch={this.onSearch}
+                        style={{maxWidth: '180px'}}
+                        enterButton/>
+                    </Form.Item>
+                    <Form.Item>
+                      <Checkbox checked={!this.state.hideZero}
+                                onChange={this.handleHideZero}>{intl.formatMessage({id: 'balance.zero'})}</Checkbox>
+                    </Form.Item>
+                  </Form>
+                </Col>
+                <Col span={8}>
+                  <div style={{float: 'right'}}>
+                    <label>{intl.formatMessage({id: 'estimated.value'})}</label>：
+                    <span><strong>{mainEstimated ? parseFloat(mainEstimated).toFixed(8) : 0.00000000} BTC</strong></span>
+                  </div>
+                </Col>
+              </Row>
             </div>
             <MainAccounts accountData={data}/>
           </TabPane>
