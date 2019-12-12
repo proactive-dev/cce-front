@@ -2,12 +2,13 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import { getAuthStatus } from '../../appRedux/actions/User'
-import { Button, DatePicker, Form, Icon, Input, Radio, Select, Spin, Upload, Row, Col } from 'antd'
+import { Button, Col, DatePicker, Form, Icon, Input, Radio, Row, Select, Spin, Upload } from 'antd'
 import _ from 'lodash'
 import CountrySelect from '../../components/CountrySelect'
 import moment from 'moment'
 import { IconNotification } from '../../components/IconNotification'
 import { SUCCESS } from '../../constants/AppConfigs'
+import { USER } from '../../constants/Paths'
 import { updateIdDocument } from '../../api/axiosAPIs'
 
 const formItemLayout = {
@@ -37,32 +38,9 @@ class IdVerification extends React.Component {
     super(props)
     this.state = {
       loader: false,
-      name: '',
-      gender: '',
       birth: new Date(),
-      country: '',
-      state: '',
-      city: '',
-      address: '',
-      zipcode: '',
       docType: ID_DOCS[0],
-      docNumber: '',
-      docPhoto: null,
       proof: PROOF_DOCS[0],
-      proofOfResidence: '',
-      proofPhoto1: null,
-      proofPhoto2: null,
-      selfiePhoto: null,
-      expandCountries: false,
-      countryName: '',
-      countryShortCode: null,
-      filteredCountries: CountrySelect,
-      expandGender: false,
-      province: '',
-      expandDocTypes: false,
-      nameVaild: true,
-      docNumberValid: true,
-      docFileData: null
     }
   }
 
@@ -77,7 +55,6 @@ class IdVerification extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault()
     this.props.form.validateFields((err, values) => {
-      console.log(err, values)
       if (!err) {
         this.doSubmitVerification(values)
       }
@@ -105,8 +82,8 @@ class IdVerification extends React.Component {
     if (countryShortCode) {
       formData.append('id_document[country]', countryShortCode)
     }
-    if (data.province) {
-      formData.append('id_document[state]', data.province)
+    if (data.state) {
+      formData.append('id_document[state]', data.state)
     }
     if (data.zipcode) {
       formData.append('id_document[zipcode]', data.zipcode)
@@ -130,7 +107,7 @@ class IdVerification extends React.Component {
     updateIdDocument(formData)
       .then(response => {
         IconNotification(SUCCESS, this.props.intl.formatMessage({id: 'id.document.submitted'}))
-        this.props.history.push('/user')
+        this.props.history.push(`/${USER}`)
       })
   }
 
@@ -146,7 +123,7 @@ class IdVerification extends React.Component {
     const {intl} = this.props
     const {loader} = this.state
     const {getFieldDecorator} = this.props.form
-    const {name, gender, birth, country, state, city, address, zipcode, docType, docNumber, proof, proofPhoto1, proofPhoto2, selfiePhoto, docFileData} = this.state
+    const {gender, birth, docType, proof} = this.state
 
     return (
       <div>
@@ -157,7 +134,6 @@ class IdVerification extends React.Component {
               {...formItemLayout}
               label={intl.formatMessage({id: 'name'})}>
               {getFieldDecorator('name', {
-                initialValue: name,
                 rules: [{
                   required: true, message: intl.formatMessage({id: 'alert.fieldRequired'})
                 }]
@@ -197,7 +173,6 @@ class IdVerification extends React.Component {
               {...formItemLayout}
               label={intl.formatMessage({id: 'country'})}>
               {getFieldDecorator('country', {
-                initialValue: country
               })(
                 <CountrySelect onChange={this.onChangeCountry}/>
               )}
@@ -206,7 +181,6 @@ class IdVerification extends React.Component {
               {...formItemLayout}
               label={intl.formatMessage({id: 'state.or.province'})}>
               {getFieldDecorator('state', {
-                initialValue: state
               })(
                 <Input/>
               )}
@@ -215,7 +189,6 @@ class IdVerification extends React.Component {
               {...formItemLayout}
               label={intl.formatMessage({id: 'city'})}>
               {getFieldDecorator('city', {
-                initialValue: city
               })(
                 <Input/>
               )}
@@ -224,7 +197,6 @@ class IdVerification extends React.Component {
               {...formItemLayout}
               label={intl.formatMessage({id: 'address'})}>
               {getFieldDecorator('address', {
-                initialValue: address
               })(
                 <Input/>
               )}
@@ -233,7 +205,6 @@ class IdVerification extends React.Component {
               {...formItemLayout}
               label={intl.formatMessage({id: 'zipcode'})}>
               {getFieldDecorator('zipcode', {
-                initialValue: zipcode
               })(
                 <Input/>
               )}
@@ -266,7 +237,6 @@ class IdVerification extends React.Component {
               {...formItemLayout}
               label={intl.formatMessage({id: 'document.number'})}>
               {getFieldDecorator('docNumber', {
-                initialValue: docNumber,
                 rules: [{
                   required: true, message: intl.formatMessage({id: 'alert.fieldRequired'})
                 }]
@@ -278,7 +248,6 @@ class IdVerification extends React.Component {
               {...formItemLayout}
               label={intl.formatMessage({id: 'document.photo'})}>
               {getFieldDecorator('docFileData', {
-                initialValue: docFileData
               })(
                 <Upload
                   beforeUpload={() => {
@@ -320,7 +289,6 @@ class IdVerification extends React.Component {
               {...formItemLayout}
               label={intl.formatMessage({id: 'proof.of.residence.photo'})}>
               {getFieldDecorator('proofPhoto1', {
-                initialValue: proofPhoto1
               })(
                 <Upload
                   action=""
@@ -339,7 +307,6 @@ class IdVerification extends React.Component {
               {...formItemLayout}
               label={intl.formatMessage({id: 'proof.of.residence.photo'})}>
               {getFieldDecorator('proofPhoto2', {
-                initialValue: proofPhoto2
               })(
                 <Upload
                   action=""
@@ -358,7 +325,6 @@ class IdVerification extends React.Component {
               {...formItemLayout}
               label={intl.formatMessage({id: 'selfie.photo'})}>
               {getFieldDecorator('selfiePhoto', {
-                initialValue: selfiePhoto
               })(
                 <Upload
                   action=""
