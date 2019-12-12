@@ -5,6 +5,7 @@ import { Table } from 'antd'
 import _ from 'lodash'
 import { getCoinNameBySymbol, getPointFixed, priceChange } from '../../src/util/helpers'
 import { EXCHANGE } from '../constants/Paths'
+import { getTableLocaleData } from '../util/helpers'
 
 class SimpleMarketInfo extends React.Component {
   constructor(props) {
@@ -115,6 +116,7 @@ class SimpleMarketInfo extends React.Component {
                columns={this.getColumns()}
                dataSource={data}
                pagination={false}
+               locale={getTableLocaleData}
                rowKey="at"
                onRow={(record) => ({
                  onClick: () => {

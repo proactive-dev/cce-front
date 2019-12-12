@@ -2,7 +2,7 @@ import React from 'react'
 import { withRouter } from 'react-router-dom'
 import { injectIntl } from 'react-intl'
 import { Button, Popover, Table } from 'antd'
-import { getCoinFixed, getFixed } from '../util/helpers'
+import { getCoinFixed, getFixed, getTableLocaleData } from '../util/helpers'
 import { ESTIMATE_SYMBOL } from '../constants/AppConfigs'
 
 class MainAccounts extends React.Component {
@@ -115,6 +115,7 @@ class MainAccounts extends React.Component {
              columns={this.getColumns()}
              dataSource={dataSource}
              pagination={false}
+             locale={getTableLocaleData}
              rowKey="symbol"
              size='middle'/>
     )
