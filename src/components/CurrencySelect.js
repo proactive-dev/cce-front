@@ -17,8 +17,6 @@ class CurrencySelect extends React.Component {
         <Select
           showSearch
           style={{width: '100%'}}
-          placeholder="Select a person"
-          optionFilterProp="children"
           defaultValue={value}
           onChange={this.props.onChange}
           // onFocus={handleFocus}
