@@ -19,7 +19,7 @@ class Balances extends React.Component {
 
     this.state = {
       loader: false,
-      accounts: {},
+      accounts: [],
       searchText: '',
       hideZero: false
     }
@@ -72,7 +72,7 @@ class Balances extends React.Component {
     const {loader, accounts, searchText, hideZero} = this.state
     const {TabPane} = Tabs
 
-    let filteredAccounts = accounts.accounts
+    let filteredAccounts = accounts
     if (searchText.length) {
       filteredAccounts = filteredAccounts.filter(account => {
         return account.currency.code.toLowerCase().includes(searchText.toLowerCase())
@@ -125,8 +125,8 @@ class Balances extends React.Component {
                   <Form.Item>
                     <Checkbox
                       checked={!this.state.hideZero}
-                      onChange={this.handleHideZero}>{
-                      intl.formatMessage({id: 'balance.zero'})}
+                      onChange={this.handleHideZero}>
+                      {intl.formatMessage({id: 'balance.zero'})}
                     </Checkbox>
                   </Form.Item>
                 </Form>

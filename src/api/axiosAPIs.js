@@ -128,20 +128,20 @@ export const clearOrder = (market, order) => {
   return axiosRequest('delete', `${axiosConfig.MARKETS_URL}/${market}/orders/${order}`)
 }
 
-export const getAllAccounts = (needLoader = false) => {
-  return axiosRequest('get', axiosConfig.ALL_ACCOUNTS_URL, null, needLoader)
+export const getAllAccounts = () => {
+  return axiosRequest('get', axiosConfig.ALL_ACCOUNTS_URL)
 }
 
-export const getAccounts = (needLoader = false) => {
-  return axiosRequest('get', axiosConfig.ACCOUNTS_URL, null, needLoader)
+export const getAccounts = () => {
+  return axiosRequest('get', axiosConfig.ACCOUNTS_URL)
 }
 
-export const getMainAccounts = (needLoader = false) => {
-  return axiosRequest('get', axiosConfig.MAIN_ACCOUNTS_URL, null, needLoader)
+export const getMainAccounts = () => {
+  return axiosRequest('get', axiosConfig.MAIN_ACCOUNTS_URL)
 }
 
-export const getMember = (needLoader = false) => {
-  return axiosRequest('get', axiosConfig.MEMBER_URL, null, needLoader)
+export const getMember = () => {
+  return axiosRequest('get', axiosConfig.MEMBER_URL)
 }
 
 export const updateMember = (data) => {

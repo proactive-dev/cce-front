@@ -1,8 +1,10 @@
-import { GET_AUTH_STATUS, INIT_SETTINGS, SET_AUTH_STATUS } from '../../constants/ActionTypes'
+import { GET_AUTH_STATUS, GET_PROFILE, INIT_SETTINGS, SET_AUTH_STATUS } from '../../constants/ActionTypes'
 import { LOGGED_IN } from '../../constants/ResponseCode'
+import { keysToCamelcase } from '../../util/helpers'
 
 const INIT_STATE = {
-  authStatus: false
+  authStatus: false,
+  profile: {}
 }
 
 export default (state = INIT_STATE, action) => {
@@ -19,6 +21,12 @@ export default (state = INIT_STATE, action) => {
       }
     case SET_AUTH_STATUS:
       return {...state, authStatus: !!action.status}
+    case GET_PROFILE:
+      if (action.payload) {
+        return {...state, profile: keysToCamelcase(action.payload)}
+      } else {
+        return state
+      }
     default:
       return state
   }

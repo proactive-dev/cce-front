@@ -11,7 +11,8 @@ export default (state = INIT_STATE, action) => {
       return INIT_STATE
     case GET_ACCOUNTS:
       if (!!action.payload) {
-        return {...state, accounts: action.payload}
+        const {accounts} = action.payload
+        return {...state, accounts: accounts}
       } else {
         return state
       }
