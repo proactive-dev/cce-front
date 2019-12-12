@@ -172,7 +172,7 @@ class TradeHistory extends React.Component {
 
     return (
       <div>
-        <h2 className="title gx-mb-4"><FormattedMessage id="trade.history"/></h2>
+        <h1 className="gx-mt-4 gx-mb-4"><FormattedMessage id="trade.history"/></h1>
         <Spin spinning={loader} size="large">
           <Row className="gx-flex-row gx-align-items-center">
             <Col xl={6} lg={16} sm={24} xs={24} className="gx-mb-3">
