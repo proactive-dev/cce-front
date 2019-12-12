@@ -5,7 +5,7 @@ import QRCode from 'qrcode.react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import _ from 'lodash'
 
-const {Text, Title} = Typography
+const {Text} = Typography
 
 class DepositAddress extends React.Component {
   constructor(props) {
