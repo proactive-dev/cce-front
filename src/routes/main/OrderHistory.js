@@ -47,7 +47,7 @@ class OrderHistory extends React.Component {
 
   handleTableChange = (pagination, filters, sorter) => {
     const {from, to, market, hideCanceled} = this.state
-    this.setState({pagination})
+    this.setState({pagination, page: pagination.current})
     this.fetchData({from, to, market, hideCanceled, page: pagination.current})
   }
 
@@ -148,7 +148,7 @@ class OrderHistory extends React.Component {
 
   handleClickHide() {
     const {from, to, market, hideCanceled, pagination} = this.state
-    this.setState({hideCanceled: !hideCanceled})
+    this.setState({hideCanceled: !hideCanceled, page: pagination.current})
     this.fetchData({from, to, market, hideCanceled: !hideCanceled, page: pagination.current})
   }
 
