@@ -3,9 +3,7 @@ import { connect } from 'react-redux'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import { getAuthStatus } from '../../appRedux/actions/User'
 import { Button, Col, DatePicker, Form, Icon, Input, Radio, Row, Select, Spin, Upload } from 'antd'
-import _ from 'lodash'
 import CountrySelect from '../../components/CountrySelect'
-import moment from 'moment'
 import { IconNotification } from '../../components/IconNotification'
 import { SUCCESS } from '../../constants/AppConfigs'
 import { USER } from '../../constants/Paths'
@@ -37,10 +35,7 @@ class IdVerification extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      loader: false,
-      birth: new Date(),
-      docType: ID_DOCS[0],
-      proof: PROOF_DOCS[0],
+      loader: false
     }
   }
 
@@ -123,7 +118,6 @@ class IdVerification extends React.Component {
     const {intl} = this.props
     const {loader} = this.state
     const {getFieldDecorator} = this.props.form
-    const {gender, birth, docType, proof} = this.state
 
     return (
       <div>
@@ -145,7 +139,6 @@ class IdVerification extends React.Component {
               {...formItemLayout}
               label={intl.formatMessage({id: 'gender'})}>
               {getFieldDecorator('gender', {
-                initialValue: _.isEmpty(gender) ? 'male' : gender,
                 rules: [{
                   required: true, message: intl.formatMessage({id: 'alert.fieldRequired'})
                 }],
@@ -161,7 +154,6 @@ class IdVerification extends React.Component {
               {...formItemLayout}
               label={intl.formatMessage({id: 'birth'})}>
               {getFieldDecorator('birth', {
-                initialValue: _.isEmpty(birth) ? moment() : moment(birth, 'YYYY-MM-DD'),
                 rules: [{
                   type: 'object'
                 }]
@@ -172,40 +164,35 @@ class IdVerification extends React.Component {
             <FormItem
               {...formItemLayout}
               label={intl.formatMessage({id: 'country'})}>
-              {getFieldDecorator('country', {
-              })(
+              {getFieldDecorator('country', {})(
                 <CountrySelect onChange={this.onChangeCountry}/>
               )}
             </FormItem>
             <FormItem
               {...formItemLayout}
               label={intl.formatMessage({id: 'state.or.province'})}>
-              {getFieldDecorator('state', {
-              })(
+              {getFieldDecorator('state', {})(
                 <Input/>
               )}
             </FormItem>
             <FormItem
               {...formItemLayout}
               label={intl.formatMessage({id: 'city'})}>
-              {getFieldDecorator('city', {
-              })(
+              {getFieldDecorator('city', {})(
                 <Input/>
               )}
             </FormItem>
             <FormItem
               {...formItemLayout}
               label={intl.formatMessage({id: 'address'})}>
-              {getFieldDecorator('address', {
-              })(
+              {getFieldDecorator('address', {})(
                 <Input/>
               )}
             </FormItem>
             <FormItem
               {...formItemLayout}
               label={intl.formatMessage({id: 'zipcode'})}>
-              {getFieldDecorator('zipcode', {
-              })(
+              {getFieldDecorator('zipcode', {})(
                 <Input/>
               )}
             </FormItem>
@@ -213,7 +200,6 @@ class IdVerification extends React.Component {
               {...formItemLayout}
               label={intl.formatMessage({id: 'document.type'})}>
               {getFieldDecorator('docType', {
-                initialValue: docType,
                 rules: [{
                   required: true, message: intl.formatMessage({id: 'alert.fieldRequired'})
                 }]
@@ -247,8 +233,7 @@ class IdVerification extends React.Component {
             <FormItem
               {...formItemLayout}
               label={intl.formatMessage({id: 'document.photo'})}>
-              {getFieldDecorator('docFileData', {
-              })(
+              {getFieldDecorator('docFileData', {})(
                 <Upload
                   beforeUpload={() => {
                     return false
@@ -265,7 +250,6 @@ class IdVerification extends React.Component {
               {...formItemLayout}
               label={intl.formatMessage({id: 'proof.of.residence'})}>
               {getFieldDecorator('proof', {
-                initialValue: proof,
                 rules: [{
                   required: true, message: intl.formatMessage({id: 'alert.fieldRequired'})
                 }]
@@ -288,10 +272,8 @@ class IdVerification extends React.Component {
             <FormItem
               {...formItemLayout}
               label={intl.formatMessage({id: 'proof.of.residence.photo'})}>
-              {getFieldDecorator('proofPhoto1', {
-              })(
+              {getFieldDecorator('proofPhoto1', {})(
                 <Upload
-                  action=""
                   beforeUpload={() => {
                     return false
                   }}
@@ -306,10 +288,8 @@ class IdVerification extends React.Component {
             <FormItem
               {...formItemLayout}
               label={intl.formatMessage({id: 'proof.of.residence.photo'})}>
-              {getFieldDecorator('proofPhoto2', {
-              })(
+              {getFieldDecorator('proofPhoto2', {})(
                 <Upload
-                  action=""
                   beforeUpload={() => {
                     return false
                   }}
@@ -324,10 +304,8 @@ class IdVerification extends React.Component {
             <FormItem
               {...formItemLayout}
               label={intl.formatMessage({id: 'selfie.photo'})}>
-              {getFieldDecorator('selfiePhoto', {
-              })(
+              {getFieldDecorator('selfiePhoto', {})(
                 <Upload
-                  action=""
                   beforeUpload={() => {
                     return false
                   }}
