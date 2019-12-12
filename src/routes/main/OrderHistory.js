@@ -45,7 +45,7 @@ class OrderHistory extends React.Component {
     return null
   }
 
-  handleTableChange = (pagination, filters, sorter) => {
+  onChangeTable = (pagination, filters, sorter) => {
     const {from, to, market, hideCanceled} = this.state
     this.setState({pagination, page: pagination.current})
     this.fetchData({from, to, market, hideCanceled, page: pagination.current})
@@ -135,7 +135,7 @@ class OrderHistory extends React.Component {
       })
   }
 
-  onDateChange = (value, dateString) => {
+  onChangeDate = (value, dateString) => {
     this.setState({from: _.isEmpty(dateString[0]) ? null : dateString[0]})
     this.setState({to: _.isEmpty(dateString[1]) ? null : dateString[1]})
   }
@@ -146,13 +146,13 @@ class OrderHistory extends React.Component {
     this.buildExportData()
   }
 
-  handleClickHide() {
+  onClickHide() {
     const {from, to, market, hideCanceled, pagination} = this.state
     this.setState({hideCanceled: !hideCanceled, page: pagination.current})
     this.fetchData({from, to, market, hideCanceled: !hideCanceled, page: pagination.current})
   }
 
-  handleClickMarket = market => {
+  onSelectMarket = market => {
     if (market === 'All') {
       this.setState({market: null, page: 1, pagination: {current: 1}})
     } else {
@@ -160,11 +160,11 @@ class OrderHistory extends React.Component {
     }
   }
 
-  handleSubmitSearch = () => {
+  onSearch = () => {
     this.fetchData(this.state)
   }
 
-  handleResetSearch = () => {
+  onReset = () => {
     const to = new Date()
     const from = new Date(to.getTime() - (7 * 24 * 60 * 60 * 1000))
     const {hideCanceled} = this.state
@@ -172,7 +172,7 @@ class OrderHistory extends React.Component {
     this.fetchData({from, to, market: null, hideCanceled, page: 1})
   }
 
-  getOptionList = () => {
+  getOptions = () => {
     let options = [<Option value={'All'} key={'All'}><FormattedMessage id="all"/></Option>]
     for (let i = 0; i < MARKETS.length; i++) {
       if (MARKETS[i].visible) {
@@ -185,7 +185,7 @@ class OrderHistory extends React.Component {
   render() {
     const {intl} = this.props
     const {loader, from, to, orders, market, exportData, exportReady, pagination} = this.state
-    let options = this.getOptionList()
+    let options = this.getOptions()
 
     return (
       <div>
@@ -197,27 +197,27 @@ class OrderHistory extends React.Component {
               <RangePicker
                 style={{width: '80%'}}
                 value={[moment(from, 'YYYY-MM-DD'), moment(to, 'YYYY-MM-DD')]}
-                onChange={this.onDateChange}/>
+                onChange={this.onChangeDate}/>
             </Col>
             <Col xl={4} lg={10} sm={10} xs={16} className="gx-mb-3">
               <label className="gx-mr-2"><FormattedMessage id="pair"/>:</label>
               <Select style={{width: '70%'}}
                       defaultValue={intl.formatMessage({id: 'all'})}
                       value={market ? market : intl.formatMessage({id: 'all'})}
-                      onChange={this.handleClickMarket}>
+                      onChange={this.onSelectMarket}>
                 {options}
               </Select>
             </Col>
             <Col xl={6} lg={14} sm={14} xs={24} className="gx-mb-3">
-              <Button type="primary" className="gx-mb-0" onClick={() => this.handleSubmitSearch()}>
+              <Button type="primary" className="gx-mb-0" onClick={() => this.onSearch()}>
                 <FormattedMessage id="search"/>
               </Button>
-              <Button className="gx-mb-0" onClick={() => this.handleResetSearch()}>
+              <Button className="gx-mb-0" onClick={() => this.onReset()}>
                 <FormattedMessage id="reset"/>
               </Button>
             </Col>
             <Col xl={4} lg={12} sm={12} xs={24} className="gx-mb-3">
-              <Checkbox className="gx-text-left" onClick={() => this.handleClickHide()}>
+              <Checkbox className="gx-text-left" onClick={() => this.onClickHide()}>
                 <FormattedMessage id="hide.all.canceled"/>
               </Checkbox>
             </Col>
@@ -236,7 +236,7 @@ class OrderHistory extends React.Component {
           <OrderHistoryTable
             pagination={pagination}
             dataList={orders}
-            onChange={this.handleTableChange}
+            onChange={this.onChangeTable}
           />
         </Spin>
       </div>
