@@ -271,6 +271,7 @@
   "email.activated": "邮件验证",
   "email.deactivated": "未邮件认证",
   "last.login.time": "最后登录时间",
+  "login.time": "登录时间",
   "commission.config": "使用TSF支付交易手续费",
   "login.password": "登录密码",
   "manage": "管理",

@@ -271,6 +271,7 @@
   "email.activated": "이메일 인증 됨",
   "email.deactivated": "이메일 인증 되지않음",
   "last.login.time": "마지막 로그인 시간",
+  "login.time": "로그인 시간",
   "commission.config": "TSF를 사용하여 수수료 지불",
   "login.password": "로그인 비밀번호",
   "manage": "관리",

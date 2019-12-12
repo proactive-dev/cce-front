@@ -271,6 +271,7 @@
   "email.activated": "Email Activated",
   "email.deactivated": "Email Not Activated",
   "last.login.time": "Last login Time",
+  "login.time": "Login Time",
   "commission.config": "Using TSF to pay for fees",
   "login.password": "Login Password",
   "manage": "Manage",
