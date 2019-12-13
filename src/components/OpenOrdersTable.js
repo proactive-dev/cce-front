@@ -3,7 +3,7 @@ import { Table } from 'antd'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import { getFixed, getTableLocaleData, getTimeForTable } from '../util/helpers'
 
-class TradeHistoryTable extends React.Component {
+class OpenOrdersTable extends React.Component {
 
   handleTableChange = (pagination, filters, sorter) => {
     this.props.onChange(pagination, filters, sorter)
@@ -42,11 +42,27 @@ class TradeHistoryTable extends React.Component {
         }
       },
       {
+        title: intl.formatMessage({id: 'amount'}),
+        dataIndex: 'origin_volume',
+        align: 'center',
+        render: (value, record) => {
+          return getFixed(value, record.amountFixed)
+        }
+      },
+      {
+        title: intl.formatMessage({id: 'filled%'}),
+        dataIndex: 'filled',
+        align: 'center',
+        render: (value, record) => {
+          return getFixed((record.origin_volume - record.volume) * 100 / record.origin_volume, 2)
+        }
+      },
+      {
         title: intl.formatMessage({id: 'total'}),
         dataIndex: 'total',
         align: 'center',
         render: (value, record) => {
-          return getFixed(record.volume * record.price, record.priceFixed)
+          return getFixed(record.origin_volume * record.price, record.priceFixed)
         }
       }
     ]
@@ -70,4 +86,4 @@ class TradeHistoryTable extends React.Component {
   }
 }
 
-export default injectIntl(TradeHistoryTable)
+export default injectIntl(OpenOrdersTable)

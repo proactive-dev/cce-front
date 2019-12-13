@@ -22,7 +22,7 @@ class OrderHistoryTable extends React.Component {
       },
       {
         title: intl.formatMessage({id: 'pair'}),
-        dataIndex: 'name',
+        dataIndex: 'marketName',
         align: 'center'
       },
       {
