@@ -1,5 +1,5 @@
 import React from 'react'
-import {Select} from 'antd'
+import { Select } from 'antd'
 import countries from '../util/countryData'
 
 const Option = Select.Option
@@ -17,8 +17,7 @@ class CountrySelect extends React.Component {
         optionFilterProp="children"
         filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
         value={this.props.value}
-        onChange={this.onChange}
-      >
+        onChange={this.onChange}>
         {countries.map(country =>
           <Option key={country.code} value={country.code}>
             {country.name}

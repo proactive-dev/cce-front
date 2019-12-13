@@ -1,19 +1,19 @@
 export const MARKETS = [
   {
-    id: "ethbtc",
+    id: 'ethbtc',
     code: 1,
-    name: "ETH/BTC",
-    baseUnit: "eth",
-    quoteUnit: "btc",
+    name: 'ETH/BTC',
+    baseUnit: 'eth',
+    quoteUnit: 'btc',
     bid: {
       fee: 0.001,
-      currency: "btc",
+      currency: 'btc',
       fixed: 6,
       min: 0.0001
     },
     ask: {
       fee: 0.001,
-      currency: "eth",
+      currency: 'eth',
       fixed: 3,
       min: 0.001
     },
@@ -21,20 +21,20 @@ export const MARKETS = [
     visible: true
   },
   {
-    id: "xrpbtc",
+    id: 'xrpbtc',
     code: 2,
-    name: "XRP/BTC",
-    baseUnit: "xrp",
-    quoteUnit: "btc",
+    name: 'XRP/BTC',
+    baseUnit: 'xrp',
+    quoteUnit: 'btc',
     bid: {
       fee: 0.001,
-      currency: "btc",
+      currency: 'btc',
       fixed: 8,
       min: 0.0001
     },
     ask: {
       fee: 0.001,
-      currency: "xrp",
+      currency: 'xrp',
       fixed: 1,
       min: 1
     },
@@ -42,20 +42,20 @@ export const MARKETS = [
     visible: true
   },
   {
-    id: "ltcbtc",
+    id: 'ltcbtc',
     code: 3,
-    name: "LTC/BTC",
-    baseUnit: "ltc",
-    quoteUnit: "btc",
+    name: 'LTC/BTC',
+    baseUnit: 'ltc',
+    quoteUnit: 'btc',
     bid: {
       fee: 0.001,
-      currency: "btc",
+      currency: 'btc',
       fixed: 6,
       min: 0.0001
     },
     ask: {
       fee: 0.001,
-      currency: "ltc",
+      currency: 'ltc',
       fixed: 2,
       min: 0.01
     },
@@ -63,20 +63,20 @@ export const MARKETS = [
     visible: true
   },
   {
-    id: "bchbtc",
+    id: 'bchbtc',
     code: 4,
-    name: "BCH/BTC",
-    baseUnit: "bch",
-    quoteUnit: "btc",
+    name: 'BCH/BTC',
+    baseUnit: 'bch',
+    quoteUnit: 'btc',
     bid: {
       fee: 0,
-      currency: "btc",
+      currency: 'btc',
       fixed: 6,
       min: 0.0001
     },
     ask: {
       fee: 0,
-      currency: "bch",
+      currency: 'bch',
       fixed: 3,
       min: 0.001
     },
@@ -84,20 +84,20 @@ export const MARKETS = [
     visible: true
   },
   {
-    id: "bnbbtc",
+    id: 'bnbbtc',
     code: 5,
-    name: "BNB/BTC",
-    baseUnit: "bnb",
-    quoteUnit: "btc",
+    name: 'BNB/BTC',
+    baseUnit: 'bnb',
+    quoteUnit: 'btc',
     bid: {
       fee: 0.001,
-      currency: "btc",
+      currency: 'btc',
       fixed: 7,
       min: 0.0001
     },
     ask: {
       fee: 0.001,
-      currency: "bnb",
+      currency: 'bnb',
       fixed: 2,
       min: 0.01
     },
@@ -105,20 +105,20 @@ export const MARKETS = [
     visible: false
   },
   {
-    id: "adabtc",
+    id: 'adabtc',
     code: 6,
-    name: "ADA/BTC",
-    baseUnit: "ada",
-    quoteUnit: "btc",
+    name: 'ADA/BTC',
+    baseUnit: 'ada',
+    quoteUnit: 'btc',
     bid: {
       fee: 0.001,
-      currency: "btc",
+      currency: 'btc',
       fixed: 8,
       min: 0.0001
     },
     ask: {
       fee: 0.001,
-      currency: "ada",
+      currency: 'ada',
       fixed: 1,
       min: 1
     },
@@ -126,20 +126,20 @@ export const MARKETS = [
     visible: true
   },
   {
-    id: "btcpax",
+    id: 'btcpax',
     code: 7,
-    name: "BTC/PAX",
-    baseUnit: "btc",
-    quoteUnit: "pax",
+    name: 'BTC/PAX',
+    baseUnit: 'btc',
+    quoteUnit: 'pax',
     bid: {
       fee: 0,
-      currency: "pax",
+      currency: 'pax',
       fixed: 2,
       min: 10
     },
     ask: {
       fee: 0,
-      currency: "btc",
+      currency: 'btc',
       fixed: 6,
       min: 0.000001
     },
@@ -147,20 +147,20 @@ export const MARKETS = [
     visible: true
   },
   {
-    id: "dashbtc",
+    id: 'dashbtc',
     code: 8,
-    name: "DASH/BTC",
-    baseUnit: "dash",
-    quoteUnit: "btc",
+    name: 'DASH/BTC',
+    baseUnit: 'dash',
+    quoteUnit: 'btc',
     bid: {
       fee: 0.001,
-      currency: "btc",
+      currency: 'btc',
       fixed: 6,
       min: 0.0001
     },
     ask: {
       fee: 0.001,
-      currency: "dash",
+      currency: 'dash',
       fixed: 3,
       min: 0.001
     },
@@ -168,20 +168,20 @@ export const MARKETS = [
     visible: true
   },
   {
-    id: "xmrbtc",
+    id: 'xmrbtc',
     code: 9,
-    name: "XMR/BTC",
-    baseUnit: "xmr",
-    quoteUnit: "btc",
+    name: 'XMR/BTC',
+    baseUnit: 'xmr',
+    quoteUnit: 'btc',
     bid: {
       fee: 0.001,
-      currency: "btc",
+      currency: 'btc',
       fixed: 6,
       min: 0.0001
     },
     ask: {
       fee: 0.001,
-      currency: "xmr",
+      currency: 'xmr',
       fixed: 3,
       min: 0.001
     },
@@ -189,20 +189,20 @@ export const MARKETS = [
     visible: true
   },
   {
-    id: "neobtc",
+    id: 'neobtc',
     code: 10,
-    name: "NEO/BTC",
-    baseUnit: "neo",
-    quoteUnit: "btc",
+    name: 'NEO/BTC',
+    baseUnit: 'neo',
+    quoteUnit: 'btc',
     bid: {
       fee: 0.001,
-      currency: "btc",
+      currency: 'btc',
       fixed: 6,
       min: 0.0001
     },
     ask: {
       fee: 0.001,
-      currency: "neo",
+      currency: 'neo',
       fixed: 2,
       min: 0.01
     },
@@ -210,20 +210,20 @@ export const MARKETS = [
     visible: true
   },
   {
-    id: "etcbtc",
+    id: 'etcbtc',
     code: 11,
-    name: "ETC/BTC",
-    baseUnit: "etc",
-    quoteUnit: "btc",
+    name: 'ETC/BTC',
+    baseUnit: 'etc',
+    quoteUnit: 'btc',
     bid: {
       fee: 0.001,
-      currency: "btc",
+      currency: 'btc',
       fixed: 6,
       min: 0.0001
     },
     ask: {
       fee: 0.001,
-      currency: "etc",
+      currency: 'etc',
       fixed: 2,
       min: 0.01
     },
@@ -231,20 +231,20 @@ export const MARKETS = [
     visible: true
   },
   {
-    id: "xembtc",
+    id: 'xembtc',
     code: 12,
-    name: "XEM/BTC",
-    baseUnit: "xem",
-    quoteUnit: "btc",
+    name: 'XEM/BTC',
+    baseUnit: 'xem',
+    quoteUnit: 'btc',
     bid: {
       fee: 0.001,
-      currency: "btc",
+      currency: 'btc',
       fixed: 8,
       min: 0.0001
     },
     ask: {
       fee: 0.001,
-      currency: "xem",
+      currency: 'xem',
       fixed: 1,
       min: 1
     },
@@ -252,20 +252,20 @@ export const MARKETS = [
     visible: true
   },
   {
-    id: "dentbtc",
+    id: 'dentbtc',
     code: 13,
-    name: "DENT/BTC",
-    baseUnit: "dent",
-    quoteUnit: "btc",
+    name: 'DENT/BTC',
+    baseUnit: 'dent',
+    quoteUnit: 'btc',
     bid: {
       fee: 0,
-      currency: "btc",
+      currency: 'btc',
       fixed: 8,
       min: 0
     },
     ask: {
       fee: 0,
-      currency: "dent",
+      currency: 'dent',
       fixed: 1,
       min: 0
     },
@@ -273,20 +273,20 @@ export const MARKETS = [
     visible: false
   },
   {
-    id: "batbtc",
+    id: 'batbtc',
     code: 14,
-    name: "BAT/BTC",
-    baseUnit: "bat",
-    quoteUnit: "btc",
+    name: 'BAT/BTC',
+    baseUnit: 'bat',
+    quoteUnit: 'btc',
     bid: {
       fee: 0.001,
-      currency: "btc",
+      currency: 'btc',
       fixed: 8,
       min: 0.0001
     },
     ask: {
       fee: 0.001,
-      currency: "bat",
+      currency: 'bat',
       fixed: 1,
       min: 1
     },
@@ -294,20 +294,20 @@ export const MARKETS = [
     visible: true
   },
   {
-    id: "omgbtc",
+    id: 'omgbtc',
     code: 15,
-    name: "OMG/BTC",
-    baseUnit: "omg",
-    quoteUnit: "btc",
+    name: 'OMG/BTC',
+    baseUnit: 'omg',
+    quoteUnit: 'btc',
     bid: {
       fee: 0.001,
-      currency: "btc",
+      currency: 'btc',
       fixed: 6,
       min: 0.0001
     },
     ask: {
       fee: 0.001,
-      currency: "omg",
+      currency: 'omg',
       fixed: 2,
       min: 0.01
     },
@@ -315,20 +315,20 @@ export const MARKETS = [
     visible: true
   },
   {
-    id: "btgbtc",
+    id: 'btgbtc',
     code: 16,
-    name: "BTG/BTC",
-    baseUnit: "btg",
-    quoteUnit: "btc",
+    name: 'BTG/BTC',
+    baseUnit: 'btg',
+    quoteUnit: 'btc',
     bid: {
       fee: 0.001,
-      currency: "btc",
+      currency: 'btc',
       fixed: 6,
       min: 0.0001
     },
     ask: {
       fee: 0.001,
-      currency: "btg",
+      currency: 'btg',
       fixed: 2,
       min: 0.01
     },
@@ -336,20 +336,20 @@ export const MARKETS = [
     visible: true
   },
   {
-    id: "repbtc",
+    id: 'repbtc',
     code: 17,
-    name: "REP/BTC",
-    baseUnit: "rep",
-    quoteUnit: "btc",
+    name: 'REP/BTC',
+    baseUnit: 'rep',
+    quoteUnit: 'btc',
     bid: {
       fee: 0.001,
-      currency: "btc",
+      currency: 'btc',
       fixed: 6,
       min: 0.0001
     },
     ask: {
       fee: 0.001,
-      currency: "rep",
+      currency: 'rep',
       fixed: 3,
       min: 0.001
     },
@@ -357,20 +357,20 @@ export const MARKETS = [
     visible: true
   },
   {
-    id: "btctusd",
+    id: 'btctusd',
     code: 18,
-    name: "BTC/TUSD",
-    baseUnit: "btc",
-    quoteUnit: "tusd",
+    name: 'BTC/TUSD',
+    baseUnit: 'btc',
+    quoteUnit: 'tusd',
     bid: {
       fee: 0,
-      currency: "tusd",
+      currency: 'tusd',
       fixed: 2,
       min: 10
     },
     ask: {
       fee: 0,
-      currency: "btc",
+      currency: 'btc',
       fixed: 6,
       min: 0.000001
     },
@@ -378,20 +378,20 @@ export const MARKETS = [
     visible: true
   },
   {
-    id: "linkbtc",
+    id: 'linkbtc',
     code: 19,
-    name: "LINK/BTC",
-    baseUnit: "link",
-    quoteUnit: "btc",
+    name: 'LINK/BTC',
+    baseUnit: 'link',
+    quoteUnit: 'btc',
     bid: {
       fee: 0.001,
-      currency: "btc",
+      currency: 'btc',
       fixed: 8,
       min: 0.0001
     },
     ask: {
       fee: 0.001,
-      currency: "link",
+      currency: 'link',
       fixed: 1,
       min: 1
     },
@@ -399,20 +399,20 @@ export const MARKETS = [
     visible: true
   },
   {
-    id: "zrxbtc",
+    id: 'zrxbtc',
     code: 20,
-    name: "ZRX/BTC",
-    baseUnit: "zrx",
-    quoteUnit: "btc",
+    name: 'ZRX/BTC',
+    baseUnit: 'zrx',
+    quoteUnit: 'btc',
     bid: {
       fee: 0.001,
-      currency: "btc",
+      currency: 'btc',
       fixed: 8,
       min: 0.0001
     },
     ask: {
       fee: 0.001,
-      currency: "zrx",
+      currency: 'zrx',
       fixed: 1,
       min: 1
     },
@@ -420,20 +420,20 @@ export const MARKETS = [
     visible: true
   },
   {
-    id: "bcdbtc",
+    id: 'bcdbtc',
     code: 21,
-    name: "BCD/BTC",
-    baseUnit: "bcd",
-    quoteUnit: "btc",
+    name: 'BCD/BTC',
+    baseUnit: 'bcd',
+    quoteUnit: 'btc',
     bid: {
       fee: 0.001,
-      currency: "btc",
+      currency: 'btc',
       fixed: 6,
       min: 0.0001
     },
     ask: {
       fee: 0.001,
-      currency: "bcd",
+      currency: 'bcd',
       fixed: 3,
       min: 1
     },
@@ -441,20 +441,20 @@ export const MARKETS = [
     visible: true
   },
   {
-    id: "mcobtc",
+    id: 'mcobtc',
     code: 22,
-    name: "MCO/BTC",
-    baseUnit: "mco",
-    quoteUnit: "btc",
+    name: 'MCO/BTC',
+    baseUnit: 'mco',
+    quoteUnit: 'btc',
     bid: {
       fee: 0,
-      currency: "btc",
+      currency: 'btc',
       fixed: 6,
       min: 0.0001
     },
     ask: {
       fee: 0,
-      currency: "mco",
+      currency: 'mco',
       fixed: 2,
       min: 0.01
     },
@@ -462,20 +462,20 @@ export const MARKETS = [
     visible: true
   },
   {
-    id: "sntbtc",
+    id: 'sntbtc',
     code: 23,
-    name: "SNT/BTC",
-    baseUnit: "snt",
-    quoteUnit: "btc",
+    name: 'SNT/BTC',
+    baseUnit: 'snt',
+    quoteUnit: 'btc',
     bid: {
       fee: 0,
-      currency: "btc",
+      currency: 'btc',
       fixed: 8,
       min: 0.0001
     },
     ask: {
       fee: 0,
-      currency: "snt",
+      currency: 'snt',
       fixed: 1,
       min: 1
     },
@@ -483,20 +483,20 @@ export const MARKETS = [
     visible: true
   },
   {
-    id: "dgdbtc",
+    id: 'dgdbtc',
     code: 24,
-    name: "DGD/BTC",
-    baseUnit: "dgd",
-    quoteUnit: "btc",
+    name: 'DGD/BTC',
+    baseUnit: 'dgd',
+    quoteUnit: 'btc',
     bid: {
       fee: 0,
-      currency: "btc",
+      currency: 'btc',
       fixed: 6,
       min: 0.000001
     },
     ask: {
       fee: 0,
-      currency: "dgd",
+      currency: 'dgd',
       fixed: 3,
       min: 0.001
     },
@@ -504,20 +504,20 @@ export const MARKETS = [
     visible: true
   },
   {
-    id: "btcusdc",
+    id: 'btcusdc',
     code: 25,
-    name: "BTC/USDC",
-    baseUnit: "btc",
-    quoteUnit: "usdc",
+    name: 'BTC/USDC',
+    baseUnit: 'btc',
+    quoteUnit: 'usdc',
     bid: {
       fee: 0,
-      currency: "usdc",
+      currency: 'usdc',
       fixed: 2,
       min: 10
     },
     ask: {
       fee: 0,
-      currency: "btc",
+      currency: 'btc',
       fixed: 6,
       min: 0.000001
     },
@@ -525,20 +525,20 @@ export const MARKETS = [
     visible: true
   },
   {
-    id: "manabtc",
+    id: 'manabtc',
     code: 26,
-    name: "MANA/BTC",
-    baseUnit: "mana",
-    quoteUnit: "btc",
+    name: 'MANA/BTC',
+    baseUnit: 'mana',
+    quoteUnit: 'btc',
     bid: {
       fee: 0,
-      currency: "btc",
+      currency: 'btc',
       fixed: 8,
       min: 0.0001
     },
     ask: {
       fee: 0,
-      currency: "mana",
+      currency: 'mana',
       fixed: 1,
       min: 1
     },
@@ -546,20 +546,20 @@ export const MARKETS = [
     visible: true
   },
   {
-    id: "btcusds",
+    id: 'btcusds',
     code: 27,
-    name: "BTC/USDS",
-    baseUnit: "btc",
-    quoteUnit: "usds",
+    name: 'BTC/USDS',
+    baseUnit: 'btc',
+    quoteUnit: 'usds',
     bid: {
       fee: 0,
-      currency: "usds",
+      currency: 'usds',
       fixed: 2,
       min: 10
     },
     ask: {
       fee: 0,
-      currency: "btc",
+      currency: 'btc',
       fixed: 6,
       min: 0.000001
     },
@@ -567,20 +567,20 @@ export const MARKETS = [
     visible: true
   },
   {
-    id: "gasbtc",
+    id: 'gasbtc',
     code: 28,
-    name: "GAS/BTC",
-    baseUnit: "gas",
-    quoteUnit: "btc",
+    name: 'GAS/BTC',
+    baseUnit: 'gas',
+    quoteUnit: 'btc',
     bid: {
       fee: 0.001,
-      currency: "btc",
+      currency: 'btc',
       fixed: 6,
       min: 0.0001
     },
     ask: {
       fee: 0.001,
-      currency: "gas",
+      currency: 'gas',
       fixed: 2,
       min: 0.01
     },
@@ -588,20 +588,20 @@ export const MARKETS = [
     visible: true
   },
   {
-    id: "tsfbtc",
+    id: 'tsfbtc',
     code: 29,
-    name: "TSF/BTC",
-    baseUnit: "tsf",
-    quoteUnit: "btc",
+    name: 'TSF/BTC',
+    baseUnit: 'tsf',
+    quoteUnit: 'btc',
     bid: {
       fee: 0,
-      currency: "btc",
+      currency: 'btc',
       fixed: 8,
       min: 0
     },
     ask: {
       fee: 0,
-      currency: "tsf",
+      currency: 'tsf',
       fixed: 2,
       min: 0
     },
@@ -609,20 +609,20 @@ export const MARKETS = [
     visible: true
   },
   {
-    id: "btcusdt",
+    id: 'btcusdt',
     code: 30,
-    name: "BTC/USDT",
-    baseUnit: "btc",
-    quoteUnit: "usdt",
+    name: 'BTC/USDT',
+    baseUnit: 'btc',
+    quoteUnit: 'usdt',
     bid: {
       fee: 0.001,
-      currency: "usdt",
+      currency: 'usdt',
       fixed: 2,
       min: 10
     },
     ask: {
       fee: 0.001,
-      currency: "btc",
+      currency: 'btc',
       fixed: 6,
       min: 0.000001
     },
@@ -630,20 +630,20 @@ export const MARKETS = [
     visible: true
   },
   {
-    id: "ethusdt",
+    id: 'ethusdt',
     code: 31,
-    name: "ETH/USDT",
-    baseUnit: "eth",
-    quoteUnit: "usdt",
+    name: 'ETH/USDT',
+    baseUnit: 'eth',
+    quoteUnit: 'usdt',
     bid: {
       fee: 0.001,
-      currency: "usdt",
+      currency: 'usdt',
       fixed: 2,
       min: 10
     },
     ask: {
       fee: 0.001,
-      currency: "eth",
+      currency: 'eth',
       fixed: 6,
       min: 0.00001
     },
@@ -651,20 +651,20 @@ export const MARKETS = [
     visible: true
   },
   {
-    id: "xrpusdt",
+    id: 'xrpusdt',
     code: 32,
-    name: "XRP/USDT",
-    baseUnit: "xrp",
-    quoteUnit: "usdt",
+    name: 'XRP/USDT',
+    baseUnit: 'xrp',
+    quoteUnit: 'usdt',
     bid: {
       fee: 0.001,
-      currency: "usdt",
+      currency: 'usdt',
       fixed: 6,
       min: 10
     },
     ask: {
       fee: 0.001,
-      currency: "xrp",
+      currency: 'xrp',
       fixed: 1,
       min: 0.1
     },
@@ -672,20 +672,20 @@ export const MARKETS = [
     visible: true
   },
   {
-    id: "ltcusdt",
+    id: 'ltcusdt',
     code: 33,
-    name: "LTC/USDT",
-    baseUnit: "ltc",
-    quoteUnit: "usdt",
+    name: 'LTC/USDT',
+    baseUnit: 'ltc',
+    quoteUnit: 'usdt',
     bid: {
       fee: 0.001,
-      currency: "usdt",
+      currency: 'usdt',
       fixed: 2,
       min: 10
     },
     ask: {
       fee: 0.001,
-      currency: "ltc",
+      currency: 'ltc',
       fixed: 6,
       min: 0.00001
     },
@@ -693,20 +693,20 @@ export const MARKETS = [
     visible: true
   },
   {
-    id: "bchusdt",
+    id: 'bchusdt',
     code: 34,
-    name: "BCH/USDT",
-    baseUnit: "bch",
-    quoteUnit: "usdt",
+    name: 'BCH/USDT',
+    baseUnit: 'bch',
+    quoteUnit: 'usdt',
     bid: {
       fee: 0,
-      currency: "usdt",
+      currency: 'usdt',
       fixed: 2,
       min: 10
     },
     ask: {
       fee: 0,
-      currency: "bch",
+      currency: 'bch',
       fixed: 5,
       min: 0.00001
     },
@@ -714,20 +714,20 @@ export const MARKETS = [
     visible: true
   },
   {
-    id: "bnbusdt",
+    id: 'bnbusdt',
     code: 35,
-    name: "BNB/USDT",
-    baseUnit: "bnb",
-    quoteUnit: "usdt",
+    name: 'BNB/USDT',
+    baseUnit: 'bnb',
+    quoteUnit: 'usdt',
     bid: {
       fee: 0.001,
-      currency: "usdt",
+      currency: 'usdt',
       fixed: 4,
       min: 10
     },
     ask: {
       fee: 0.001,
-      currency: "bnb",
+      currency: 'bnb',
       fixed: 2,
       min: 0.01
     },
@@ -735,20 +735,20 @@ export const MARKETS = [
     visible: false
   },
   {
-    id: "adausdt",
+    id: 'adausdt',
     code: 36,
-    name: "ADA/USDT",
-    baseUnit: "ada",
-    quoteUnit: "usdt",
+    name: 'ADA/USDT',
+    baseUnit: 'ada',
+    quoteUnit: 'usdt',
     bid: {
       fee: 0.001,
-      currency: "usdt",
+      currency: 'usdt',
       fixed: 5,
       min: 10
     },
     ask: {
       fee: 0.001,
-      currency: "ada",
+      currency: 'ada',
       fixed: 1,
       min: 0.1
     },
@@ -756,20 +756,20 @@ export const MARKETS = [
     visible: true
   },
   {
-    id: "paxusdt",
+    id: 'paxusdt',
     code: 37,
-    name: "PAX/USDT",
-    baseUnit: "pax",
-    quoteUnit: "usdt",
+    name: 'PAX/USDT',
+    baseUnit: 'pax',
+    quoteUnit: 'usdt',
     bid: {
       fee: 0,
-      currency: "usdt",
+      currency: 'usdt',
       fixed: 4,
       min: 10
     },
     ask: {
       fee: 0,
-      currency: "pax",
+      currency: 'pax',
       fixed: 2,
       min: 0.01
     },
@@ -777,20 +777,20 @@ export const MARKETS = [
     visible: true
   },
   {
-    id: "dashusdt",
+    id: 'dashusdt',
     code: 38,
-    name: "DASH/USDT",
-    baseUnit: "dash",
-    quoteUnit: "usdt",
+    name: 'DASH/USDT',
+    baseUnit: 'dash',
+    quoteUnit: 'usdt',
     bid: {
       fee: 0.001,
-      currency: "usdt",
+      currency: 'usdt',
       fixed: 2,
       min: 10
     },
     ask: {
       fee: 0.001,
-      currency: "dash",
+      currency: 'dash',
       fixed: 5,
       min: 0.00001
     },
@@ -798,20 +798,20 @@ export const MARKETS = [
     visible: true
   },
   {
-    id: "xmrusdt",
+    id: 'xmrusdt',
     code: 39,
-    name: "XMR/USDT",
-    baseUnit: "xmr",
-    quoteUnit: "usdt",
+    name: 'XMR/USDT',
+    baseUnit: 'xmr',
+    quoteUnit: 'usdt',
     bid: {
       fee: 0.001,
-      currency: "usdt",
+      currency: 'usdt',
       fixed: 2,
       min: 10
     },
     ask: {
       fee: 0.001,
-      currency: "xmr",
+      currency: 'xmr',
       fixed: 5,
       min: 0.00001
     },
@@ -819,20 +819,20 @@ export const MARKETS = [
     visible: true
   },
   {
-    id: "neousdt",
+    id: 'neousdt',
     code: 40,
-    name: "NEO/USDT",
-    baseUnit: "neo",
-    quoteUnit: "usdt",
+    name: 'NEO/USDT',
+    baseUnit: 'neo',
+    quoteUnit: 'usdt',
     bid: {
       fee: 0.001,
-      currency: "usdt",
+      currency: 'usdt',
       fixed: 3,
       min: 10
     },
     ask: {
       fee: 0.001,
-      currency: "neo",
+      currency: 'neo',
       fixed: 3,
       min: 0.001
     },
@@ -840,20 +840,20 @@ export const MARKETS = [
     visible: true
   },
   {
-    id: "etcusdt",
+    id: 'etcusdt',
     code: 41,
-    name: "ETC/USDT",
-    baseUnit: "etc",
-    quoteUnit: "usdt",
+    name: 'ETC/USDT',
+    baseUnit: 'etc',
+    quoteUnit: 'usdt',
     bid: {
       fee: 0.001,
-      currency: "usdt",
+      currency: 'usdt',
       fixed: 4,
       min: 10
     },
     ask: {
       fee: 0.001,
-      currency: "etc",
+      currency: 'etc',
       fixed: 2,
       min: 0.01
     },
@@ -861,20 +861,20 @@ export const MARKETS = [
     visible: true
   },
   {
-    id: "batusdt",
+    id: 'batusdt',
     code: 44,
-    name: "BAT/USDT",
-    baseUnit: "bat",
-    quoteUnit: "usdt",
+    name: 'BAT/USDT',
+    baseUnit: 'bat',
+    quoteUnit: 'usdt',
     bid: {
       fee: 0.001,
-      currency: "usdt",
+      currency: 'usdt',
       fixed: 4,
       min: 10
     },
     ask: {
       fee: 0.001,
-      currency: "bat",
+      currency: 'bat',
       fixed: 2,
       min: 0.01
     },
@@ -882,20 +882,20 @@ export const MARKETS = [
     visible: true
   },
   {
-    id: "omgusdt",
+    id: 'omgusdt',
     code: 45,
-    name: "OMG/USDT",
-    baseUnit: "omg",
-    quoteUnit: "usdt",
+    name: 'OMG/USDT',
+    baseUnit: 'omg',
+    quoteUnit: 'usdt',
     bid: {
       fee: 0.001,
-      currency: "usdt",
+      currency: 'usdt',
       fixed: 4,
       min: 10
     },
     ask: {
       fee: 0.001,
-      currency: "omg",
+      currency: 'omg',
       fixed: 2,
       min: 0.01
     },
@@ -903,20 +903,20 @@ export const MARKETS = [
     visible: true
   },
   {
-    id: "tusdusdt",
+    id: 'tusdusdt',
     code: 48,
-    name: "TUSD/USDT",
-    baseUnit: "tusd",
-    quoteUnit: "usdt",
+    name: 'TUSD/USDT',
+    baseUnit: 'tusd',
+    quoteUnit: 'usdt',
     bid: {
       fee: 0,
-      currency: "usdt",
+      currency: 'usdt',
       fixed: 4,
       min: 10
     },
     ask: {
       fee: 0,
-      currency: "tusd",
+      currency: 'tusd',
       fixed: 2,
       min: 0.01
     },
@@ -924,20 +924,20 @@ export const MARKETS = [
     visible: true
   },
   {
-    id: "linkusdt",
+    id: 'linkusdt',
     code: 49,
-    name: "LINK/USDT",
-    baseUnit: "link",
-    quoteUnit: "usdt",
+    name: 'LINK/USDT',
+    baseUnit: 'link',
+    quoteUnit: 'usdt',
     bid: {
       fee: 0.001,
-      currency: "usdt",
+      currency: 'usdt',
       fixed: 4,
       min: 10
     },
     ask: {
       fee: 0.001,
-      currency: "link",
+      currency: 'link',
       fixed: 2,
       min: 0.01
     },
@@ -945,20 +945,20 @@ export const MARKETS = [
     visible: true
   },
   {
-    id: "zrxusdt",
+    id: 'zrxusdt',
     code: 50,
-    name: "ZRX/USDT",
-    baseUnit: "zrx",
-    quoteUnit: "usdt",
+    name: 'ZRX/USDT',
+    baseUnit: 'zrx',
+    quoteUnit: 'usdt',
     bid: {
       fee: 0.001,
-      currency: "usdt",
+      currency: 'usdt',
       fixed: 4,
       min: 10
     },
     ask: {
       fee: 0.001,
-      currency: "zrx",
+      currency: 'zrx',
       fixed: 2,
       min: 0.01
     },
@@ -966,20 +966,20 @@ export const MARKETS = [
     visible: true
   },
   {
-    id: "usdcusdt",
+    id: 'usdcusdt',
     code: 55,
-    name: "USDC/USDT",
-    baseUnit: "usdc",
-    quoteUnit: "usdt",
+    name: 'USDC/USDT',
+    baseUnit: 'usdc',
+    quoteUnit: 'usdt',
     bid: {
       fee: 0,
-      currency: "usdt",
+      currency: 'usdt',
       fixed: 4,
       min: 10
     },
     ask: {
       fee: 0,
-      currency: "usdc",
+      currency: 'usdc',
       fixed: 2,
       min: 0.01
     },
@@ -987,20 +987,20 @@ export const MARKETS = [
     visible: true
   },
   {
-    id: "usdsusdt",
+    id: 'usdsusdt',
     code: 57,
-    name: "USDS/USDT",
-    baseUnit: "usds",
-    quoteUnit: "usdt",
+    name: 'USDS/USDT',
+    baseUnit: 'usds',
+    quoteUnit: 'usdt',
     bid: {
       fee: 0,
-      currency: "usdt",
+      currency: 'usdt',
       fixed: 4,
       min: 10
     },
     ask: {
       fee: 0,
-      currency: "usds",
+      currency: 'usds',
       fixed: 2,
       min: 0.01
     },
@@ -1008,20 +1008,20 @@ export const MARKETS = [
     visible: true
   },
   {
-    id: "tsfusdt",
+    id: 'tsfusdt',
     code: 59,
-    name: "TSF/USDT",
-    baseUnit: "tsf",
-    quoteUnit: "usdt",
+    name: 'TSF/USDT',
+    baseUnit: 'tsf',
+    quoteUnit: 'usdt',
     bid: {
       fee: 0,
-      currency: "usdt",
+      currency: 'usdt',
       fixed: 4,
       min: 0
     },
     ask: {
       fee: 0,
-      currency: "tsf",
+      currency: 'tsf',
       fixed: 2,
       min: 0
     },

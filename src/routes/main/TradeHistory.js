@@ -1,14 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { FormattedMessage, injectIntl } from 'react-intl'
-import { getAuthStatus } from '../../appRedux/actions/User'
 import { Button, Col, DatePicker, Row, Select, Spin } from 'antd'
-import { convertToDate } from '../../util/helpers'
-import { getAllTradeHistory, getTradeHistory } from '../../api/axiosAPIs'
-import { MARKETS } from '../../constants/Markets'
 import moment from 'moment'
 import _ from 'lodash'
 import { CSVLink } from 'react-csv'
+import { convertToDate } from '../../util/helpers'
+import { getAllTradeHistory, getTradeHistory } from '../../api/axiosAPIs'
+import { getAuthStatus } from '../../appRedux/actions/User'
+import { MARKETS } from '../../constants/Markets'
 import TradeHistoryTable from '../../components/TradeHistoryTable'
 
 const {Option} = Select
@@ -200,14 +200,14 @@ class TradeHistory extends React.Component {
               </Button>
             </Col>
             <Col xl={8} lg={12} sm={12} xs={24} className="gx-mb-3 gx-text-right">
-              {exportReady &&
-              <CSVLink
-                className="gx-text-right"
-                data={exportData}
-                filename={`${convertToDate(new Date())}_trades.csv`}
-              >
-                {intl.formatMessage({id: 'export.trade.history'})}
-              </CSVLink>
+              {
+                exportReady &&
+                <CSVLink
+                  className="gx-text-right"
+                  data={exportData}
+                  filename={`${convertToDate(new Date())}_trades.csv`}>
+                  {intl.formatMessage({id: 'export.trade.history'})}
+                </CSVLink>
               }
             </Col>
           </Row>

@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import { Alert, Button, Form, Icon, Input, Spin } from 'antd'
-import { SUCCESS } from '../../constants/AppConfigs'
+import { connect } from 'react-redux'
 import { forgotPassword } from '../../api/axiosAPIs'
 import { IconNotification } from '../../components/IconNotification'
-import { connect } from 'react-redux'
+import { SUCCESS } from '../../constants/AppConfigs'
 import { RESET_PWD_SUCCESS } from '../../constants/ResponseCode'
 
 const FormItem = Form.Item

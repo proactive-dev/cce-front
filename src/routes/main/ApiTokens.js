@@ -1,8 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { FormattedMessage, injectIntl } from 'react-intl'
-import { getAuthStatus } from '../../appRedux/actions/User'
 import { Spin } from 'antd'
+import { getAuthStatus } from '../../appRedux/actions/User'
 
 class ApiTokens extends React.Component {
   constructor(props) {
@@ -31,7 +31,7 @@ class ApiTokens extends React.Component {
 
     return (
       <div>
-        <h2 className="title gx-mb-4"><FormattedMessage id="api.tokens"/></h2>
+        <h1 className="gx-mt-4 gx-mb-4"><FormattedMessage id="api.tokens"/></h1>
         <Spin spinning={loader} size="large">
           {/* Components */}
         </Spin>

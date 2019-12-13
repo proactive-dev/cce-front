@@ -8,10 +8,9 @@ import { getAuthStatus } from '../../appRedux/actions/User'
 import { getAccounts } from '../../appRedux/actions/Accounts'
 import { DEFAULT_PRECISION, ESTIMATE_SYMBOL } from '../../constants/AppConfigs'
 import { DEPOSIT, WITHDRAWAL } from '../../constants/Paths'
+import { MARKETS } from '../../constants/Markets'
 
 const Search = Input.Search
-
-const MARKETS = [{name: 'XRP/BTC', code: 'xrpbtc'}, {name: 'BTC/ETH', code: 'btceth'}]
 
 class Balances extends React.Component {
   constructor(props) {

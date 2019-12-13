@@ -2,14 +2,14 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import { CSVLink } from 'react-csv'
-import { getAuthStatus } from '../../appRedux/actions/User'
 import { Button, Checkbox, Col, DatePicker, Row, Select, Spin } from 'antd'
-import { MARKETS } from '../../constants/Markets'
-import { getAllOrderHistory, getOrderHistory } from '../../api/axiosAPIs'
-import { convertToDate } from '../../util/helpers'
-import OrderHistoryTable from '../../components/OrderHistoryTable'
 import moment from 'moment'
 import _ from 'lodash'
+import { MARKETS } from '../../constants/Markets'
+import { getAllOrderHistory, getOrderHistory } from '../../api/axiosAPIs'
+import { getAuthStatus } from '../../appRedux/actions/User'
+import { convertToDate } from '../../util/helpers'
+import OrderHistoryTable from '../../components/OrderHistoryTable'
 
 const {Option} = Select
 const {RangePicker} = DatePicker
@@ -222,14 +222,14 @@ class OrderHistory extends React.Component {
               </Checkbox>
             </Col>
             <Col xl={4} lg={12} sm={12} xs={24} className="gx-mb-3 gx-text-right">
-              {exportReady &&
-              <CSVLink
-                className="gx-text-right"
-                data={exportData}
-                filename={`${convertToDate(new Date())}_orders.csv`}
-              >
-                {intl.formatMessage({id: 'export.order.history'})}
-              </CSVLink>
+              {
+                exportReady &&
+                <CSVLink
+                  className="gx-text-right"
+                  data={exportData}
+                  filename={`${convertToDate(new Date())}_orders.csv`}>
+                  {intl.formatMessage({id: 'export.order.history'})}
+                </CSVLink>
               }
             </Col>
           </Row>
