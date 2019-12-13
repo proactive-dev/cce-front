@@ -67,14 +67,12 @@ class TradeHistory extends React.Component {
         let tradeData = []
         for (let i = 0; i < trades.length; i++) {
           let trade = trades[i]
-          MARKETS.map(item => {
-            if (item.id === trade.market) {
-              trade.name = item.name
-              trade.priceFixed = item.bid.fixed
-              trade.amountFixed = item.ask.fixed
-              return trade
-            }
-          })
+          let market = MARKETS.find(item => item.id === trade.market)
+          if (market) {
+            trade.marketName = market.name
+            trade.priceFixed = market.bid.fixed
+            trade.amountFixed = market.ask.fixed
+          }
           trade.kind = trade.ask_member_id ? 'sell' : 'buy'
           tradeData.push(trade)
         }

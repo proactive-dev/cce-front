@@ -71,14 +71,12 @@ class OrderHistory extends React.Component {
         let orderData = []
         for (let i = 0; i < orders.length; i++) {
           let order = orders[i]
-          MARKETS.map(item => {
-            if (item.id === order.market) {
-              order.name = item.name
-              order.priceFixed = item.bid.fixed
-              order.amountFixed = item.ask.fixed
-              return order
-            }
-          })
+          let market = MARKETS.find(item => item.id === order.market)
+          if (market) {
+            order.marketName = market.name
+            order.priceFixed = market.bid.fixed
+            order.amountFixed = market.ask.fixed
+          }
           orderData.push(order)
         }
         const pagination = {...this.state.pagination}
