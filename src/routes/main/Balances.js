@@ -7,7 +7,7 @@ import MainAccounts from '../../components/MainAccounts'
 import { getAuthStatus } from '../../appRedux/actions/User'
 import { getAccounts } from '../../appRedux/actions/Accounts'
 import { DEFAULT_PRECISION, ESTIMATE_SYMBOL } from '../../constants/AppConfigs'
-import { DEPOSIT, WITHDRAWAL } from '../../constants/Paths'
+import { DEPOSIT, EXCHANGE, WITHDRAWAL } from '../../constants/Paths'
 import { MARKETS } from '../../constants/Markets'
 
 const Search = Input.Search
@@ -49,7 +49,7 @@ class Balances extends React.Component {
   }
 
   goTrade = (pair) => {
-    // TODO
+    this.props.history.push(`/${EXCHANGE}/${pair}`)
   }
 
   goDeposit = (symbol) => {
@@ -71,6 +71,7 @@ class Balances extends React.Component {
     const {loader, accounts, searchText, hideZero} = this.state
     const {TabPane} = Tabs
 
+    let mainEstimated = accounts.reduce((prev, account) => prev + parseFloat(account.estimated), 0.0)
     let filteredAccounts = accounts
     if (searchText.length) {
       filteredAccounts = filteredAccounts.filter(account => {
@@ -83,10 +84,8 @@ class Balances extends React.Component {
       })
     }
     let data = []
-    let mainEstimated = 0
     _.forEach(filteredAccounts, function (value) {
       if (value.currency.visible) {
-        let estimation = parseFloat(value.estimated)
         data.push({
           name: value.currency.name,
           symbol: value.currency.code,
@@ -95,12 +94,11 @@ class Balances extends React.Component {
           available: parseFloat(value.balance),
           total: parseFloat(value.balance) + parseFloat(value.locked),
           precision: parseInt(value.currency.precision),
-          estimation: estimation,
+          estimation: parseFloat(value.estimated),
           markets: MARKETS.filter(market => {
             return market.name.toLowerCase().includes(value.currency.code.toLowerCase())
           })
         })
-        mainEstimated += estimation
       }
     })
 
@@ -131,7 +129,7 @@ class Balances extends React.Component {
                 </Form>
               </Col>
               <Col span={8} xl={8} lg={8} md={8} sm={24} xs={24}
-                   className='gx-float-right gx-m-auto'>
+                   className='gx-m-auto gx-text-right'>
                 <label>{intl.formatMessage({id: 'estimated.value'})}</label>：
                 <strong>
                   {mainEstimated ? parseFloat(mainEstimated).toFixed(DEFAULT_PRECISION) : 0.00000000} {ESTIMATE_SYMBOL}

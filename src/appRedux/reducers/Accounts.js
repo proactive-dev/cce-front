@@ -1,7 +1,7 @@
 import { GET_ACCOUNTS, INIT_ACCOUNTS } from '../../constants/ActionTypes'
 
 const INIT_STATE = {
-  accounts: {}
+  accounts: []
 }
 
 export default (state = INIT_STATE, action) => {

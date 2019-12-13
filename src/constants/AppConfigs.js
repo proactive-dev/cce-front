@@ -231,6 +231,8 @@ export const COINS = [
 
 export const QUOTE_SYMBOL = 'USDT'
 export const ESTIMATE_SYMBOL = 'BTC'
+export const HOME_SYMBOLS = ['BTC', 'ETH', 'XRP', 'LTC', 'BCH']
+export const BASE_PRICE_SYMBOL = '$'
 
 export const DEFAULT_PRECISION = 8
 

@@ -1,10 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { injectIntl } from 'react-intl'
-import { getAuthStatus } from '../../appRedux/actions/User'
-import { Col, Row, Spin } from 'antd'
-import SimpleMarketInfo from '../../components/SimpleMarketInfo'
+import { FormattedMessage, injectIntl } from 'react-intl'
+import { Link } from 'react-router-dom'
+import { Card, Spin } from 'antd'
 import _ from 'lodash'
+import SimpleMarketInfo from '../../components/SimpleMarketInfo'
+import { MARKETS } from '../../constants/Paths'
 
 class Home extends React.Component {
   constructor(props) {
@@ -14,8 +15,6 @@ class Home extends React.Component {
       loader: false,
       tickers: {}
     }
-    this.baseFilter = ['bchusdt', 'btcusdt', 'ethusdt', 'xrpusdt', 'ltcusdt']
-    this.symbolMap = {'bchusdt': 'bch', 'btcusdt': 'btc', 'ethusdt': 'eth', 'xrpusdt': 'xrp', 'ltcusdt': 'ltc'}
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -29,30 +28,21 @@ class Home extends React.Component {
     return null
   }
 
-  componentDidMount() {
-    this.props.getAuthStatus()
-  }
-
   render() {
     const {loader, tickers} = this.state
-    const {intl} = this.props
     return (
-      <div>
-        <SimpleMarketInfo tickers={tickers} baseFilter={this.baseFilter} symbolMap={this.symbolMap} symbol={'$'}/>
-        <Spin spinning={loader} size="large">
-          {/* Components */}
-        </Spin>
-        <br/>
-        <Row type="flex" align="center">
-          <Col><a href="/trade" className="text-active f-fl">{intl.formatMessage({id: 'view.all'})}</a></Col>
-        </Row>
-      </div>
+      <Spin spinning={loader} size="large">
+        <Card
+          className="gx-card-full gx-card-widget gx-m-2"
+          bordered={false}>
+          <SimpleMarketInfo tickers={tickers}/>
+          <div className={'gx-m-4 gx-text-center'}>
+            <Link to={`${MARKETS}`}><FormattedMessage id='view.all'/></Link>
+          </div>
+        </Card>
+      </Spin>
     )
   }
-}
-
-const mapDispatchToProps = {
-  getAuthStatus
 }
 
 const mapStateToProps = ({progress, markets}) => {
@@ -62,4 +52,4 @@ const mapStateToProps = ({progress, markets}) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(Home))
+export default connect(mapStateToProps, null)(injectIntl(Home))

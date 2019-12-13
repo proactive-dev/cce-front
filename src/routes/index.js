@@ -1,5 +1,10 @@
 import React from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
+import Login from './common/Login'
+import Register from './common/Register'
+import TFAuthentication from './common/TFAuthentication'
+import ForgotPassword from './common/ForgotPassword'
+import ResetPassword from './common/ResetPassword'
 import Home from './main/Home'
 import Deposit from './main/Deposit'
 import Withdrawal from './main/Withdrawal'
@@ -17,11 +22,8 @@ import EnableGoogleAuth from './main/EnableGoogleAuth'
 import DisableGoogleAuth from './main/DisableGoogleAuth'
 import Affiliate from './main/Affiliate'
 import Balances from './main/Balances'
-import Login from './common/Login'
-import Register from './common/Register'
-import TFAuthentication from './common/TFAuthentication'
-import ForgotPassword from './common/ForgotPassword'
-import ResetPassword from './common/ResetPassword'
+import Exchange from './main/Exchange'
+import Markets from './main/Markets'
 import {
   API_TOKEN_EDIT,
   API_TOKEN_NEW,
@@ -30,11 +32,13 @@ import {
   CHANGE_PWD,
   DEPOSIT,
   E_404,
+  EXCHANGE,
   FORGOT_PWD,
   G_AUTH_DISABLE,
   G_AUTH_ENABLE,
   LOGIN,
   LOGIN_AUTH,
+  MARKETS,
   OPEN_ORDERS,
   ORDER_HISTORY,
   REFERRAL,
@@ -46,6 +50,8 @@ import {
   VERIFICATION,
   WITHDRAWAL
 } from '../constants/Paths'
+import { MARKETS as MARKET_LIST } from '../constants/Markets'
+import CustomRedirect from '../components/CustomRedirect'
 
 const AppRoute = ({match}) => (
   <div className="gx-main-content-wrapper">
@@ -56,6 +62,8 @@ const AppRoute = ({match}) => (
       <Route exact path={`${match.url}${LOGIN_AUTH}`} component={TFAuthentication}/>
       <Route exact path={`${match.url}${FORGOT_PWD}`} component={ForgotPassword}/>
       <Route exact path={`${match.url}${RESET_PWD}/:token`} component={ResetPassword}/>
+      <Route exact path={`${match.url}${MARKETS}`} component={Markets}/>
+      <Route exact path={`${match.url}${EXCHANGE}/:market`} component={Exchange}/>
       <Route exact path={`${match.url}${BALANCES}`} component={Balances}/>
       <Route exact path={`${match.url}${DEPOSIT}`} component={Deposit}/>
       <Route exact path={`${match.url}${WITHDRAWAL}`} component={Withdrawal}/>
@@ -72,6 +80,8 @@ const AppRoute = ({match}) => (
       <Route exact path={`${match.url}${G_AUTH_ENABLE}`} component={EnableGoogleAuth}/>
       <Route exact path={`${match.url}${G_AUTH_DISABLE}`} component={DisableGoogleAuth}/>
       <Route exact path={`${match.url}${REFERRAL}`} component={Affiliate}/>
+      <Route exact path={`${match.url}${EXCHANGE}`}
+             render={() => <CustomRedirect path={`${match.url}${EXCHANGE}/${MARKET_LIST[0].id}`}/>}/>
       <Redirect from='*' to={`/${E_404}`}/>
     </Switch>
   </div>

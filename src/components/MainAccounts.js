@@ -2,6 +2,7 @@ import React from 'react'
 import { withRouter } from 'react-router-dom'
 import { injectIntl } from 'react-intl'
 import { Button, Popover, Table } from 'antd'
+import _ from 'lodash'
 import { getCoinFixed, getFixed, getTableLocaleData } from '../util/helpers'
 import { ESTIMATE_SYMBOL } from '../constants/AppConfigs'
 
@@ -73,19 +74,6 @@ class MainAccounts extends React.Component {
         title: '',
         align: 'center',
         render: (record) => {
-          const menuContents = (
-            <ul className="gx-sub-popover">
-              {
-                record.markets.map((market) =>
-                  <li className="gx-media gx-pointer gx-p-2"
-                      key={market.code}
-                      onClick={() => this.props.onWithdrawal(market)}>
-                    {market.name}
-                  </li>
-                )
-              }
-            </ul>
-          )
           return <div className={'equalValue f-right'}>
             <Button type="link" className="gx-m-2"
                     onClick={() => this.props.onDeposit(record.symbol)}>
@@ -95,17 +83,36 @@ class MainAccounts extends React.Component {
                     onClick={() => this.props.onWithdrawal(record.symbol)}>
               <u>{intl.formatMessage({id: 'withdrawal'})}</u>
             </Button>
-            <Popover
-              overlayClassName="gx-popover-horizontal"
-              placement="bottomRight"
-              content={menuContents}
-              trigger="click">
-              <u className={'gx-link'}>{intl.formatMessage({id: 'trade'})}</u>
-            </Popover>
+            {
+              _.isEmpty(record.markets) ?
+                <u className={'gx-link gx-text-light-grey'}>{intl.formatMessage({id: 'trade'})}</u>
+                :
+                <Popover
+                  overlayClassName="gx-popover-horizontal"
+                  placement="bottomRight"
+                  content={this.getTradeMenuContents(record.markets)}
+                  trigger="click">
+                  <u className={'gx-link'}>{intl.formatMessage({id: 'trade'})}</u>
+                </Popover>
+            }
           </div>
         }
       }
     ]
+  }
+
+  getTradeMenuContents = (markets) => {
+    return <ul className="gx-sub-popover">
+      {
+        markets.map((market) =>
+          <li className="gx-media gx-pointer gx-p-2"
+              key={market.code}
+              onClick={() => this.props.onTrade(market.id)}>
+            {market.name}
+          </li>
+        )
+      }
+    </ul>
   }
 
   render() {
