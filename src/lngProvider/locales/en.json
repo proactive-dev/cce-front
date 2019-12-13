@@ -548,6 +548,8 @@
   "no.api.tokens": "You have no API tokens.",
   "create.api.desc1": "Please copy and paste keys below to a safe place and save.",
   "create.api.desc2": "The secret key will never be displayed again.",
+  "copy.secrete.key.success": "The secret key has been successfully copied to the clipboard.",
+  "copy.access.key.success": "The access key has been successfully copied to the clipboard.",
   "reset.password": "Reset Password",
   "reset.password.desc": "Please enter your e-mail address which is verified by your account, enter verification code to submit,and login your mailbox, follow the prompts to reset your password.",
   "no.tickets": "You have no tickets.",

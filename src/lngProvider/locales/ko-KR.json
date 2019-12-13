@@ -547,6 +547,8 @@
   "no.api.tokens": "API 토큰이 없습니다.",
   "create.api.desc1": "아래의 키를 복사하여 안전한 장소에 붙여넣고 저장해주세요.",
   "create.api.desc2": "페이지가 닫히면 Secret Key 는 다시 표시되지 않습니다.",
+  "copy.secrete.key.success": "비밀키를 클립보드에 저장했습니다.",
+  "copy.access.key.success": "호출키를 클립보드에 저장했습니다.",
   "reset.password": "비믿번호 재설정",
   "reset.password.desc": "이메일주소를 입력하고 제출할 인증 코드를 입력 한 다음 메일의 프롬프트에 따라 비밀번호를 재설정해주세요.",
   "no.tickets": "서비스 티켓이 없습니다.",

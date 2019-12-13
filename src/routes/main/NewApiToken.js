@@ -6,9 +6,11 @@ import { getAuthStatus } from '../../appRedux/actions/User'
 import { newApiToken } from '../../api/axiosAPIs'
 import { IconNotification } from '../../components/IconNotification'
 import { SUCCESS } from '../../constants/AppConfigs'
+import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 const {Text, Title} = Typography
 const {Option} = Select
+const InputGroup = Input.Group
 
 class NewApiToken extends React.Component {
   constructor(props) {
@@ -53,6 +55,14 @@ class NewApiToken extends React.Component {
     })
   }
 
+  copyAccessKey = () => {
+    IconNotification(SUCCESS, this.props.intl.formatMessage({id: 'copy.access.key.success'}))
+  }
+
+  copySecretKey = () => {
+    IconNotification(SUCCESS, this.props.intl.formatMessage({id: 'copy.secrete.key.success'}))
+  }
+
   handleCloseModal = () => {
     this.setState({visibleToken: false, token: null})
   }
@@ -63,11 +73,6 @@ class NewApiToken extends React.Component {
     const {getFieldDecorator} = this.props.form
     const accessKey = token ? token.access_key : intl.formatMessage({id: 'unknown'})
     const secretKey = token ? token.secret_key : intl.formatMessage({id: 'unknown'})
-
-    const copySecretBtn = (
-      <a><Icon type="copy"/>
-      </a>
-    )
 
     return (
       <div>
@@ -126,7 +131,7 @@ class NewApiToken extends React.Component {
           onCancel={this.handleCloseModal}
         >
           <Row type="flex" justify='center'>
-            <Col align={'center'}>
+            <Col align={'left'}>
               <Text className='gx-fs-lg' type='warning'
                     strong>{intl.formatMessage({id: 'create.api.desc1'})}</Text><br/>
               <Text className='gx-fs-lg' type='warning' strong>{intl.formatMessage({id: 'create.api.desc2'})}</Text>
@@ -134,16 +139,32 @@ class NewApiToken extends React.Component {
           </Row>
           <br/>
           <Row type="flex">
-            <Col>
-              <div style={{marginBottom: 16}}>
-                <Input addonBefore={'Access Key:'} addonAfter={copySecretBtn} defaultValue={accessKey} readOnly/>
+            <Col span={24}>
+              <div style={{width: '100%', marginBottom: 16}}>
+                <InputGroup compact>
+                  <Input addonBefore={'Access Key:'} defaultValue={accessKey} readOnly style={{width: '85%'}}/>
+                  <CopyToClipboard
+                    text={accessKey}
+                    onCopy={() => this.copyAccessKey()}
+                  >
+                    <Button><Icon type="copy"/></Button>
+                  </CopyToClipboard>
+                </InputGroup>
               </div>
             </Col>
           </Row>
           <Row type="flex">
-            <Col>
-              <div style={{marginBottom: 16}}>
-                <Input addonBefore={'Secrete Key:'} addonAfter={copySecretBtn} defaultValue={accessKey} readOnly/>
+            <Col span={24}>
+              <div style={{width: '100%', marginBottom: 16}}>
+                <InputGroup compact>
+                  <Input addonBefore={'Secrete Key:'} defaultValue={secretKey} readOnly style={{width: '85%'}}/>
+                  <CopyToClipboard
+                    text={secretKey}
+                    onCopy={() => this.copySecretKey()}
+                  >
+                    <Button><Icon type="copy"/></Button>
+                  </CopyToClipboard>
+                </InputGroup>
               </div>
             </Col>
           </Row>
