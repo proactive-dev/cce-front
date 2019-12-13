@@ -1,8 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { FormattedMessage, injectIntl } from 'react-intl'
-import { Spin } from 'antd'
+import { Card, Form, Input, Spin, Typography } from 'antd'
 import { getAuthStatus } from '../../appRedux/actions/User'
+
+const {Text} = Typography
 
 class NewApiToken extends React.Component {
   constructor(props) {
@@ -35,6 +37,14 @@ class NewApiToken extends React.Component {
         <Spin spinning={loader} size="large">
           {/* Components */}
         </Spin>
+        <Card bordered={false}>
+          <Text><FormattedMessage id="api.tokens.create.description"/></Text>
+          <Form>
+            <Form.Item>
+              <Input/>
+            </Form.Item>
+          </Form>
+        </Card>
       </div>
     )
   }
