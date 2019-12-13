@@ -7,15 +7,14 @@ import CurrencySelect from '../../components/CurrencySelect'
 import BalanceInfo from '../../components/BalanceInfo'
 import { Button, Card, Checkbox, Col, Form, Input, Row, Select, Spin, Typography } from 'antd'
 import _ from 'lodash'
-import { getCoinBySymbol, getFixed } from '../../util/helpers'
+import { getCoinBySymbol, getFixed, isXRP } from '../../util/helpers'
 import { getAddresses, newWithdraw } from '../../api/axiosAPIs'
 import { IconNotification } from '../../components/IconNotification'
 import { SUCCESS } from '../../constants/AppConfigs'
 import { Link } from 'react-router-dom'
 
 const {Text} = Typography
-const Option = Select.Option
-const InputGroup = Input.Group
+const {Option} = Select
 
 class Withdrawal extends React.Component {
   constructor(props) {
@@ -30,7 +29,7 @@ class Withdrawal extends React.Component {
       getAmount: 0,
       account: {},
       twoFactor: '',
-      checkedAddrTag: false
+      addrTagChecked: false
     }
   }
 
@@ -54,11 +53,8 @@ class Withdrawal extends React.Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     const {loader, accounts} = nextProps
-    if (loader !== prevState.loader) {
-      return {loader}
-    }
-    if (!_.isEmpty(accounts) && accounts !== prevState.accounts) {
-      return {accounts}
+    if ((loader !== prevState.loader) || (!_.isEmpty(accounts) && accounts !== prevState.accounts)) {
+      return {loader, accounts}
     }
     return null
   }
@@ -74,7 +70,7 @@ class Withdrawal extends React.Component {
       this.updateStateAddrs(this.state.currentSymbol)
   }
 
-  handleChange = (value) => {
+  onSelectCurrency = (value) => {
     this.setState({currentSymbol: value})
     this.updateStateAddrs(value)
     this.props.form.setFieldsValue({
@@ -97,15 +93,15 @@ class Withdrawal extends React.Component {
     this.setState({getAmount: amount})
   }
 
-  handleChangeAddress = (value) => {
+  onSelectAddress = (value) => {
     this.setState({address: value})
   }
 
   handleClickAddrTag = (event) => {
-    this.setState({checkedAddrTag: event.target.checked})
+    this.setState({addrTagChecked: event.target.checked})
   }
 
-  handleSubmit = e => {
+  onSubmit = e => {
     e.preventDefault()
     const {currentSymbol, addrs} = this.state
     this.props.form.validateFields((err, values) => {
@@ -128,7 +124,7 @@ class Withdrawal extends React.Component {
           }
         }
 
-        if (currentSymbol === 'xrp') {
+        if (isXRP(currentSymbol)) {
           param.withdraw.tag = values.addrTag
         }
 
@@ -173,7 +169,7 @@ class Withdrawal extends React.Component {
   render() {
     const {intl} = this.props
     const {getFieldDecorator} = this.props.form
-    const {loader, currentSymbol, addrs, getAmount, account} = this.state
+    const {loader, currentSymbol, addrs, getAmount, account, addrTagChecked} = this.state
 
     const coin = getCoinBySymbol(currentSymbol)
     const balance = !_.isEmpty(account) ? getFixed(parseFloat(account.balance), parseInt(account.currency.precision)) : 0.0
@@ -181,139 +177,119 @@ class Withdrawal extends React.Component {
       <div>
         <h1 className="gx-mt-4 gx-mb-4"><FormattedMessage id="withdrawal"/></h1>
         <Spin spinning={loader} size="large">
-          {/* Components */}
-        </Spin>
-        <div>
           <Row type='flex' gutter={12}>
-            <Col span={12} xxl={12} xl={12} lg={12} md={24} sm={24} xs={24} className={'gx-mb-2'}>
-              <Card bordered={false} style={{height: '100%'}}>
-                <CurrencySelect value={currentSymbol} onChange={this.handleChange}/>
+            <Col span={12} xxl={12} xl={12} lg={12} md={24} sm={24} xs={24} className={'gx-p-1'}>
+              <Card className="gx-h-100" bordered={false}>
+                <CurrencySelect value={currentSymbol} onChange={this.onSelectCurrency}/>
                 <BalanceInfo account={account} symbol={currentSymbol}/>
-                <div>
-                  <Text type="warning"><FormattedMessage id="important"/></Text>
-                  <ul type='warning' className={'gx-mt-2'}>
-                    <li className={'gx-text-warning'}>
+                <div className={'gx-mt-5 gx-mb-4 gx-ml-2 gx-mr-2 gx-text-warning'}>
+                  <FormattedMessage id="important"/>
+                  <ul className={'gx-mt-2'}>
+                    <li>
                       <FormattedMessage id="min.withdrawal"/>: {coin.withdraw.minAmount} {currentSymbol.toUpperCase()}
                     </li>
-                    <li className={'gx-text-warning'}><FormattedMessage id="withdrawal.notice"/></li>
+                    <li><FormattedMessage id="withdrawal.notice"/></li>
                   </ul>
                 </div>
               </Card>
             </Col>
-            <Col span={12} xxl={12} xl={12} lg={12} md={24} sm={24} xs={24}>
-              <Card bordered={false} style={{height: '100%'}}>
-                <Form onSubmit={this.handleSubmit}>
-                  <div>
-                    <Text strong>{currentSymbol.toUpperCase()} <FormattedMessage id="withdrawal.address"/></Text>
-                  </div>
-                  {_.isEmpty(addrs) && (
-                    <div className='gx-ml-3 gx-mt-2'>
-                      <Text><FormattedMessage id="no.whitelist.address"/> <Link className='gx-text-underline' to=''>
-                        <FormattedMessage id="address.management"/>
-                      </Link></Text>
-                    </div>
-                  )}
-                  <Form.Item className={'gx-mt-2'} wrapperCol={{sm: 24}} style={{width: '100%', margin: 0}}>
+            <Col span={12} xxl={12} xl={12} lg={12} md={24} sm={24} xs={24} className={'gx-p-1'}>
+              <Card className="gx-h-100 gx-p-1" bordered={false}>
+                <Form onSubmit={this.onSubmit}>
+                  <Text strong>{currentSymbol.toUpperCase()} <FormattedMessage id="withdrawal.address"/></Text>
+                  {
+                    _.isEmpty(addrs) && (
+                      <div className='gx-ml-3 gx-mt-2'>
+                        <FormattedMessage id="no.whitelist.address"/>&nbsp;
+                        <Link className='gx-text-underline' to=''>
+                          <FormattedMessage id="address.management"/>
+                        </Link>
+                      </div>
+                    )
+                  }
+                  <Form.Item wrapperCol={{sm: 24}} className={'gx-w-100 gx-m-2'}>
                     {getFieldDecorator('address', {
                       rules: [{required: true, message: intl.formatMessage({id: 'alert.fieldRequired'})}]
                     })(
                       <Select
-                        style={{width: '100%'}}
-                        onChange={this.handleChangeAddress}
-                      >
+                        className={'gx-w-100'}
+                        onChange={this.onSelectAddress}>
                         {
                           !_.isEmpty(addrs) &&
                           addrs.map((addr) => {
-                            return <Option value={addr.id} key={addr.id}>
-                              <strong>{addr.label}</strong>
-                            </Option>
+                            return (
+                              <Option value={addr.id} key={addr.id}>
+                                <strong>{addr.label}</strong>
+                              </Option>
+                            )
                           })
                         }
                       </Select>
                     )}
                   </Form.Item>
-                  <div className={'gx-mt-3'}>
-                    <Text strong><FormattedMessage id="amount"/></Text>
-                    <a className='gx-text-underline gx-mr-3' style={{float: 'right'}}
-                       onClick={this.setAmountAvailable}><FormattedMessage id="available"/>: {balance}</a>
-                  </div>
-                  <div className={'gx-mt-2'}>
-                    <Form.Item wrapperCol={{sm: 24}} style={{width: '100%', margin: 0}}>
-                      {getFieldDecorator('amount', {
-                        rules: [{
-                          required: true, message: intl.formatMessage({id: 'alert.fieldRequired'})
-                        }, {
-                          validator: this.checkAmount
-                        }]
-                      })(
-                        <Input onChange={this.handleAmountChange}
-                               addonAfter={currentSymbol.toUpperCase()}/>
-                      )}
-                    </Form.Item>
-                  </div>
-                  {currentSymbol === 'xrp' && (
-                    <div>
-                      <div className={'gx-mt-3'}>
-                        <Text strong>{currentSymbol.toUpperCase()} <FormattedMessage id="withdrawal.tag"/></Text>
+                  {
+                    isXRP(currentSymbol) && (
+                      <div>
+                        <span className={'gx-font-weight-bold'}>
+                          {currentSymbol.toUpperCase()} <FormattedMessage id="withdrawal.tag"/>
+                        </span>
                         <Checkbox
-                          style={{float: 'right'}}
-                          checked={this.state.checkedAddrTag}
-                          onChange={this.handleClickAddrTag}
-                        >
+                          className={'gx-float-right'}
+                          checked={addrTagChecked}
+                          onChange={this.handleClickAddrTag}>
                           <FormattedMessage id="no.tag"/>
                         </Checkbox>
-                      </div>
-                      <div className={'gx-mt-2'}>
-                        <Form.Item wrapperCol={{sm: 24}} style={{width: '100%', margin: 0}}>
+                        <Form.Item wrapperCol={{sm: 24}} className={'gx-w-100 gx-m-2'}>
                           {getFieldDecorator('addrTag', {
                             rules: [{
-                              required: !this.state.checkedAddrTag,
+                              required: !addrTagChecked,
                               message: intl.formatMessage({id: 'alert.fieldRequired'})
                             }]
                           })(
-                            <Input/>
+                            <Input disabled={addrTagChecked}/>
                           )}
                         </Form.Item>
                       </div>
-                    </div>
-                  )}
-                  <div className={'gx-mt-3'}>
-                    <Text strong><FormattedMessage id="google.auth.code"/></Text>
+                    )
+                  }
+                  <span className={'gx-font-weight-bold'}><FormattedMessage id="amount"/></span>
+                  <a className='gx-text-underline gx-float-right gx-mr-2'
+                     onClick={this.setAmountAvailable}>
+                    <FormattedMessage id="available"/>: {balance}
+                  </a>
+                  <Form.Item wrapperCol={{sm: 24}} className={'gx-w-100 gx-m-2'}>
+                    {getFieldDecorator('amount', {
+                      rules: [{
+                        required: true, message: intl.formatMessage({id: 'alert.fieldRequired'})
+                      }, {
+                        validator: this.checkAmount
+                      }]
+                    })(
+                      <Input onChange={this.handleAmountChange}
+                             addonAfter={currentSymbol.toUpperCase()}/>
+                    )}
+                  </Form.Item>
+                  <span className={'gx-font-weight-bold'}><FormattedMessage id="google.auth.code"/></span>
+                  <Form.Item wrapperCol={{sm: 24}} className={'gx-w-100 gx-m-2'}>
+                    {getFieldDecorator('twoFactor', {
+                      rules: [{required: false, message: intl.formatMessage({id: 'alert.fieldRequired'})}]
+                    })(
+                      <Input/>
+                    )}
+                  </Form.Item>
+                  <div className={'gx-m-2'}>
+                    <FormattedMessage id="transaction.fee"/>: {coin.withdraw.fee}
+                    <span className={'gx-float-right'}><FormattedMessage id="you.will.get"/>: {getAmount}</span>
                   </div>
-                  <div className={'gx-mt-2'}>
-                    <Form.Item wrapperCol={{sm: 24}} style={{width: '100%', margin: 0}}>
-                      {getFieldDecorator('twoFactor', {
-                        rules: [{required: false, message: intl.formatMessage({id: 'alert.fieldRequired'})}]
-                      })(
-                        <Input/>
-                      )}
-                    </Form.Item>
-                  </div>
-
-                  <div className={'gx-mt-2'}>
-                    <Row type='flex' gutter={12}>
-                      <Col span={12} xxl={12} xl={12} lg={12} md={24} sm={24} xs={24} className={'gx-mb-2'}
-                           align={'center'}>
-                        <Text><FormattedMessage id="transaction.fee"/>: {coin.withdraw.fee}</Text>
-                      </Col>
-                      <Col span={12} xxl={12} xl={12} lg={12} md={24} sm={24} xs={24} className={'gx-mb-2'}
-                           align={'center'}>
-                        <Text><FormattedMessage id="you.will.get"/>: {getAmount}</Text>
-                      </Col>
-                    </Row>
-                  </div>
-                  <Row className='gx-mt-2' type='flex' justify={'center'}>
-                    <Col>
-                      <Button type='primary' block onClick={this.handleSubmit}><FormattedMessage id="submit"/></Button>
-                    </Col>
-                  </Row>
-                  {/*<Button type='primary' block onClick={this.handleSubmit}><FormattedMessage id="submit"/></Button>*/}
+                  <Button type="primary" className='auth-form-button gx-mt-3' onClick={this.onSubmit}>
+                    <FormattedMessage id="submit"/>
+                  </Button>
                 </Form>
 
               </Card>
             </Col>
           </Row>
-        </div>
+        </Spin>
       </div>
     )
   }

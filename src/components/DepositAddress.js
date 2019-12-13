@@ -1,11 +1,9 @@
 import React from 'react'
 import { FormattedMessage, injectIntl } from 'react-intl'
-import { Button, Col, Icon, Modal, Row, Typography } from 'antd'
+import { Button, Col, Modal, Row } from 'antd'
 import QRCode from 'qrcode.react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import _ from 'lodash'
-
-const {Text} = Typography
 
 class DepositAddress extends React.Component {
   constructor(props) {
@@ -27,72 +25,58 @@ class DepositAddress extends React.Component {
     })
   }
 
-  copyQRCode = () => {
-    this.props.onCopyQRCode(this.props.intl.formatMessage({id: 'alert.copied'}))
+  onCopied = () => {
+    this.props.onCopy()
   }
 
-  getDepositeAddress = (account, defaultValue) => {
-    return !_.isEmpty(account.payment_address) ? account.payment_address.deposit_address : defaultValue
+  getDepositAddress = (account, defaultValue = '') => {
+    return (!_.isEmpty(account.payment_address) && !_.isEmpty(account.payment_address.deposit_address)) ? account.payment_address.deposit_address : defaultValue
   }
 
   render() {
     const {symbol, account, intl} = this.props
-    const depositAddress = this.getDepositeAddress(account, '')
+    const depositAddress = this.getDepositAddress(account, intl.formatMessage({id: 'alert.emptyData'}))
     return (
       <div>
-        <div>
-          <Text strong>{symbol.toUpperCase()} <FormattedMessage id="deposit.address"/>:</Text><br/>
-        </div>
-        <div className={'gx-mt-2 gx-text-warning gx-fs-lg'}>
-          <strong>{account.payment_address.deposit_address}</strong>
-        </div>
+        <h5>{symbol.toUpperCase()} <FormattedMessage id="deposit.address"/>:</h5>
+        <p className={'gx-m-3 gx-p-2 h4'}>
+          {account.payment_address.deposit_address}
+        </p>
         <Row type="flex" justify='center' className={'gx-mt-3'}>
           <Col>
-            <Button type="normal" onClick={this.showQRCode}>
-              <Icon type="qrcode"/>
+            <Button type="normal" icon={'qrcode'} onClick={this.showQRCode}>
               <FormattedMessage id="show.qrcode"/>
             </Button>
             <CopyToClipboard
               text={depositAddress}
-              onCopy={() => this.copyQRCode()}
-            >
-              <Button type="normal">
-                <Icon type="copy"/>
+              onCopy={this.onCopied}>
+              <Button type="normal" icon={'copy'}>
                 <FormattedMessage id="copy.address"/>
               </Button>
             </CopyToClipboard>
           </Col>
         </Row>
-        <div>
-          <Text type="warning"><FormattedMessage id="important"/></Text>
-          <ul type='warning' className={'gx-mt-2'}>
-            <li className={'gx-text-warning'}><FormattedMessage id="deposit.important"/></li>
+        <div className={'gx-mt-4 gx-mb-3 gx-ml-2 gx-mr-2 gx-text-warning'}>
+          <FormattedMessage id="important"/>
+          <ul className={'gx-mt-2'}>
+            <li><FormattedMessage id="deposit.important"/></li>
           </ul>
         </div>
         <Modal
           visible={this.state.visibleQRCode}
           footer={null}
           onOk={this.closeQRCode}
-          onCancel={this.closeQRCode}
-        >
-          <Row type="flex" justify='center'>
-            <Col align={'center'}><Text
-              strong>{symbol.toUpperCase()} {intl.formatMessage({id: 'deposit.address'})}</Text></Col>
-          </Row>
-          <br/>
-          <Row type="flex" justify='center'>
-            <Col>
-              <QRCode
-                value={this.getDepositeAddress(account, intl.formatMessage({id: 'alert.emptyData'}))}
-                size={200}
-                level='H'
-              />
-            </Col>
-          </Row>
-          <br/>
-          <Row type="flex" justify='center'>
-            <Col><Text strong>{depositAddress}</Text></Col>
-          </Row>
+          onCancel={this.closeQRCode}>
+          <div className={'gx-text-center'}>
+            <h5 className={'gx-m-2'}>{symbol.toUpperCase()} {intl.formatMessage({id: 'deposit.address'})}</h5>
+            <br/>
+            <QRCode
+              value={this.getDepositAddress(account, intl.formatMessage({id: 'alert.emptyData'}))}
+              size={200}
+              level='H'/>
+            <br/>
+            <h5 className={'gx-m-2'}>{depositAddress}</h5>
+          </div>
         </Modal>
       </div>
     )

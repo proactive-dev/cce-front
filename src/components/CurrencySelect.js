@@ -1,42 +1,34 @@
 import React from 'react'
-import { injectIntl } from 'react-intl'
-import { CURRENCIES } from '../constants/Currencies'
 import { Select } from 'antd'
+import { CURRENCIES } from '../constants/Currencies'
 
-const Option = Select.Option
+const {Option} = Select
 
 class CurrencySelect extends React.Component {
-  constructor(props) {
-    super(props)
-  }
-
   render() {
-    const {intl, value} = this.props
+    const {value} = this.props
     return (
-      <div>
-        <Select
-          showSearch
-          style={{width: '100%'}}
-          defaultValue={value}
-          onChange={this.props.onChange}
-          // onFocus={handleFocus}
-          // onBlur={handleBlur}
-          // filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-        >
-          {
-            CURRENCIES.map((coin) => {
-                if (coin.visible)
-                  return <Option value={coin.symbol} key={coin.symbol}>
-                    {/*<img src={require(`assets/images/coins/${coin.symbol.toLowerCase()}.png`)}*/}
-                    {/*     style={{maxWidth: 16}} alt={coin.code}/>*/}
-                    &nbsp;<strong>{coin.symbol.toUpperCase()}</strong>&nbsp;-&nbsp;{coin.name}
+      <Select
+        showSearch
+        style={{width: '100%'}}
+        defaultValue={value}
+        onChange={this.props.onChange}
+      >
+        {
+          CURRENCIES.map((currency) => {
+              if (currency.visible)
+                return (
+                  <Option value={currency.symbol} key={currency.symbol}>
+                    {/*<img src={require(`assets/images/coins/${currency.symbol.toLowerCase()}.png`)}*/}
+                    {/*     style={{maxWidth: 16}} alt={currency.symbol}/>*/}
+                    &nbsp;<strong>{currency.symbol.toUpperCase()}</strong>&nbsp;-&nbsp;{currency.name}
                   </Option>
-              }
-            )}
-        </Select>
-      </div>
+                )
+            }
+          )}
+      </Select>
     )
   }
 }
 
-export default injectIntl(CurrencySelect)
+export default CurrencySelect

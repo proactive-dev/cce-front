@@ -1,15 +1,10 @@
 import React from 'react'
 import { injectIntl } from 'react-intl'
-import { Icon, Table, Typography } from 'antd'
+import { Button, Table } from 'antd'
 import _ from 'lodash'
-
-const {Text} = Typography
+import { getTableLocaleData } from '../util/helpers'
 
 class AddressTable extends React.Component {
-  constructor(props) {
-    super(props)
-
-  }
 
   getColumns() {
     const {intl} = this.props
@@ -17,62 +12,53 @@ class AddressTable extends React.Component {
       {
         title: intl.formatMessage({id: 'coin'}),
         dataIndex: 'coin',
-        align: 'left',
+        align: 'center',
         render: (value) => {
-          return <Text>{value.toUpperCase()}</Text>
+          return value.toUpperCase()
         }
       },
       {
         title: intl.formatMessage({id: 'label'}),
         dataIndex: 'label',
-        align: 'center',
-        render: (value) => {
-          return <Text>{value}</Text>
-        }
+        align: 'left'
       },
       {
         title: intl.formatMessage({id: 'address'}),
         dataIndex: 'address',
-        align: 'left',
-        render: (value) => {
-          return <Text>{value}</Text>
-        }
+        align: 'left'
       },
       {
         title: intl.formatMessage({id: 'memo.tag'}),
         dataIndex: 'tag',
-        align: 'left',
-        render: (value) => {
-          return <Text>{value}</Text>
-        }
+        align: 'left'
       },
       {
         title: intl.formatMessage({id: 'action'}),
         dataIndex: 'action',
         align: 'center',
         render: (value, record) => {
-          return <a onClick={e => this.handleDelete(e, record)}><Icon type="delete" theme="filled"/></a>
+          return <Button type="link" icon={'delete'} size={'small'} onClick={e => this.onDelete(record)}/>
         }
       }
     ]
   }
 
-  handleDelete = (e, record) => {
+  onDelete = (record) => {
     this.props.onDelete(record)
   }
 
   render() {
-    const {addrs, filter} = this.props
-    let data = []
-    let filteredAddrs = addrs
-    if (!_.isEmpty(filteredAddrs) && filter) {
-      filteredAddrs = filteredAddrs.filter(addr => {
+    const {data, filter} = this.props
+    let addresses = []
+    let filteredData = data
+    if (!_.isEmpty(filteredData) && filter) {
+      filteredData = filteredData.filter(addr => {
         return addr.currency.toLowerCase().includes(filter.toLowerCase())
       })
     }
 
-    _.forEach(filteredAddrs, function (addr) {
-      data.push({
+    _.forEach(filteredData, function (addr) {
+      addresses.push({
         id: addr.id,
         coin: addr.currency,
         label: addr.extra,
@@ -83,13 +69,14 @@ class AddressTable extends React.Component {
     })
 
     return (
-      <div>
-        <Table className={'gx-table-responsible '}
-               columns={this.getColumns()}
-               dataSource={data}
-               rowKey="index"
-               size='middle'/>
-      </div>
+      <Table
+        className={'gx-table-responsive'}
+        columns={this.getColumns()}
+        dataSource={addresses}
+        pagination={false}
+        locale={getTableLocaleData}
+        rowKey="id"
+        size='middle'/>
     )
   }
 }

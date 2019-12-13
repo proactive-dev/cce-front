@@ -54,6 +54,10 @@ export const getTableLocaleData = (intl) => {
   }
 }
 
+export const isXRP = (symbol) => {
+  return symbol === 'xrp'
+}
+
 export const getPrecise = (value, precision = null) => {
   let precise = precision > DEFAULT_PRECISION ? DEFAULT_PRECISION : precision
   return BigNumber(value).toPrecision(precise).toString()

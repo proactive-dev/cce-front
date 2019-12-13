@@ -5,39 +5,36 @@ import _ from 'lodash'
 import { getFixed } from '../util/helpers'
 
 class BalanceInfo extends React.Component {
-  constructor(props) {
-    super(props)
-  }
-
   render() {
     const {account, symbol} = this.props
+    const symStr = symbol.toUpperCase()
     const balance = !_.isEmpty(account) ? getFixed(parseFloat(account.balance), parseInt(account.currency.precision)) : 0.0
     const locked = !_.isEmpty(account) ? getFixed(parseFloat(account.locked), parseInt(account.currency.precision)) : 0.0
     const total = !_.isEmpty(account) ? getFixed(parseFloat(account.balance) + parseFloat(account.locked), parseInt(account.currency.precision)) : 0.0
     return (
-      <div className={'gx-mt-3'}>
-        <Row>
+      <div className={'gx-mt-4 gx-m4-2'}>
+        <Row className={'gx-m-1'}>
           <Col span={12}>
-            <p><FormattedMessage id="balance.total"/></p>
+            <FormattedMessage id="balance.total"/>
           </Col>
           <Col span={12}>
-            <p>{total}&nbsp;{symbol.toUpperCase()}</p>
-          </Col>
-        </Row>
-        <Row>
-          <Col span={12}>
-            <p><FormattedMessage id="balance.available"/></p>
-          </Col>
-          <Col span={12}>
-            <p>{balance}&nbsp;{symbol.toUpperCase()}</p>
+            {total}&nbsp;{symStr}
           </Col>
         </Row>
-        <Row>
+        <Row className={'gx-m-1'}>
           <Col span={12}>
-            <p><FormattedMessage id="locked"/></p>
+            <FormattedMessage id="balance.available"/>
           </Col>
           <Col span={12}>
-            <p>{locked}&nbsp;{symbol.toUpperCase()}</p>
+            {balance}&nbsp;{symStr}
+          </Col>
+        </Row>
+        <Row className={'gx-m-1'}>
+          <Col span={12}>
+            <FormattedMessage id="locked"/>
+          </Col>
+          <Col span={12}>
+            {locked}&nbsp;{symStr}
           </Col>
         </Row>
       </div>
