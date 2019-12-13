@@ -50,7 +50,7 @@ class UserCenter extends React.Component {
   render() {
     const {intl} = this.props
     const {loader, profile, accounts} = this.state
-    const {verificationStatus, tfaStatus, logins} = profile
+    const {verificationStatus, tfaStatus, logins} = profile || {}
 
     return (
       <Spin spinning={loader} size="large">

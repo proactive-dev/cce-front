@@ -23,11 +23,6 @@ import DisableGoogleAuth from './main/DisableGoogleAuth'
 import Affiliate from './main/Affiliate'
 import Balances from './main/Balances'
 import AddressManagement from './main/AddressManagement'
-import Login from './common/Login'
-import Register from './common/Register'
-import TFAuthentication from './common/TFAuthentication'
-import ForgotPassword from './common/ForgotPassword'
-import ResetPassword from './common/ResetPassword'
 import Exchange from './main/Exchange'
 import Markets from './main/Markets'
 import CustomRedirect from '../components/CustomRedirect'
@@ -37,7 +32,8 @@ import Privacy from './common/Privacy'
 import Terms from './common/Terms'
 import { MARKETS as MARKET_LIST } from '../constants/Markets'
 import {
-  ADDRESS_MANAGEMENT,
+  ADDR_MANAGEMENT,
+  API,
   API_TOKEN_EDIT,
   API_TOKEN_NEW,
   API_TOKENS,
@@ -67,6 +63,7 @@ import {
   VERIFICATION,
   WITHDRAWAL
 } from '../constants/Paths'
+import { API_DOC_URL } from '../constants/AppConfigs'
 
 const AppRoute = ({match}) => (
   <div className="gx-main-content-wrapper">
@@ -81,7 +78,7 @@ const AppRoute = ({match}) => (
       <Route exact path={`${match.url}${EXCHANGE}/:market`} component={Exchange}/>
       <Route exact path={`${match.url}${BALANCES}`} component={Balances}/>
       <Route exact path={`${match.url}${DEPOSIT}`} component={Deposit}/>
-      <Route exact path={`${match.url}${ADDRESS_MANAGEMENT}`} component={AddressManagement}/>
+      <Route exact path={`${match.url}${ADDR_MANAGEMENT}`} component={AddressManagement}/>
       <Route exact path={`${match.url}${WITHDRAWAL}`} component={Withdrawal}/>
       <Route exact path={`${match.url}${TRANSACTIONS}`} component={Transactions}/>
       <Route exact path={`${match.url}${USER}`} component={UserCenter}/>
@@ -100,6 +97,8 @@ const AppRoute = ({match}) => (
       <Route exact path={`${match.url}${FEE_RULES}`} component={FeeRules}/>
       <Route exact path={`${match.url}${PRIVACY}`} component={Privacy}/>
       <Route exact path={`${match.url}${TERMS}`} component={Terms}/>
+      <Route exact path={`${match.url}${API}`}
+             render={() => <CustomRedirect path={`${API_DOC_URL}`}/>}/>
       <Route exact path={`${match.url}${EXCHANGE}`}
              render={() => <CustomRedirect path={`${match.url}${EXCHANGE}/${MARKET_LIST[0].id}`}/>}/>
       <Redirect from='*' to={`/${E_404}`}/>

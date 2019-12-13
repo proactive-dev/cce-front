@@ -10,22 +10,21 @@ class CurrencySelect extends React.Component {
     return (
       <Select
         showSearch
-        style={{width: '100%'}}
+        className={'gx-w-100'}
         defaultValue={value}
-        onChange={this.props.onChange}
-      >
+        onChange={this.props.onChange}>
         {
           CURRENCIES.map((currency) => {
-              if (currency.visible)
-                return (
-                  <Option value={currency.symbol} key={currency.symbol}>
-                    {/*<img src={require(`assets/images/coins/${currency.symbol.toLowerCase()}.png`)}*/}
-                    {/*     style={{maxWidth: 16}} alt={currency.symbol}/>*/}
-                    &nbsp;<strong>{currency.symbol.toUpperCase()}</strong>&nbsp;-&nbsp;{currency.name}
-                  </Option>
-                )
-            }
-          )}
+            if (currency.visible)
+              return (
+                <Option value={currency.symbol} key={currency.symbol}>
+                  <img src={require(`assets/images/coins/${currency.symbol.toLowerCase()}.png`)}
+                       style={{maxWidth: 16}} alt={currency.symbol}/>
+                  &nbsp;<strong>{currency.symbol.toUpperCase()}</strong>&nbsp;-&nbsp;{currency.name}
+                </Option>
+              )
+          })
+        }
       </Select>
     )
   }

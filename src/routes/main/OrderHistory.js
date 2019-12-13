@@ -67,7 +67,7 @@ class OrderHistory extends React.Component {
     getOrderHistory({page, perPage, search})
       .then(response => {
         const {total_length, orders} = response.data
-        const pageCount = Math.ceil(total_length / this.state.perPage)
+        const pageCount = Math.ceil(total_length / perPage)
         let orderData = []
         for (let i = 0; i < orders.length; i++) {
           let order = orders[i]

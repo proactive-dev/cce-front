@@ -57,7 +57,7 @@ export const getDecimal = (value) => {
 
 export const getFeeSymbol = (symbol) => {
   try {
-    return getCoinBySymbol(symbol).feeSymbol
+    return getCurrencyBySymbol(symbol).feeSymbol
   } catch (err) {
     return null
   }
@@ -65,13 +65,13 @@ export const getFeeSymbol = (symbol) => {
 
 export const getCoinNameBySymbol = (symbol) => {
   try {
-    return getCoinBySymbol(symbol).name
+    return getCurrencyBySymbol(symbol).name
   } catch (err) {
     return null
   }
 }
 
-export const getCoinBySymbol = (symbol) => {
+export const getCurrencyBySymbol = (symbol) => {
   return CURRENCIES.find(coin => coin.symbol.toLowerCase() === symbol.toLowerCase())
 }
 
@@ -108,7 +108,7 @@ export const getPrecise = (value, precision = null) => {
 }
 
 export const getCoinFixed = (value, symbol) => {
-  let precision = getCoinBySymbol(symbol).precision || 0
+  let precision = getCurrencyBySymbol(symbol).precision || 0
   return getFixed(value, precision)
 }
 

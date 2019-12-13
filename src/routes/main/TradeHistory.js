@@ -63,7 +63,7 @@ class TradeHistory extends React.Component {
     getTradeHistory({page, perPage, search})
       .then(response => {
         const {total_length, trades} = response.data
-        const pageCount = Math.ceil(total_length / this.state.perPage)
+        const pageCount = Math.ceil(total_length / perPage)
         let tradeData = []
         for (let i = 0; i < trades.length; i++) {
           let trade = trades[i]

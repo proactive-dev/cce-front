@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import { Link } from 'react-router-dom'
 import { Button, Card } from 'antd'
-import { API_TOKENS } from '../constants/Paths'
-import { API_DOC_URL } from '../constants/AppConfigs'
+import { API, API_TOKENS } from '../constants/Paths'
 
 class ApiTokenCard extends Component {
 
@@ -15,7 +14,7 @@ class ApiTokenCard extends Component {
         className='gx-card-widget gx-h-100'
         title={intl.formatMessage({id: 'api.tokens'})}>
         <FormattedMessage id="api.tokens.description"/>
-        <Link to={`${API_DOC_URL}`} className="gx-m-1"><FormattedMessage id='api.doc'/></Link>
+        <Link to={`/${API}`} className="gx-m-1"><FormattedMessage id='api.doc'/></Link>
         <Button
           type='primary'
           className="gx-w-100 gx-mt-4"

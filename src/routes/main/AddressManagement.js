@@ -9,6 +9,7 @@ import { deleteAddress, getAddresses, newAddress } from '../../api/axiosAPIs'
 import { IconNotification } from '../../components/IconNotification'
 import { SUCCESS } from '../../constants/AppConfigs'
 import { isXRP } from '../../util/helpers'
+import { CURRENCIES } from '../../constants/Currencies'
 
 const {TextArea, Search} = Input
 
@@ -19,7 +20,7 @@ class AddressManagement extends React.Component {
     this.state = {
       loader: false,
       addressData: [],
-      currentSymbol: 'btc',
+      currentSymbol: CURRENCIES[0].symbol,
       searchCoin: ''
     }
   }
@@ -59,8 +60,8 @@ class AddressManagement extends React.Component {
 
   onSubmit = (e) => {
     e.preventDefault()
-    const {currentSymbol} = this.state
     this.props.form.validateFields((err, values) => {
+      const {currentSymbol} = this.state
       if (!err) {
         let params = {
           currency: currentSymbol,
@@ -95,7 +96,7 @@ class AddressManagement extends React.Component {
 
   render() {
     const {intl} = this.props
-    const {loader, currentSymbol, addressData} = this.state
+    const {loader, currentSymbol, addressData, searchCoin} = this.state
     const {getFieldDecorator} = this.props.form
     return (
       <div>
@@ -168,7 +169,7 @@ class AddressManagement extends React.Component {
                   enterButton/>
                 <AddressTable
                   data={addressData}
-                  filter={this.state.searchCoin}
+                  filter={searchCoin}
                   onDelete={this.handleDeleteAddr}/>
               </Card>
             </Col>

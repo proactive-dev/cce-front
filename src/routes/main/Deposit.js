@@ -10,6 +10,7 @@ import CurrencySelect from '../../components/CurrencySelect'
 import BalanceInfo from '../../components/BalanceInfo'
 import { IconNotification } from '../../components/IconNotification'
 import { SUCCESS } from '../../constants/AppConfigs'
+import { CURRENCIES } from '../../constants/Currencies'
 
 const {Text} = Typography
 
@@ -20,7 +21,7 @@ class Deposit extends React.Component {
     this.state = {
       loader: false,
       accounts: [],
-      currentSymbol: 'btc'
+      currentSymbol: CURRENCIES[0].symbol
     }
   }
 

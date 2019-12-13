@@ -121,7 +121,7 @@ class Balances extends React.Component {
                   </Form.Item>
                   <Form.Item>
                     <Checkbox
-                      checked={!this.state.hideZero}
+                      checked={!hideZero}
                       onChange={this.handleHideZero}>
                       {intl.formatMessage({id: 'balance.zero'})}
                     </Checkbox>

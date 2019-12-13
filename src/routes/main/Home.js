@@ -37,7 +37,7 @@ class Home extends React.Component {
           bordered={false}>
           <SimpleMarketInfo tickers={tickers}/>
           <div className={'gx-m-4 gx-text-center'}>
-            <Link to={`${MARKETS}`}><FormattedMessage id='view.all'/></Link>
+            <Link to={`/${MARKETS}`}><FormattedMessage id='view.all'/></Link>
           </div>
         </Card>
       </Spin>

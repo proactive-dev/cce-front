@@ -1,17 +1,19 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { FormattedMessage, injectIntl } from 'react-intl'
+import { Link } from 'react-router-dom'
+import { Button, Card, Checkbox, Col, Form, Input, Row, Select, Spin, Typography } from 'antd'
+import _ from 'lodash'
+import { getCurrencyBySymbol, getFixed, isXRP } from '../../util/helpers'
+import { getAddresses, newWithdraw } from '../../api/axiosAPIs'
 import { getAuthStatus } from '../../appRedux/actions/User'
 import { getAccounts } from '../../appRedux/actions/Accounts'
 import CurrencySelect from '../../components/CurrencySelect'
 import BalanceInfo from '../../components/BalanceInfo'
-import { Button, Card, Checkbox, Col, Form, Input, Row, Select, Spin, Typography } from 'antd'
-import _ from 'lodash'
-import { getCoinBySymbol, getFixed, isXRP } from '../../util/helpers'
-import { getAddresses, newWithdraw } from '../../api/axiosAPIs'
 import { IconNotification } from '../../components/IconNotification'
 import { SUCCESS } from '../../constants/AppConfigs'
-import { Link } from 'react-router-dom'
+import { CURRENCIES } from '../../constants/Currencies'
+import { ADDR_MANAGEMENT } from '../../constants/Paths'
 
 const {Text} = Typography
 const {Option} = Select
@@ -23,7 +25,7 @@ class Withdrawal extends React.Component {
     this.state = {
       loader: false,
       accounts: [],
-      currentSymbol: 'btc',
+      currentSymbol: CURRENCIES[0].symbol,
       addrs: [],
       address: '',
       getAmount: 0,
@@ -73,15 +75,12 @@ class Withdrawal extends React.Component {
   onSelectCurrency = (value) => {
     this.setState({currentSymbol: value})
     this.updateStateAddrs(value)
-    this.props.form.setFieldsValue({
-      amount: '',
-      address: ''
-    })
+    this.props.form.resetFields()
   }
 
   handleAmountChange = (e) => {
-    const coin = getCoinBySymbol(this.state.currentSymbol)
-    const {account} = this.state
+    const {account, currentSymbol} = this.state
+    const coin = getCurrencyBySymbol(currentSymbol)
     let val = parseFloat(e.target.value)
     let amount = 0
     if (!isNaN(val)) {
@@ -142,7 +141,7 @@ class Withdrawal extends React.Component {
   checkAmount = (rule, value, callback) => {
     let amount = parseFloat(value)
     if (amount > 0) {
-      const coin = getCoinBySymbol(this.state.currentSymbol)
+      const coin = getCurrencyBySymbol(this.state.currentSymbol)
       if (amount < coin.withdraw.minAmount) {
         callback(this.props.intl.formatMessage({id: 'must.be.min'}) + String(coin.withdraw.minAmount))
         return
@@ -171,7 +170,7 @@ class Withdrawal extends React.Component {
     const {getFieldDecorator} = this.props.form
     const {loader, currentSymbol, addrs, getAmount, account, addrTagChecked} = this.state
 
-    const coin = getCoinBySymbol(currentSymbol)
+    const coin = getCurrencyBySymbol(currentSymbol)
     const balance = !_.isEmpty(account) ? getFixed(parseFloat(account.balance), parseInt(account.currency.precision)) : 0.0
     return (
       <div>
@@ -201,7 +200,7 @@ class Withdrawal extends React.Component {
                     _.isEmpty(addrs) && (
                       <div className='gx-ml-3 gx-mt-2'>
                         <FormattedMessage id="no.whitelist.address"/>&nbsp;
-                        <Link className='gx-text-underline' to=''>
+                        <Link className='gx-text-underline' to={`/${ADDR_MANAGEMENT}`}>
                           <FormattedMessage id="address.management"/>
                         </Link>
                       </div>

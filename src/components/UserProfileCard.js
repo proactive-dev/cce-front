@@ -6,7 +6,7 @@ class ApiTokenCard extends Component {
 
   render() {
     const {data} = this.props
-    const {email, name, isAdmin, level, activationStatus, verificationStatus, commissionStatus} = data
+    const {email, name, isAdmin, level, activationStatus, verificationStatus, commissionStatus} = data || {}
 
     return (
       <Card className="gx-flex-row gx-align-items-center">
