@@ -8,6 +8,7 @@ export const WALLET = 'wallet'
 export const BALANCES = `${WALLET}/balances`
 export const DEPOSIT = `${WALLET}/deposit`
 export const WITHDRAWAL = `${WALLET}/withdrawal`
+export const ADDRESS_MANAGEMENT = 'address-management'
 export const TRANSACTIONS = `${WALLET}/transactions`
 export const USER = 'user'
 export const CHANGE_PWD = `${USER}/change-password`

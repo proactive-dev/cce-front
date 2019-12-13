@@ -22,6 +22,12 @@ import EnableGoogleAuth from './main/EnableGoogleAuth'
 import DisableGoogleAuth from './main/DisableGoogleAuth'
 import Affiliate from './main/Affiliate'
 import Balances from './main/Balances'
+import AddressManagement from './main/AddressManagement'
+import Login from './common/Login'
+import Register from './common/Register'
+import TFAuthentication from './common/TFAuthentication'
+import ForgotPassword from './common/ForgotPassword'
+import ResetPassword from './common/ResetPassword'
 import Exchange from './main/Exchange'
 import Markets from './main/Markets'
 import CustomRedirect from '../components/CustomRedirect'
@@ -31,6 +37,7 @@ import Privacy from './common/Privacy'
 import Terms from './common/Terms'
 import { MARKETS as MARKET_LIST } from '../constants/Markets'
 import {
+  ADDRESS_MANAGEMENT,
   API_TOKEN_EDIT,
   API_TOKEN_NEW,
   API_TOKENS,
@@ -74,6 +81,7 @@ const AppRoute = ({match}) => (
       <Route exact path={`${match.url}${EXCHANGE}/:market`} component={Exchange}/>
       <Route exact path={`${match.url}${BALANCES}`} component={Balances}/>
       <Route exact path={`${match.url}${DEPOSIT}`} component={Deposit}/>
+      <Route exact path={`${match.url}${ADDRESS_MANAGEMENT}`} component={AddressManagement}/>
       <Route exact path={`${match.url}${WITHDRAWAL}`} component={Withdrawal}/>
       <Route exact path={`${match.url}${TRANSACTIONS}`} component={Transactions}/>
       <Route exact path={`${match.url}${USER}`} component={UserCenter}/>

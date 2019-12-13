@@ -12,7 +12,7 @@ export default (state = INIT_STATE, action) => {
     case GET_ACCOUNTS:
       if (!!action.payload) {
         const {accounts} = action.payload
-        return {...state, accounts: accounts}
+        return {...state, accounts: accounts || []}
       } else {
         return state
       }
