@@ -6,7 +6,7 @@ import { getAuthStatus } from '../../appRedux/actions/User'
 import { getTableLocaleData } from '../../util/helpers'
 import _ from 'lodash'
 import { deleteApiToken, getApiTokens } from '../../api/axiosAPIs'
-import { API_TOKEN_NEW } from '../../constants/Paths'
+import { API_TOKEN_EDIT, API_TOKEN_NEW } from '../../constants/Paths'
 import { IconNotification } from '../../components/IconNotification'
 import { SUCCESS } from '../../constants/AppConfigs'
 
@@ -45,7 +45,9 @@ class ApiTokens extends React.Component {
   }
 
   handleEdit = (token) => {
-
+    const {id, label, access_key, trusted_ip_list} = token
+    const ipString = trusted_ip_list ? trusted_ip_list.join(', ') : ''
+    this.props.history.push(`/${API_TOKEN_EDIT}?id=${id}&label=${label}&access_key=${access_key}&trusted_ip_list=${ipString}`)
   }
 
   handleDelete = (token) => {
