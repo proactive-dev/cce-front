@@ -5,8 +5,8 @@ import { connect } from 'react-redux'
 import { resetPassword, validatePwdToken } from '../../api/axiosAPIs'
 import { RESET_PWD_SUCCESS } from '../../constants/ResponseCode'
 import { FORGOT_PWD, LOGIN, RESET_PWD } from '../../constants/Paths'
-import { IconNotification } from '../../components/IconNotification'
 import { SUCCESS } from '../../constants/AppConfigs'
+import { IconNotification } from '../../components/IconNotification'
 
 const FormItem = Form.Item
 

@@ -5,6 +5,41 @@ import { DEFAULT_PRECISION, EX_URL, QUOTE_SYMBOL } from '../constants/AppConfigs
 import { CURRENCIES } from '../constants/Currencies'
 
 // main helper functions
+export const toCamelCase = (string) => {
+  return string.replace(/([-_][a-z])/ig, ($1) => {
+    return $1.toUpperCase()
+      .replace('-', '')
+      .replace('_', '')
+  })
+}
+
+export const isArray = (arr) => {
+  return Array.isArray(arr)
+}
+
+export const isObject = (obj) => {
+  return obj === Object(obj) && !isArray(obj) && typeof obj !== 'function'
+}
+
+export const keysToCamelcase = (obj) => {
+  if (isObject(obj)) {
+    const n = {}
+
+    Object.keys(obj)
+      .forEach((k) => {
+        n[toCamelCase(k)] = keysToCamelcase(obj[k])
+      })
+
+    return n
+  } else if (isArray(obj)) {
+    return obj.map((i) => {
+      return keysToCamelcase(i)
+    })
+  }
+
+  return obj
+}
+
 export const removeDuplicates = (array) => {
   return (array === undefined || array.length === 0) ? [] : array.filter((v, i) => array.indexOf(v) === i)
 }
@@ -43,6 +78,15 @@ export const getCoinBySymbol = (symbol) => {
 export const getFixed = (value, precision = null) => {
   let fixed = precision > DEFAULT_PRECISION ? DEFAULT_PRECISION : precision
   return BigNumber(value).toFixed(fixed).toString()
+}
+
+export const isStableCoin = (sym) => {
+  const symbol = sym.toUpperCase()
+  return symbol === 'PAX' || symbol.includes('USD')
+}
+
+export const convertToDate = d => {
+  return Moment(d).format('YYYY-MM-DD')
 }
 
 export const getTableLocaleData = (intl) => {

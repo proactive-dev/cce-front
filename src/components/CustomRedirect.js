@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
+import { Component } from 'react'
 
 class CustomRedirect extends Component {
 
   UNSAFE_componentWillMount() {
-    window.location = this.props.link || '/'
+    window.location = this.props.path || '/'
   }
 
   render() {

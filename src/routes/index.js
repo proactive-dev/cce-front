@@ -1,5 +1,10 @@
 import React from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
+import Login from './auth/Login'
+import Register from './auth/Register'
+import TFAuthentication from './auth/TFAuthentication'
+import ForgotPassword from './auth/ForgotPassword'
+import ResetPassword from './auth/ResetPassword'
 import Home from './main/Home'
 import Deposit from './main/Deposit'
 import Withdrawal from './main/Withdrawal'
@@ -23,7 +28,14 @@ import Register from './common/Register'
 import TFAuthentication from './common/TFAuthentication'
 import ForgotPassword from './common/ForgotPassword'
 import ResetPassword from './common/ResetPassword'
-
+import Exchange from './main/Exchange'
+import Markets from './main/Markets'
+import CustomRedirect from '../components/CustomRedirect'
+import TradingRules from './common/TradingRules'
+import FeeRules from './common/FeeRules'
+import Privacy from './common/Privacy'
+import Terms from './common/Terms'
+import { MARKETS as MARKET_LIST } from '../constants/Markets'
 import {
   ADDRESS_MANAGEMENT,
   API_TOKEN_EDIT,
@@ -33,17 +45,23 @@ import {
   CHANGE_PWD,
   DEPOSIT,
   E_404,
+  EXCHANGE,
+  FEE_RULES,
   FORGOT_PWD,
   G_AUTH_DISABLE,
   G_AUTH_ENABLE,
   LOGIN,
   LOGIN_AUTH,
+  MARKETS,
   OPEN_ORDERS,
   ORDER_HISTORY,
+  PRIVACY,
   REFERRAL,
   REGISTER,
   RESET_PWD,
+  TERMS,
   TRADE_HISTORY,
+  TRADING_RULES,
   TRANSACTIONS,
   USER,
   VERIFICATION,
@@ -59,6 +77,8 @@ const AppRoute = ({match}) => (
       <Route exact path={`${match.url}${LOGIN_AUTH}`} component={TFAuthentication}/>
       <Route exact path={`${match.url}${FORGOT_PWD}`} component={ForgotPassword}/>
       <Route exact path={`${match.url}${RESET_PWD}/:token`} component={ResetPassword}/>
+      <Route exact path={`${match.url}${MARKETS}`} component={Markets}/>
+      <Route exact path={`${match.url}${EXCHANGE}/:market`} component={Exchange}/>
       <Route exact path={`${match.url}${BALANCES}`} component={Balances}/>
       <Route exact path={`${match.url}${DEPOSIT}`} component={Deposit}/>
       <Route exact path={`${match.url}${ADDRESS_MANAGEMENT}`} component={AddressManagement}/>
@@ -76,6 +96,12 @@ const AppRoute = ({match}) => (
       <Route exact path={`${match.url}${G_AUTH_ENABLE}`} component={EnableGoogleAuth}/>
       <Route exact path={`${match.url}${G_AUTH_DISABLE}`} component={DisableGoogleAuth}/>
       <Route exact path={`${match.url}${REFERRAL}`} component={Affiliate}/>
+      <Route exact path={`${match.url}${TRADING_RULES}`} component={TradingRules}/>
+      <Route exact path={`${match.url}${FEE_RULES}`} component={FeeRules}/>
+      <Route exact path={`${match.url}${PRIVACY}`} component={Privacy}/>
+      <Route exact path={`${match.url}${TERMS}`} component={Terms}/>
+      <Route exact path={`${match.url}${EXCHANGE}`}
+             render={() => <CustomRedirect path={`${match.url}${EXCHANGE}/${MARKET_LIST[0].id}`}/>}/>
       <Redirect from='*' to={`/${E_404}`}/>
     </Switch>
   </div>

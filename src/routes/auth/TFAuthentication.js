@@ -3,12 +3,12 @@ import { connect } from 'react-redux'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import { Alert, Button, Form, Icon, Input, Spin } from 'antd'
 import _ from 'lodash'
-import { SUCCESS } from '../../constants/AppConfigs'
 import { verifyTFA } from '../../api/axiosAPIs'
-import { IconNotification } from '../../components/IconNotification'
+import { SUCCESS } from '../../constants/AppConfigs'
 import { LOGGED_IN } from '../../constants/ResponseCode'
 import { USER } from '../../constants/Paths'
 import { setAuthStatus } from '../../appRedux/actions/User'
+import { IconNotification } from '../../components/IconNotification'
 
 const FormItem = Form.Item
 

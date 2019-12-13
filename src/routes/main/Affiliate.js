@@ -52,7 +52,7 @@ class Affiliate extends Component {
 
     return (
       <Spin spinning={loader} size="large">
-        <h2 className="title gx-mb-4"><FormattedMessage id="affiliate"/></h2>
+        <h1 className="gx-mt-4 gx-mb-4"><FormattedMessage id="affiliate"/></h1>
         {
           !_.isEmpty(refId) && <AffiliateLink link={refLink}/>
         }

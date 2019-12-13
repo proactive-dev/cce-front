@@ -3,67 +3,68 @@ import { injectIntl } from 'react-intl'
 import { withRouter } from 'react-router-dom'
 import { Table } from 'antd'
 import _ from 'lodash'
-import { getCoinNameBySymbol, getPointFixed, priceChange } from '../../src/util/helpers'
+import { getCoinNameBySymbol, getFiatFixed, getTableLocaleData, priceChange } from '../util/helpers'
 import { EXCHANGE } from '../constants/Paths'
+import { BASE_PRICE_SYMBOL, HOME_SYMBOLS, QUOTE_SYMBOL } from '../constants/AppConfigs'
 
 class SimpleMarketInfo extends React.Component {
   constructor(props) {
     super(props)
+
     this.prevData = []
   }
 
   getColumns() {
-    const {symbol, intl} = this.props
+    const {intl} = this.props
+    const symbol = BASE_PRICE_SYMBOL
     return [
+      {
+        title: intl.formatMessage({id: 'coin'}),
+        dataIndex: 'symbol',
+        align: 'center',
+        render: (value) => {
+          return (
+            <div>
+              <img src={require(`assets/images/coins/${value}.png`)} alt={value} title={value} style={{maxWidth: 20}}/>
+              <span className="gx-fs-lg gx-p-2 gx-m-2">{value.toUpperCase()}</span>
+            </div>
+          )
+        }
+      },
       {
         title: intl.formatMessage({id: 'name'}),
         dataIndex: 'market',
         align: 'left',
         render: (value, record) => {
-          return <div><img src={require(`assets/images/coins/${record.symbol.toLowerCase()}.png`)}
-                           alt={record.symbol} title={record.symbol} style={{maxWidth: 16}}/>
-            <span className="gx-fs-lg gx-p-2">{record.symbol.toUpperCase()}</span>&nbsp;
-            <span className={'gx-text-muted'}>{getCoinNameBySymbol(record.symbol)}</span></div>
+          return <span>{getCoinNameBySymbol(record.symbol)}</span>
         }
       },
       {
         title: intl.formatMessage({id: 'last.price'}),
         dataIndex: 'last',
-        align: 'center',
+        align: 'left',
         render: (value, record) => {
-          if (record.last_trend > 0) {
-            return <div className={'gx-text-green'}>
-              {symbol}&nbsp;{getPointFixed(value, 2)}
-            </div>
-          } else if (record.last_trend < 0) {
-            return <div className={'gx-text-red'}>
-              {symbol}&nbsp;{getPointFixed(value, 2)}
-            </div>
-          } else {
-            return <div>
-              {symbol}&nbsp;{getPointFixed(value, 2)}
-            </div>
+          let className = ''
+          if (record.lastTrend > 0) {
+            className = 'gx-text-green'
+          } else if (record.lastTrend < 0) {
+            className = 'gx-text-red'
           }
+          return <span className={className}>{symbol}&nbsp;{getFiatFixed(value)}</span>
         }
       },
       {
         title: intl.formatMessage({id: 'change'}),
         dataIndex: 'change',
         align: 'center',
-        render: (value, record) => {
-          if (record.change > 0) {
-            return <div className={'gx-text-green'}>
-              {getPointFixed(value, 2)}&nbsp;%
-            </div>
-          } else if (record.change < 0) {
-            return <div className={'gx-text-red'}>
-              {getPointFixed(value, 2)}&nbsp;%
-            </div>
-          } else {
-            return <div>
-              {getPointFixed(value, 2)}&nbsp;%
-            </div>
+        render: (value) => {
+          let className = ''
+          if (value > 0) {
+            className = 'gx-text-green'
+          } else if (value < 0) {
+            className = 'gx-text-red'
           }
+          return <span className={className}>{getFiatFixed(value)}%</span>
         }
       }
     ]
@@ -74,11 +75,12 @@ class SimpleMarketInfo extends React.Component {
   }
 
   render() {
-    const {tickers, baseFilter, symbolMap} = this.props
+    const {tickers} = this.props
     let data = []
     if (!_.isEmpty(tickers)) {
-      let filteredTickers = baseFilter.reduce(function (obj, key) {
-        if (tickers.hasOwnProperty(key)) obj[key] = tickers[key]
+      let filteredTickers = HOME_SYMBOLS.reduce((obj, key) => {
+        const pair = `${key}${QUOTE_SYMBOL}`.toLowerCase()
+        if (tickers.hasOwnProperty(pair)) obj[pair] = {base: key.toLowerCase(), ticker: tickers[pair].ticker}
         return obj
       }, {})
 
@@ -86,23 +88,23 @@ class SimpleMarketInfo extends React.Component {
       let lastData = {}
       _.forEach(filteredTickers, function (value, key) {
         const ticker = value.ticker
-        const sym = symbolMap[key]
+        const symbol = value.base
         if (ticker) {
           const open = parseFloat(ticker.open)
           const last = parseFloat(ticker.last)
           const change = priceChange(open, last)
-          const lastTrend = !_.isEmpty(prevData) ? last - prevData[sym] : 0
-          lastData[sym] = last
+          const lastTrend = !_.isEmpty(prevData) ? last - prevData[symbol] : 0
+          lastData[symbol] = last
           data.push({
             market: key,
-            symbol: sym,
+            symbol: symbol,
             last: last,
             open: open,
-//            high: parseFloat(ticker.high),
-//            low: parseFloat(ticker.low),
-//            vol: parseFloat(ticker.vol),
+            high: parseFloat(ticker.high),
+            low: parseFloat(ticker.low),
+            vol: parseFloat(ticker.vol),
             change: change,
-            last_trend: lastTrend
+            lastTrend: lastTrend
           })
         }
       })
@@ -110,19 +112,17 @@ class SimpleMarketInfo extends React.Component {
     }
 
     return (
-      <div>
-        <Table className={'gx-table-responsible '}
-               columns={this.getColumns()}
-               dataSource={data}
-               pagination={false}
-               rowKey="market"
-               onRow={(record) => ({
-                 onClick: () => {
-                   this.handleClick(record.market)
-                 }
-               })}
-               size='middle'/>
-      </div>
+      <Table className={'gx-table-responsive'}
+             columns={this.getColumns()}
+             dataSource={data}
+             pagination={false}
+             locale={getTableLocaleData}
+             rowKey="market"
+             onRow={(record) => ({
+               onClick: () => {
+                 this.handleClick(record.market)
+               }
+             })}/>
     )
   }
 }

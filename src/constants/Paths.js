@@ -13,6 +13,7 @@ export const TRANSACTIONS = `${WALLET}/transactions`
 export const USER = 'user'
 export const CHANGE_PWD = `${USER}/change-password`
 export const VERIFICATION = `${USER}/verification`
+export const ADDR_MANAGEMENT = `${USER}/addr-management`
 export const MARKETS = 'markets'
 export const EXCHANGE = 'exchange'
 export const HISTORY = 'history'
