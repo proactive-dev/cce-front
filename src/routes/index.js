@@ -1,10 +1,10 @@
 import React from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
-import Login from './common/Login'
-import Register from './common/Register'
-import TFAuthentication from './common/TFAuthentication'
-import ForgotPassword from './common/ForgotPassword'
-import ResetPassword from './common/ResetPassword'
+import Login from './auth/Login'
+import Register from './auth/Register'
+import TFAuthentication from './auth/TFAuthentication'
+import ForgotPassword from './auth/ForgotPassword'
+import ResetPassword from './auth/ResetPassword'
 import Home from './main/Home'
 import Deposit from './main/Deposit'
 import Withdrawal from './main/Withdrawal'
@@ -24,6 +24,12 @@ import Affiliate from './main/Affiliate'
 import Balances from './main/Balances'
 import Exchange from './main/Exchange'
 import Markets from './main/Markets'
+import CustomRedirect from '../components/CustomRedirect'
+import TradingRules from './common/TradingRules'
+import FeeRules from './common/FeeRules'
+import Privacy from './common/Privacy'
+import Terms from './common/Terms'
+import { MARKETS as MARKET_LIST } from '../constants/Markets'
 import {
   API_TOKEN_EDIT,
   API_TOKEN_NEW,
@@ -33,6 +39,7 @@ import {
   DEPOSIT,
   E_404,
   EXCHANGE,
+  FEE_RULES,
   FORGOT_PWD,
   G_AUTH_DISABLE,
   G_AUTH_ENABLE,
@@ -41,17 +48,18 @@ import {
   MARKETS,
   OPEN_ORDERS,
   ORDER_HISTORY,
+  PRIVACY,
   REFERRAL,
   REGISTER,
   RESET_PWD,
+  TERMS,
   TRADE_HISTORY,
+  TRADING_RULES,
   TRANSACTIONS,
   USER,
   VERIFICATION,
   WITHDRAWAL
 } from '../constants/Paths'
-import { MARKETS as MARKET_LIST } from '../constants/Markets'
-import CustomRedirect from '../components/CustomRedirect'
 
 const AppRoute = ({match}) => (
   <div className="gx-main-content-wrapper">
@@ -80,6 +88,10 @@ const AppRoute = ({match}) => (
       <Route exact path={`${match.url}${G_AUTH_ENABLE}`} component={EnableGoogleAuth}/>
       <Route exact path={`${match.url}${G_AUTH_DISABLE}`} component={DisableGoogleAuth}/>
       <Route exact path={`${match.url}${REFERRAL}`} component={Affiliate}/>
+      <Route exact path={`${match.url}${TRADING_RULES}`} component={TradingRules}/>
+      <Route exact path={`${match.url}${FEE_RULES}`} component={FeeRules}/>
+      <Route exact path={`${match.url}${PRIVACY}`} component={Privacy}/>
+      <Route exact path={`${match.url}${TERMS}`} component={Terms}/>
       <Route exact path={`${match.url}${EXCHANGE}`}
              render={() => <CustomRedirect path={`${match.url}${EXCHANGE}/${MARKET_LIST[0].id}`}/>}/>
       <Redirect from='*' to={`/${E_404}`}/>
