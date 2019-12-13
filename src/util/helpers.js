@@ -80,6 +80,11 @@ export const getFixed = (value, precision = null) => {
   return BigNumber(value).toFixed(fixed).toString()
 }
 
+export const isStableCoin = (sym) => {
+  const symbol = sym.toUpperCase()
+  return symbol === 'PAX' || symbol.includes('USD')
+}
+
 export const convertToDate = d => {
   return Moment(d).format('YYYY-MM-DD')
 }

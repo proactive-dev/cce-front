@@ -5,7 +5,6 @@ import { Table } from 'antd'
 import _ from 'lodash'
 import { getFixed, getPointFixed, getTableLocaleData, priceChange } from '../util/helpers'
 import { EXCHANGE } from '../constants/Paths'
-import { MARKETS } from '../constants/Markets'
 
 class MarketOverview extends React.Component {
   constructor(props) {
@@ -85,12 +84,12 @@ class MarketOverview extends React.Component {
   }
 
   render() {
-    const {tickers} = this.props
+    const {tickers, markets} = this.props
     let data = []
     if (!_.isEmpty(tickers)) {
       let prevData = this.prevData
       let lastData = {}
-      MARKETS.map((market) => {
+      markets.map((market) => {
           const marketId = market.id
           if (market.visible && tickers[marketId]) {
             const ticker = tickers[marketId].ticker
