@@ -115,7 +115,7 @@ class SimpleMarketInfo extends React.Component {
                columns={this.getColumns()}
                dataSource={data}
                pagination={false}
-               rowKey="at"
+               rowKey="market"
                onRow={(record) => ({
                  onClick: () => {
                    this.handleClick(record.market)

@@ -39,7 +39,7 @@ class AddressTable extends React.Component {
         }
       },
       {
-        title: intl.formatMessage({id: 'tag'}),
+        title: intl.formatMessage({id: 'memo.tag'}),
         dataIndex: 'tag',
         align: 'left',
         render: (value) => {
@@ -71,10 +71,9 @@ class AddressTable extends React.Component {
       })
     }
 
-    let lastData = {}
     _.forEach(filteredAddrs, function (addr) {
       data.push({
-        index: addr.id,
+        id: addr.id,
         coin: addr.currency,
         label: addr.extra,
         address: addr.uid,
@@ -88,8 +87,7 @@ class AddressTable extends React.Component {
         <Table className={'gx-table-responsible '}
                columns={this.getColumns()}
                dataSource={data}
-          //pagination={false}
-               rowKey="at"
+               rowKey="index"
                size='middle'/>
       </div>
     )

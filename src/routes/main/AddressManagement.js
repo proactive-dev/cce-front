@@ -45,7 +45,7 @@ class AddressManagement extends React.Component {
     this.buildData()
   }
 
-  buildData() {
+  buildData = () => {
     getAddresses()
       .then(response => {
         const addrs = response.data
@@ -84,7 +84,7 @@ class AddressManagement extends React.Component {
         let that = this
         newAddress(params)
           .then(response => {
-
+            this.buildData()
             IconNotification(SUCCESS, this.props.intl.formatMessage({id: 'new.addr.success'}))
           })
       }
@@ -98,9 +98,10 @@ class AddressManagement extends React.Component {
   }
 
   handleDeleteAddr = (data) => {
-    deleteAddress(data.id)
-    this.buildData()
-    this.setState({searchCoin: ''})
+    deleteAddress(data.id).then(response => {
+      this.buildData()
+      this.setState({searchCoin: ''})
+    })
   }
 
   render() {

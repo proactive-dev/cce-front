@@ -356,6 +356,7 @@
   "go.to.trade": "거래 페이지로 가기",
   "withdrawal.address": "출금 주소",
   "withdrawal.tag": "출금 태그",
+  "memo.tag": "메모 / 태그 / ...",
   "use.new.address": "새 주소 사용",
   "no.withdrawal.history": "출금내역이 없습니다.",
   "export.deposit.history": "모든 입금기록 출력",

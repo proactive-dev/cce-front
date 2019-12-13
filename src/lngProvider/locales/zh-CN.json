@@ -356,6 +356,7 @@
   "go.to.trade": "去交易",
   "withdrawal.address": "提现地址",
   "withdrawal.tag": "提现地址标签",
+  "memo.tag": "备忘 / 地址标签 / ...",
   "use.new.address": "使用新地址",
   "no.withdrawal.history": "无提现记录",
   "export.deposit.history": "导出充值记录",

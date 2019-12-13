@@ -357,6 +357,7 @@
   "go.to.trade": "Go to Trade",
   "withdrawal.address": "Withdrawal Address",
   "withdrawal.tag": "Withdrawal Tag",
+  "memo.tag": "Memo / Tag / ...",
   "use.new.address": "Use New Address",
   "no.withdrawal.history": "You have no withdrawal history.",
   "export.deposit.history": "Export Complete Deposit History",
