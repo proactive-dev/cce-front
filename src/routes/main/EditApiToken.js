@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { FormattedMessage, injectIntl } from 'react-intl'
-import { Button, Card, Col, Form, Icon, Input, Modal, Row, Spin, Typography } from 'antd'
+import { Button, Card, Col, Form, Input, Row, Spin, Typography } from 'antd'
 import { IconNotification } from '../../components/IconNotification'
 import { getAuthStatus } from '../../appRedux/actions/User'
 import queryString from 'query-string'
@@ -19,12 +19,8 @@ class EditApiToken extends React.Component {
 
     this.state = {
       loader: false,
-      label: '',
-      accessKey: '',
-      ip: '',
       otp: '',
-      otpValid: true,
-      visibleToken: false
+      otpValid: true
     }
   }
 
@@ -41,6 +37,13 @@ class EditApiToken extends React.Component {
 
     const values = queryString.parse(this.props.location.search)
     if (values && !_.isEmpty(values)) {
+
+      this.props.form.setFieldsValue({
+        label: values.label,
+        accessKey: values.access_key,
+        ip: values.trusted_ip_list
+      })
+
       this.setState({id: values.id, label: values.label, accessKey: values.access_key, ip: values.trusted_ip_list})
     }
   }
@@ -59,22 +62,16 @@ class EditApiToken extends React.Component {
         let that = this
         updateApiToken(id, formData)
           .then(response => {
-            //const token = response.data
-            that.setState({visibleToken: true})
             IconNotification(SUCCESS, this.props.intl.formatMessage({id: 'new.token.success'}))
+            this.props.history.push(`/${API_TOKENS}`)
           })
       }
     })
   }
 
-  handleCloseModal = () => {
-    this.setState({visibleToken: false})
-    this.props.history.push(`/${API_TOKENS}`)
-  }
-
   render() {
     const {intl} = this.props
-    const {loader, label, ip, accessKey} = this.state
+    const {loader} = this.state
     const {getFieldDecorator} = this.props.form
     return (
       <div>
@@ -103,15 +100,23 @@ class EditApiToken extends React.Component {
                   {getFieldDecorator('label', {
                     rules: [{required: true, message: intl.formatMessage({id: 'alert.fieldRequired'})}]
                   })(
-                    <Input defaultValue={label}/>)}
+                    <Input/>)}
+                </Form.Item>
+
+                <Form.Item label={intl.formatMessage({id: 'accessKey'})} className={'gx-mt-2'} wrapperCol={{sm: 24}}
+                           style={{width: '100%', margin: 0}}>
+                  {getFieldDecorator('accessKey', {
+                    rules: []
+                  })(
+                    <Input readOnly/>)}
                 </Form.Item>
 
                 <Form.Item label={intl.formatMessage({id: 'ip'})} className={'gx-mt-2'} wrapperCol={{sm: 24}}
                            style={{width: '100%', margin: 0}}>
                   {getFieldDecorator('ip', {
-                    rules: [{required: true, message: intl.formatMessage({id: 'alert.fieldRequired'})}]
+                    rules: []
                   })(
-                    <Input defaultValue={ip}/>)}
+                    <Input/>)}
                 </Form.Item>
 
                 <Form.Item label={intl.formatMessage({id: 'google.auth.code'})} className={'gx-mt-2'}

@@ -84,7 +84,7 @@ class ApiTokens extends React.Component {
       },
       {
         title: intl.formatMessage({id: 'access.key'}),
-        dataIndex: 'key',
+        dataIndex: 'access_key',
         align: 'center',
         render: (value) => {
           return (
@@ -133,7 +133,7 @@ class ApiTokens extends React.Component {
         data.push({
           id: token.id,
           label: (!token.label || !token.label.length) ? ' - ' : token.label,
-          key: token.access_key,
+          access_key: token.access_key,
           date: date
         })
       })
