@@ -1,20 +1,23 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { FormattedMessage, injectIntl } from 'react-intl'
-import { Button, Card, Col, Form, Input, Row, Spin, Typography } from 'antd'
+import { Button, Card, Col, Form, Icon, Input, Modal, Row, Select, Spin, Typography } from 'antd'
 import { getAuthStatus } from '../../appRedux/actions/User'
 import { newApiToken } from '../../api/axiosAPIs'
 import { IconNotification } from '../../components/IconNotification'
 import { SUCCESS } from '../../constants/AppConfigs'
 
 const {Text, Title} = Typography
+const {Option} = Select
 
 class NewApiToken extends React.Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      loader: false
+      loader: false,
+      visibleToken: true,
+      token: ''
     }
   }
 
@@ -43,16 +46,29 @@ class NewApiToken extends React.Component {
         newApiToken(formData)
           .then(response => {
             const token = response.data
+            that.setState({visibleToken: true, token: token})
             IconNotification(SUCCESS, this.props.intl.formatMessage({id: 'new.token.success'}))
           })
       }
     })
   }
 
+  handleCloseModal = () => {
+    this.setState({visibleToken: false, token: null})
+  }
+
   render() {
     const {intl} = this.props
-    const {loader} = this.state
+    const {loader, token} = this.state
     const {getFieldDecorator} = this.props.form
+    const accessKey = token ? token.access_key : intl.formatMessage({id: 'unknown'})
+    const secretKey = token ? token.secret_key : intl.formatMessage({id: 'unknown'})
+
+    const copySecretBtn = (
+      <a><Icon type="copy"/>
+      </a>
+    )
+
     return (
       <div>
         <h1 className="gx-mt-4 gx-mb-4"><FormattedMessage id="api.tokens"/></h1>
@@ -101,6 +117,37 @@ class NewApiToken extends React.Component {
             </Card>
           </Col>
         </Row>
+
+        <Modal
+          visible={this.state.visibleToken}
+          // footer={null}
+          title={intl.formatMessage({id: 'success'})}
+          onOk={this.handleCloseModal}
+          onCancel={this.handleCloseModal}
+        >
+          <Row type="flex" justify='center'>
+            <Col align={'center'}>
+              <Text className='gx-fs-lg' type='warning'
+                    strong>{intl.formatMessage({id: 'create.api.desc1'})}</Text><br/>
+              <Text className='gx-fs-lg' type='warning' strong>{intl.formatMessage({id: 'create.api.desc2'})}</Text>
+            </Col>
+          </Row>
+          <br/>
+          <Row type="flex">
+            <Col>
+              <div style={{marginBottom: 16}}>
+                <Input addonBefore={'Access Key:'} addonAfter={copySecretBtn} defaultValue={accessKey} readOnly/>
+              </div>
+            </Col>
+          </Row>
+          <Row type="flex">
+            <Col>
+              <div style={{marginBottom: 16}}>
+                <Input addonBefore={'Secrete Key:'} addonAfter={copySecretBtn} defaultValue={accessKey} readOnly/>
+              </div>
+            </Col>
+          </Row>
+        </Modal>
       </div>
     )
   }
