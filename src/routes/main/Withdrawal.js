@@ -10,14 +10,12 @@ import _ from 'lodash'
 import { getCoinBySymbol, getFixed } from '../../util/helpers'
 import { getAddresses, newWithdraw } from '../../api/axiosAPIs'
 import { IconNotification } from '../../components/IconNotification'
-import { ERROR, SUCCESS } from '../../constants/AppConfigs'
+import { SUCCESS } from '../../constants/AppConfigs'
+import { Link } from 'react-router-dom'
 
 const {Text} = Typography
 const Option = Select.Option
 const InputGroup = Input.Group
-const {Search} = Input
-const FormItem = Form.Item
-
 
 class Withdrawal extends React.Component {
   constructor(props) {
@@ -44,6 +42,10 @@ class Withdrawal extends React.Component {
           return addr.currency === symbol
         })
         this.setState({addrs})
+        const {accounts} = this.state
+        const result = accounts.find(account => account.currency.code === symbol)
+        let account = result === undefined ? {} : result
+        this.setState({account: account})
       })
       .catch(error => {
         console.log(error)
@@ -74,11 +76,7 @@ class Withdrawal extends React.Component {
 
   handleChange = (value) => {
     this.setState({currentSymbol: value})
-    const {accounts} = this.state
-    const result = accounts.find(account => account.currency.code === value)
-    const account = result === undefined ? {} : result
-    this.setState({account: account})
-    this.updateStateAddrs(this.state.currentSymbol)
+    this.updateStateAddrs(value)
     this.props.form.setFieldsValue({
       amount: '',
       address: ''
@@ -135,21 +133,11 @@ class Withdrawal extends React.Component {
         }
 
         let that = this
-        newWithdraw({
-          key: currentSymbol,
-          param
-        })
+        newWithdraw(currentSymbol, param)
           .then(response => {
             this.props.getAccounts()
             that.updateStateAddrs(currentSymbol)
-            IconNotification(SUCCESS, response.data)
-          })
-          .catch(error => {
-            if (error.response && error.response.data) {
-              IconNotification(ERROR, error.response.data)
-            } else {
-              IconNotification(ERROR, 'Unknown Error!')
-            }
+            IconNotification(SUCCESS, this.props.intl.formatMessage({id: 'withdrawal.req.success'}))
           })
       }
     })
@@ -185,16 +173,7 @@ class Withdrawal extends React.Component {
   render() {
     const {intl} = this.props
     const {getFieldDecorator} = this.props.form
-    const {loader, currentSymbol, addrs, getAmount} = this.state
-    let {account} = this.state
-
-    if(_.isEmpty(account))
-    {
-      const {accounts} = this.state
-      const result = accounts.find(account => account.currency.code === currentSymbol)
-      account = result === undefined ? {} : result
-      this.setState({account: account})
-    }
+    const {loader, currentSymbol, addrs, getAmount, account} = this.state
 
     const coin = getCoinBySymbol(currentSymbol)
     const balance = !_.isEmpty(account) ? getFixed(parseFloat(account.balance), parseInt(account.currency.precision)) : 0.0
@@ -228,7 +207,11 @@ class Withdrawal extends React.Component {
                     <Text strong>{currentSymbol.toUpperCase()} <FormattedMessage id="withdrawal.address"/></Text>
                   </div>
                   {_.isEmpty(addrs) && (
-                    <Text><FormattedMessage id="no.whitelist.address"/></Text>
+                    <div className='gx-ml-3 gx-mt-2'>
+                      <Text><FormattedMessage id="no.whitelist.address"/> <Link className='gx-text-underline' to=''>
+                        <FormattedMessage id="address.management"/>
+                      </Link></Text>
+                    </div>
                   )}
                   <Form.Item className={'gx-mt-2'} wrapperCol={{sm: 24}} style={{width: '100%', margin: 0}}>
                     {getFieldDecorator('address', {

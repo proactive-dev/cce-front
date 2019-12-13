@@ -346,6 +346,7 @@
   "copy.address": "Copy Address",
   "continue.deposit": "Continue Deposit »",
   "please.note": "Please note",
+  "withdrawal.req.success": "Your withdrawal request successfully posted.\nPlease check your balance and withdraw history.",
   "min.withdrawal": "Minimum withdrawal",
   "withdrawal.notice": "Do not withdraw directly to a crowdfund or ICO address, as your account will not be credited with tokens from such sales.",
   "available": "Available",
