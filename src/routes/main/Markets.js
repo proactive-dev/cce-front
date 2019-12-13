@@ -1,36 +1,41 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { FormattedMessage, injectIntl } from 'react-intl'
-import { Spin } from 'antd'
+import { injectIntl } from 'react-intl'
+import { Card, Spin } from 'antd'
+import _ from 'lodash'
+import MarketOverview from '../../components/MarketOverview'
 
-class Markets extends React.Component {
+class Home extends React.Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      loader: false
+      loader: false,
+      tickers: {}
     }
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const {loader} = nextProps
+    const {loader, tickers} = nextProps
     if (loader !== prevState.loader) {
       return {loader}
+    }
+    if (!_.isEmpty(tickers) && tickers !== prevState.tickers) {
+      return {tickers}
     }
     return null
   }
 
   render() {
-    const {intl} = this.props
-    const {loader} = this.state
-
+    const {loader, tickers} = this.state
     return (
-      <div>
-        <h1 className="gx-mt-4 gx-mb-4"><FormattedMessage id="markets"/></h1>
-        <Spin spinning={loader} size="large">
-          {/* Components */}
-        </Spin>
-      </div>
+      <Spin spinning={loader} size="large">
+        <Card
+          className="gx-card-full gx-card-widget gx-m-2 gx-p-1"
+          bordered={false}>
+          <MarketOverview tickers={tickers}/>
+        </Card>
+      </Spin>
     )
   }
 }
@@ -42,4 +47,4 @@ const mapStateToProps = ({progress, markets}) => {
   }
 }
 
-export default connect(mapStateToProps, null)(injectIntl(Markets))
+export default connect(mapStateToProps, null)(injectIntl(Home))

@@ -3,10 +3,9 @@ import { injectIntl } from 'react-intl'
 import { withRouter } from 'react-router-dom'
 import { Table } from 'antd'
 import _ from 'lodash'
-import { getCoinNameBySymbol, getPointFixed, priceChange } from '../../src/util/helpers'
+import { getCoinNameBySymbol, getFiatFixed, getTableLocaleData, priceChange } from '../util/helpers'
 import { EXCHANGE } from '../constants/Paths'
 import { BASE_PRICE_SYMBOL, HOME_SYMBOLS, QUOTE_SYMBOL } from '../constants/AppConfigs'
-import { getTableLocaleData } from '../util/helpers'
 
 class SimpleMarketInfo extends React.Component {
   constructor(props) {
@@ -20,36 +19,38 @@ class SimpleMarketInfo extends React.Component {
     const symbol = BASE_PRICE_SYMBOL
     return [
       {
-        title: intl.formatMessage({id: 'name'}),
-        dataIndex: 'market',
-        align: 'left',
-        render: (value, record) => {
+        title: intl.formatMessage({id: 'coin'}),
+        dataIndex: 'symbol',
+        align: 'center',
+        render: (value) => {
           return (
             <div>
-              <img src={require(`assets/images/coins/${record.symbol}.png`)}
-                   alt={record.symbol} title={record.symbol} style={{maxWidth: 20}}/>
-              <span className="gx-fs-lg gx-p-2 gx-m-2">{record.symbol.toUpperCase()}</span>
-              <span>{getCoinNameBySymbol(record.symbol)}</span>
+              <img src={require(`assets/images/coins/${value}.png`)} alt={value} title={value} style={{maxWidth: 20}}/>
+              <span className="gx-fs-lg gx-p-2 gx-m-2">{value.toUpperCase()}</span>
             </div>
           )
         }
       },
       {
+        title: intl.formatMessage({id: 'name'}),
+        dataIndex: 'market',
+        align: 'left',
+        render: (value, record) => {
+          return <span>{getCoinNameBySymbol(record.symbol)}</span>
+        }
+      },
+      {
         title: intl.formatMessage({id: 'last.price'}),
         dataIndex: 'last',
-        align: 'center',
-        render: (value) => {
+        align: 'left',
+        render: (value, record) => {
           let className = ''
-          if (value > 0) {
+          if (record.lastTrend > 0) {
             className = 'gx-text-green'
-          } else if (value < 0) {
+          } else if (record.lastTrend < 0) {
             className = 'gx-text-red'
           }
-          return (
-            <div className={className}>
-              {symbol}&nbsp;{getPointFixed(value, 2)}
-            </div>
-          )
+          return <span className={className}>{symbol}&nbsp;{getFiatFixed(value)}</span>
         }
       },
       {
@@ -63,11 +64,7 @@ class SimpleMarketInfo extends React.Component {
           } else if (value < 0) {
             className = 'gx-text-red'
           }
-          return (
-            <div className={className}>
-              {symbol}&nbsp;{getPointFixed(value, 2)}
-            </div>
-          )
+          return <span className={className}>{getFiatFixed(value)}%</span>
         }
       }
     ]
@@ -121,7 +118,6 @@ class SimpleMarketInfo extends React.Component {
              pagination={false}
              locale={getTableLocaleData}
              rowKey="market"
-             size='large'
              onRow={(record) => ({
                onClick: () => {
                  this.handleClick(record.market)

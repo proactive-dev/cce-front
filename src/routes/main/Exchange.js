@@ -25,7 +25,7 @@ class Exchange extends React.Component {
   }
 
   componentDidMount() {
-    this.props.getAuthStatus()
+    // this.props.getAuthStatus()
     let marketId = this.props.match.params.market
     let market
     if (!_.isEmpty(marketId) && !_.isUndefined(marketId)) {
