@@ -238,20 +238,18 @@ class Withdrawal extends React.Component {
                        onClick={this.setAmountAvailable}><FormattedMessage id="available"/>: {balance}</a>
                   </div>
                   <div className={'gx-mt-2'}>
-                    <InputGroup compact>
-                      <Form.Item wrapperCol={{sm: 24}} style={{width: '100%', margin: 0}}>
-                        {getFieldDecorator('amount', {
-                          rules: [{
-                            required: true, message: intl.formatMessage({id: 'alert.fieldRequired'})
-                          }, {
-                            validator: this.checkAmount
-                          }]
-                        })(
-                          <Input onChange={this.handleAmountChange}
-                                 addonAfter={currentSymbol.toUpperCase()}/>
-                        )}
-                      </Form.Item>
-                    </InputGroup>
+                    <Form.Item wrapperCol={{sm: 24}} style={{width: '100%', margin: 0}}>
+                      {getFieldDecorator('amount', {
+                        rules: [{
+                          required: true, message: intl.formatMessage({id: 'alert.fieldRequired'})
+                        }, {
+                          validator: this.checkAmount
+                        }]
+                      })(
+                        <Input onChange={this.handleAmountChange}
+                               addonAfter={currentSymbol.toUpperCase()}/>
+                      )}
+                    </Form.Item>
                   </div>
                   {currentSymbol === 'xrp' && (
                     <div>
@@ -266,18 +264,16 @@ class Withdrawal extends React.Component {
                         </Checkbox>
                       </div>
                       <div className={'gx-mt-2'}>
-                        <InputGroup compact>
-                          <Form.Item wrapperCol={{sm: 24}} style={{width: '100%', margin: 0}}>
-                            {getFieldDecorator('addrTag', {
-                              rules: [{
-                                required: !this.state.checkedAddrTag,
-                                message: intl.formatMessage({id: 'alert.fieldRequired'})
-                              }]
-                            })(
-                              <Input/>
-                            )}
-                          </Form.Item>
-                        </InputGroup>
+                        <Form.Item wrapperCol={{sm: 24}} style={{width: '100%', margin: 0}}>
+                          {getFieldDecorator('addrTag', {
+                            rules: [{
+                              required: !this.state.checkedAddrTag,
+                              message: intl.formatMessage({id: 'alert.fieldRequired'})
+                            }]
+                          })(
+                            <Input/>
+                          )}
+                        </Form.Item>
                       </div>
                     </div>
                   )}
@@ -285,15 +281,13 @@ class Withdrawal extends React.Component {
                     <Text strong><FormattedMessage id="google.auth.code"/></Text>
                   </div>
                   <div className={'gx-mt-2'}>
-                    <InputGroup compact>
-                      <Form.Item wrapperCol={{sm: 24}} style={{width: '100%', margin: 0}}>
-                        {getFieldDecorator('twoFactor', {
-                          rules: [{required: false, message: intl.formatMessage({id: 'alert.fieldRequired'})}]
-                        })(
-                          <Input/>
-                        )}
-                      </Form.Item>
-                    </InputGroup>
+                    <Form.Item wrapperCol={{sm: 24}} style={{width: '100%', margin: 0}}>
+                      {getFieldDecorator('twoFactor', {
+                        rules: [{required: false, message: intl.formatMessage({id: 'alert.fieldRequired'})}]
+                      })(
+                        <Input/>
+                      )}
+                    </Form.Item>
                   </div>
 
                   <div className={'gx-mt-2'}>
@@ -308,7 +302,12 @@ class Withdrawal extends React.Component {
                       </Col>
                     </Row>
                   </div>
-                  <Button type='primary' block onClick={this.handleSubmit}><FormattedMessage id="submit"/></Button>
+                  <Row className='gx-mt-2' type='flex' justify={'center'}>
+                    <Col>
+                      <Button type='primary' block onClick={this.handleSubmit}><FormattedMessage id="submit"/></Button>
+                    </Col>
+                  </Row>
+                  {/*<Button type='primary' block onClick={this.handleSubmit}><FormattedMessage id="submit"/></Button>*/}
                 </Form>
 
               </Card>

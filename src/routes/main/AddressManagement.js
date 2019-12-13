@@ -7,7 +7,7 @@ import { Button, Card, Col, Form, Input, Row, Spin, Typography } from 'antd'
 import _ from 'lodash'
 import CurrencySelect from '../../components/CurrencySelect'
 import AddressTable from '../../components/AddressTable'
-import { getAddresses, newAddress, deleteAddress } from '../../api/axiosAPIs'
+import { deleteAddress, getAddresses, newAddress } from '../../api/axiosAPIs'
 import { IconNotification } from '../../components/IconNotification'
 import { SUCCESS } from '../../constants/AppConfigs'
 
@@ -24,7 +24,7 @@ class AddressManagement extends React.Component {
       accounts: [],
       addrs: [],
       currentSymbol: 'btc',
-      searchCoin:''
+      searchCoin: ''
     }
   }
 
@@ -97,8 +97,7 @@ class AddressManagement extends React.Component {
     })
   }
 
-  handleDeleteAddr=(data)=>
-  {
+  handleDeleteAddr = (data) => {
     deleteAddress(data.id)
     this.buildData()
     this.setState({searchCoin: ''})
@@ -117,8 +116,7 @@ class AddressManagement extends React.Component {
         <div>
           <Row type='flex' gutter={12}>
             <Col span={12} xxl={12} xl={12} lg={12} md={24} sm={24} xs={24} className={'gx-mb-2'}>
-              <Card bordered={false} style={{height: '100%'}}>
-
+              <Card bordered={false}>
                 <Form onSubmit={this.handleSubmit}>
                   <Form.Item label={intl.formatMessage({id: 'coin'})} wrapperCol={{sm: 24}}
                              style={{width: '100%', margin: 0}}>
@@ -136,7 +134,7 @@ class AddressManagement extends React.Component {
                           validator: this.checkLabel
                         }
                       ]
-                    })(<Input />)}
+                    })(<Input/>)}
                   </Form.Item>
 
                   <Form.Item label={intl.formatMessage({id: 'address'})} wrapperCol={{sm: 24}}
@@ -148,7 +146,7 @@ class AddressManagement extends React.Component {
                           message: intl.formatMessage({id: 'alert.fieldRequired'})
                         }
                       ]
-                    })(<TextArea rows={4} />)}
+                    })(<TextArea rows={4}/>)}
                   </Form.Item>
 
                   {currentSymbol === 'xrp' && (
@@ -158,24 +156,26 @@ class AddressManagement extends React.Component {
                         rules: [
                           {required: true, message: intl.formatMessage({id: 'alert.fieldRequired'})}
                         ]
-                      })(<TextArea rows={4} />)}
+                      })(<TextArea rows={4}/>)}
                     </Form.Item>
                   )}
 
-                  <div className='gx-mt-2'>
-                    <Button type='primary' block onClick={this.handleSubmit}><FormattedMessage id="submit"/></Button>
-                  </div>
+                  <Row className='gx-mt-2' type='flex' justify={'center'}>
+                    <Col>
+                      <Button type='primary' block onClick={this.handleSubmit}><FormattedMessage id="submit"/></Button>
+                    </Col>
+                  </Row>
                 </Form>
               </Card>
             </Col>
-            <Col span={12} xxl={12} xl={12} lg={12} md={24} sm={24} xs={24}>
-              <Card bordered={false} style={{height: '100%'}}>
+            <Col span={12} xxl={24} xl={24} lg={24} md={24} sm={24} xs={24}>
+              <Card bordered={false}>
                 <Search
                   className="gx-mb-3"
                   addonBefore={intl.formatMessage({id: 'coin'})}
                   placeholder={intl.formatMessage({id: 'search.inputKey'})}
                   onSearch={this.onSearch}
-                  style={{width:'50%'}}
+                  style={{width: '50%'}}
                   enterButton/>
                 <AddressTable addrs={addrs} filter={this.state.searchCoin} onDelete={this.handleDeleteAddr}/>
               </Card>
