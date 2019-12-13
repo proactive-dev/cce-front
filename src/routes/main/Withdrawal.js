@@ -179,7 +179,7 @@ class Withdrawal extends React.Component {
     const balance = !_.isEmpty(account) ? getFixed(parseFloat(account.balance), parseInt(account.currency.precision)) : 0.0
     return (
       <div>
-        <h2 className="title gx-mb-4"><FormattedMessage id="withdrawal"/></h2>
+        <h1 className="gx-mt-4 gx-mb-4"><FormattedMessage id="withdrawal"/></h1>
         <Spin spinning={loader} size="large">
           {/* Components */}
         </Spin>

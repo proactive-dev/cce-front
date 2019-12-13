@@ -57,7 +57,7 @@ class Deposit extends React.Component {
     const confirm = !_.isEmpty(account) ? account.currency.confirmation : 0
     return (
       <div>
-        <h2 className="title gx-mb-4"><FormattedMessage id="deposit"/></h2>
+        <h1 className="gx-mt-4 gx-mb-4"><FormattedMessage id="deposit"/></h1>
         <Spin spinning={loader} size="large">
           {/* Components */}
         </Spin>
