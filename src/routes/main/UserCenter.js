@@ -67,7 +67,7 @@ class UserCenter extends React.Component {
               <Col className="gx-mt-2 gx-mb-2"
                    xxl={16} xl={16} lg={16} md={24} sm={24} xs={24}>
                 <AccountsOverview
-                  style="gx-h-100"
+                  styleName="gx-h-100"
                   accounts={accounts}/>
               </Col>
               <Col className="gx-mt-2 gx-mb-2"

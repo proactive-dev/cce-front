@@ -89,7 +89,7 @@ class MarketOverview extends React.Component {
     if (!_.isEmpty(tickers)) {
       let prevData = this.prevData
       let lastData = {}
-      markets.map((market) => {
+      markets.forEach((market) => {
           const marketId = market.id
           if (market.visible && tickers[marketId]) {
             const ticker = tickers[marketId].ticker

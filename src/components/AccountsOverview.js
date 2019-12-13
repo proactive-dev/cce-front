@@ -21,14 +21,14 @@ class AccountsOverview extends Component {
   }
 
   render() {
-    const {intl, style, accounts} = this.props
+    const {intl, styleName, accounts} = this.props
     const {visible} = this.state
     const mainEstimated = accounts.reduce((prev, account) => prev + parseFloat(account.estimated), 0.0)
     const estimateStr = visible ? (mainEstimated ? parseFloat(mainEstimated).toFixed(DEFAULT_PRECISION) : 0.00000000) : '********'
 
     return (
       <Card
-        className={`gx-card-widget gx-card-tabs ${style}`}
+        className={`gx-card-widget gx-card-tabs ${styleName}`}
         title={intl.formatMessage({id: 'balance'})}
         extra={
           <div>
