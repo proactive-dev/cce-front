@@ -311,6 +311,7 @@
   "api.tokens.create.description": "To get started with the API, create a new key.",
   "api.tokens.input.label": "Input API key label",
   "api.tokens.create": "Create new key",
+  "new.token.success": "Created a new API token successfully.",
   "2fa": "2FA",
   "google.auth.code": "Google Authentication Code",
   "add.withdrawal.address": "Add Withdrawal Address",
