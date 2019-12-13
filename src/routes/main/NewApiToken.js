@@ -1,15 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { FormattedMessage, injectIntl } from 'react-intl'
-import { Button, Card, Col, Form, Icon, Input, Modal, Row, Select, Spin, Typography } from 'antd'
+import { Button, Card, Col, Form, Icon, Input, Modal, Row, Spin, Typography } from 'antd'
 import { getAuthStatus } from '../../appRedux/actions/User'
 import { newApiToken } from '../../api/axiosAPIs'
 import { IconNotification } from '../../components/IconNotification'
 import { SUCCESS } from '../../constants/AppConfigs'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
+import { API_TOKENS } from '../../constants/Paths'
 
 const {Text, Title} = Typography
-const {Option} = Select
 const InputGroup = Input.Group
 
 class NewApiToken extends React.Component {
@@ -65,6 +65,7 @@ class NewApiToken extends React.Component {
 
   handleCloseModal = () => {
     this.setState({visibleToken: false, token: null})
+    this.props.history.push(`/${API_TOKENS}`)
   }
 
   render() {
@@ -129,7 +130,7 @@ class NewApiToken extends React.Component {
           title={intl.formatMessage({id: 'success'})}
           onOk={this.handleCloseModal}
           onCancel={this.handleCloseModal}
-          cancelButtonProps={{ hidden: true }}
+          cancelButtonProps={{hidden: true}}
         >
           <Row type="flex" justify='center'>
             <Col align={'left'}>

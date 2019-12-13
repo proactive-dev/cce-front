@@ -5,8 +5,10 @@ import { Button, Col, Icon, Row, Spin, Table, Typography } from 'antd'
 import { getAuthStatus } from '../../appRedux/actions/User'
 import { getTableLocaleData } from '../../util/helpers'
 import _ from 'lodash'
-import { getApiTokens } from '../../api/axiosAPIs'
+import { deleteApiToken, getApiTokens } from '../../api/axiosAPIs'
 import { API_TOKEN_NEW } from '../../constants/Paths'
+import { IconNotification } from '../../components/IconNotification'
+import { SUCCESS } from '../../constants/AppConfigs'
 
 const {Text} = Typography
 
@@ -47,7 +49,13 @@ class ApiTokens extends React.Component {
   }
 
   handleDelete = (token) => {
-
+    let that = this
+    const {intl} = this.props
+    deleteApiToken(token.id)
+      .then(response => {
+        that.buildData()
+        IconNotification(SUCCESS, intl.formatMessage({id: 'delete.token.success'}))
+      })
   }
 
   handleCreate = (token) => {
@@ -100,9 +108,9 @@ class ApiTokens extends React.Component {
           return (
             <Row type={'flex'} justify={'center'}>
               <Col><Button type='link' size='large' className='gx-mt-0 gx-mb-0 gx-mr-3'
-                           onClick={e => this.handleEdit(e, record)}><Icon type="edit"/></Button>
+                           onClick={() => this.handleEdit(record)}><Icon type="edit"/></Button>
                 <Button type='link' size='large' className='gx-mt-0 gx-mb-0 gx-ml-3'
-                        onClick={e => this.handleDelete(e, record)}><Icon type="delete"/></Button>
+                        onClick={() => this.handleDelete(record)}><Icon type="delete"/></Button>
               </Col>
             </Row>
           )
@@ -121,6 +129,7 @@ class ApiTokens extends React.Component {
         const regx = /[TZ]/gi
         const date = token.created_at.replace(regx, ' ').replace('.000', '')
         data.push({
+          id: token.id,
           label: (!token.label || !token.label.length) ? ' - ' : token.label,
           key: token.access_key,
           date: date
@@ -134,7 +143,7 @@ class ApiTokens extends React.Component {
         <Spin spinning={loader} size="large">
           {/* Components */}
         </Spin>
-        <Button onClick={this.handleCreate}><FormattedMessage id="api.tokens.create"/></Button>
+        <Button type='primary' onClick={this.handleCreate}><FormattedMessage id="api.tokens.create"/></Button>
         <Table className={'gx-table-responsive'}
                columns={this.getColumns()}
                dataSource={data}
