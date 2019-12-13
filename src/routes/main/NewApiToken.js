@@ -18,7 +18,7 @@ class NewApiToken extends React.Component {
 
     this.state = {
       loader: false,
-      visibleToken: true,
+      visibleToken: false,
       token: ''
     }
   }
@@ -129,6 +129,7 @@ class NewApiToken extends React.Component {
           title={intl.formatMessage({id: 'success'})}
           onOk={this.handleCloseModal}
           onCancel={this.handleCloseModal}
+          cancelButtonProps={{ hidden: true }}
         >
           <Row type="flex" justify='center'>
             <Col align={'left'}>
