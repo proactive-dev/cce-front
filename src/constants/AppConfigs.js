@@ -30,6 +30,8 @@ export const PRIZE_CENTER_LINK = 'https://lend.365-exchange.com/orderlist/index.
 
 export const SITE_CONTACT = 'support@365-exchange.com'
 
+export const OTPAUTH_URL = 'otpauth://totp/'
+
 export const TICKER_INTERVAL = 1000
 
 export const BANNERS = [
