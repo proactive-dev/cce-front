@@ -32,11 +32,8 @@ class Home extends React.Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     const {loader, tickers} = nextProps
-    if (loader !== prevState.loader) {
-      return {loader}
-    }
-    if (!_.isEmpty(tickers) && tickers !== prevState.tickers) {
-      return {tickers}
+    if ((loader !== prevState.loader) || (!_.isEmpty(tickers) && tickers !== prevState.tickers)) {
+      return {loader, tickers}
     }
     return null
   }

@@ -27,7 +27,7 @@ class UserCenter extends React.Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     const {loader, profile, accounts} = nextProps
-    if (loader !== prevState.loader || profile !== prevState.profile || accounts !== prevState.accounts) {
+    if ((loader !== prevState.loader) || (profile !== prevState.profile) || (accounts !== prevState.accounts)) {
       return {loader, profile, accounts}
     }
     return null

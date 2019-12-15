@@ -60,7 +60,7 @@ class EnableGoogleAuth extends React.Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     const {loader, profile} = nextProps
-    if (loader !== prevState.loader || profile !== prevState.profile) {
+    if ((loader !== prevState.loader) || (profile !== prevState.profile)) {
       return {loader, profile}
     }
 

@@ -11,7 +11,7 @@ class CurrencySelect extends React.Component {
       <Select
         showSearch
         className={'gx-w-100'}
-        defaultValue={value}
+        value={value}
         onChange={this.props.onChange}>
         {
           CURRENCIES.map((currency) => {
