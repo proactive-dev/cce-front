@@ -25,6 +25,7 @@
     "react-countdown-now": "^2.1.1",
     "react-csv": "^1.1.2",
     "react-custom-scrollbars": "^4.2.1",
+    "react-device-detect": "^1.11.14",
     "react-dom": "^16.8.6",
     "react-hot-loader": "^4.8.4",
     "react-intl": "^2.8.0",
