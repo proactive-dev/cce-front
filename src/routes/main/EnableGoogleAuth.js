@@ -106,10 +106,14 @@ class EnableGoogleAuth extends React.Component {
   }
 
   fetchGoogleAuth = () => {
-    getGoogleAuth().then(response => {
-      if (response.data && response.data.otp_secret)
-        this.setState({otpSecret: response.data.otp_secret})
-    })
+    getGoogleAuth()
+      .then(response => {
+        if (response.data && response.data.otp_secret)
+          this.setState({otpSecret: response.data.otp_secret})
+      })
+      .catch(error => {
+        this.props.history.push(`/${USER}`)
+      })
   }
 
   render() {
@@ -146,10 +150,10 @@ class EnableGoogleAuth extends React.Component {
                 <h4 className="gx-mt-4 gx-mb-4"><FormattedMessage id="ga.step.1.description"/></h4>
                 <div className="gx-text-center">
                   <Button type="link" href={G_AUTH_IOS_APP_URL}>
-                    <img style={{width: '120px'}} src={require(`assets/images/app-store.svg`)}/>
+                    <img style={{width: '120px'}} alt={'key'} src={require(`assets/images/app-store.svg`)}/>
                   </Button>
                   <Button type="link" href={G_AUTH_ANDROID_APP_URL}>
-                    <img style={{width: '120px'}} src={require(`assets/images/google-play.svg`)}/>
+                    <img style={{width: '120px'}} alt={'key'} src={require(`assets/images/google-play.svg`)}/>
                   </Button>
                   <hr/>
                 </div>
@@ -165,13 +169,13 @@ class EnableGoogleAuth extends React.Component {
               <div className="gx-text-center gx-mt-4 gx-mb-4">
                 <h4 className="gx-mt-4 gx-mb-4"><FormattedMessage id="scan.qrcode.tip"/></h4>
                 <Row className="gx-mt-4">
-                  <Col xl={8} lg={8} sm={6} xs={24}></Col>
+                  <Col xl={8} lg={8} sm={6} xs={24}/>
                   <Col xl={4} lg={4} sm={6} xs={24}>
                     <QRCode value={qrcodeValue} size={109}/>
                   </Col>
                   <Col xl={6} lg={12} sm={12} xs={24} className="gx-text-left gx-mt-4">
                     <p><FormattedMessage id="ga.step.2.description"/></p>
-                    <h3>{otpSecret ? otpSecret : ''}</h3>
+                    <h3>{otpSecret || ''}</h3>
                   </Col>
                 </Row>
                 <hr/>
@@ -196,9 +200,9 @@ class EnableGoogleAuth extends React.Component {
               <div className="gx-text-center gx-mt-4 gx-mb-4">
                 <h4 className="gx-mt-4 gx-mb-4"><FormattedMessage id="ga.step.3.description1"/></h4>
                 <Row>
-                  <Col xl={8} lg={8} sm={6} xs={24}></Col>
+                  <Col xl={8} lg={8} sm={6} xs={24}/>
                   <Col xl={4} lg={4} sm={6} xs={24}>
-                    <img src={require(`assets/images/keepkey.svg`)} width={150} height={150}/>
+                    <img src={require(`assets/images/keepkey.svg`)} alt={'key'} width={150} height={150}/>
                   </Col>
                   <Col xl={6} lg={12} sm={12} xs={24} className="gx-text-left gx-mt-4">
                     <p><FormattedMessage id="ga.step.3.description2"/></p>

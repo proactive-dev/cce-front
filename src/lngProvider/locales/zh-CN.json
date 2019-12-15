@@ -280,6 +280,7 @@
   "api.doc": "API文档",
   "google.auth": "谷歌验证",
   "google.auth.usage": "提现，修改密码，及安全设置时用以验证谷歌二次验证",
+  "google.auth.enabled": "Google authenticator already enabled.",
   "sms.auth": "手机验证",
   "sms.auth.usage": "提现，修改密码，及安全设置时用以收取验证短信",
   "withdrawal.address.management": "提现地址管理",

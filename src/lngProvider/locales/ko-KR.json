@@ -280,6 +280,7 @@
   "api.doc": "API 문서",
   "google.auth": "구글 인증",
   "google.auth.usage": "구글(OTP)인증은 출금, 비밀번호 변경 그리고 보안용으로 사용됩니다.",
+  "google.auth.enabled": "Google authenticator already enabled.",
   "sms.auth": "SMS 인증",
   "sms.auth.usage": "휴대폰 인증은 출금, 비밀번호 변경 그리고 보안용으로 사용됩니다.",
   "withdrawal.address.management": "출금 주소 관리",

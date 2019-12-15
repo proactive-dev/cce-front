@@ -280,6 +280,7 @@
   "api.doc": "API documentation",
   "google.auth": "Google Authentication",
   "google.auth.usage": "Used for withdrawals and security modifications",
+  "google.auth.enabled": "Google authenticator already enabled.",
   "sms.auth": "SMS Authentication",
   "sms.auth.usage": "Used for withdrawals and security modifications",
   "withdrawal.address.management": "Withdrawal Address Management",

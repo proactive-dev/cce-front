@@ -248,10 +248,11 @@ class Withdrawal extends React.Component {
                     )
                   }
                   <span className={'gx-font-weight-bold'}><FormattedMessage id="amount"/></span>
-                  <a className='gx-text-underline gx-float-right gx-mr-2'
-                     onClick={this.setAmountAvailable}>
+                  <span
+                    className='gx-text-underline gx-text-primary gx-link gx-float-right gx-mr-2'
+                    onClick={this.setAmountAvailable}>
                     <FormattedMessage id="available"/>: {balance}
-                  </a>
+                  </span>
                   <Form.Item wrapperCol={{sm: 24}} className={'gx-w-100 gx-m-2'}>
                     {getFieldDecorator('amount', {
                       rules: [{

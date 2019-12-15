@@ -43,6 +43,7 @@ class RootApp extends Component {
         msgId = 'account.disabled'
         break
       case G_AUTH_FAIL:
+        msgId = 'google.auth.enabled'
       case TFA_FAIL:
         msgId = 'TFA_CODE_INCORRECT'
         break
