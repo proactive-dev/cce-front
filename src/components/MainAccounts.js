@@ -116,13 +116,13 @@ class MainAccounts extends React.Component {
   }
 
   render() {
-    const {dataSource} = this.props
+    const {intl, dataSource} = this.props
     return (
       <Table className='gx-table-responsive gx-mt-4 gx-mb-4'
              columns={this.getColumns()}
              dataSource={dataSource}
              pagination={false}
-             locale={getTableLocaleData}
+             locale={getTableLocaleData(intl)}
              rowKey="symbol"
              size='middle'/>
     )

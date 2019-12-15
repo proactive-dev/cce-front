@@ -48,7 +48,7 @@ class LoginHistoryTable extends React.Component {
              columns={this.getColumns()}
              dataSource={realData}
              pagination={pagination}
-             locale={getTableLocaleData}
+             locale={getTableLocaleData(intl)}
              rowKey={'id'}
              size='middle'/>
     )
