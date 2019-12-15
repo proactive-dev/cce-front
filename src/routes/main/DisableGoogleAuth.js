@@ -31,12 +31,12 @@ class DisableGoogleAuth extends React.Component {
     e.preventDefault()
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.doDisableGoogleAuth(values)
+        this.reqDisableGoogleAuth(values)
       }
     })
   }
 
-  doDisableGoogleAuth = (data) => {
+  reqDisableGoogleAuth = (data) => {
     let formData = new FormData()
     formData.append('_method', 'delete')
     formData.append('two_factor[type]', 'app')
@@ -60,9 +60,9 @@ class DisableGoogleAuth extends React.Component {
     const {getFieldDecorator} = this.props.form
 
     return (
-      <div className="gx-text-center">
+      <div className="gx-text-center gx-mb-4">
         <h1 className="gx-mt-4 gx-mb-4"><FormattedMessage id="disable.google.auth"/></h1>
-        <Spin className="gx-auth-container gx-mb-4" spinning={loader} size="large">
+        <Spin className="gx-auth-container" spinning={loader} size="large">
           <Form
             className="gx-auth-content gx-text-left"
             layout="vertical"

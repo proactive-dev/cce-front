@@ -31,6 +31,8 @@ export const PRIZE_CENTER_LINK = 'https://lend.365-exchange.com/orderlist/index.
 export const SITE_CONTACT = 'support@365-exchange.com'
 
 export const OTPAUTH_URL = 'otpauth://totp/'
+export const G_AUTH_IOS_APP_URL = 'https://itunes.apple.com/us/app/google-authenticator/id388497605?mt=8'
+export const G_AUTH_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2'
 
 export const TICKER_INTERVAL = 1000
 
