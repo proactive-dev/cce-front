@@ -48,9 +48,6 @@ class Withdrawal extends React.Component {
         let account = result === undefined ? {} : result
         this.setState({account: account})
       })
-      .catch(error => {
-        console.log(error)
-      })
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -64,12 +61,12 @@ class Withdrawal extends React.Component {
   componentDidMount() {
     this.props.getAuthStatus()
     this.props.getAccounts()
-    const {symbol} = this.props
-    if (symbol) {
-      this.setState({currentSymbol: symbol})
-      this.updateStateAddrs(symbol)
-    } else
-      this.updateStateAddrs(this.state.currentSymbol)
+
+    const {location} = this.props
+    if (!_.isEmpty(location.state) && !_.isEmpty(location.state.currency)) {
+      this.setState({currentSymbol: location.state.currency})
+      this.updateStateAddrs(location.state.currency)
+    }
   }
 
   onSelectCurrency = (value) => {
@@ -105,7 +102,6 @@ class Withdrawal extends React.Component {
     const {currentSymbol, addrs} = this.state
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values)
         const result = addrs.find(addr => addr.id === values.address)
         if (result === undefined)
           return
@@ -276,11 +272,11 @@ class Withdrawal extends React.Component {
                       <Input/>
                     )}
                   </Form.Item>
-                  <div className={'gx-m-2'}>
+                  <div className={'gx-m-3'}>
                     <FormattedMessage id="transaction.fee"/>: {coin.withdraw.fee}
                     <span className={'gx-float-right'}><FormattedMessage id="you.will.get"/>: {getAmount}</span>
                   </div>
-                  <Button type="primary" className='auth-form-button gx-mt-3' onClick={this.onSubmit}>
+                  <Button type="primary" className='auth-form-button gx-mt-1' onClick={this.onSubmit}>
                     <FormattedMessage id="submit"/>
                   </Button>
                 </Form>

@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import { Spin } from 'antd'
+import _ from 'lodash'
 import { getAuthStatus } from '../../appRedux/actions/User'
 
 class Transactions extends React.Component {
@@ -9,7 +10,8 @@ class Transactions extends React.Component {
     super(props)
 
     this.state = {
-      loader: false
+      loader: false,
+      kind: 0 // 0: deposit, 1: withdrawal
     }
   }
 
@@ -23,11 +25,16 @@ class Transactions extends React.Component {
 
   componentDidMount() {
     this.props.getAuthStatus()
+
+    const {location} = this.props
+    if (!_.isEmpty(location.state) && !_.isEmpty(location.state.kind)) {
+      this.setState({kind: location.state.kind})
+    }
   }
 
   render() {
     const {intl} = this.props
-    const {loader} = this.state
+    const {loader, kind} = this.state
 
     return (
       <div>

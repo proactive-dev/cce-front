@@ -11,6 +11,7 @@ import BalanceInfo from '../../components/BalanceInfo'
 import { IconNotification } from '../../components/IconNotification'
 import { SUCCESS } from '../../constants/AppConfigs'
 import { CURRENCIES } from '../../constants/Currencies'
+import { TRANSACTIONS } from '../../constants/Paths'
 
 const {Text} = Typography
 
@@ -36,6 +37,11 @@ class Deposit extends React.Component {
   componentDidMount() {
     this.props.getAuthStatus()
     this.props.getAccounts()
+
+    const {location} = this.props
+    if (!_.isEmpty(location.state) && !_.isEmpty(location.state.currency)) {
+      this.setState({currentSymbol: location.state.currency})
+    }
   }
 
   onSelectCurrency = (value) => {
@@ -44,6 +50,13 @@ class Deposit extends React.Component {
 
   onCopyAddress = () => {
     IconNotification(SUCCESS, this.props.intl.formatMessage({id: 'alert.copied'}))
+  }
+
+  goTransactions = () => {
+    this.props.history.push({
+      pathname: `/${TRANSACTIONS}`,
+      state: {kind: 0}
+    })
   }
 
   render() {
@@ -70,23 +83,21 @@ class Deposit extends React.Component {
                   </li>
                   <li>
                     <FormattedMessage id="deposit.note.2.first"/>&nbsp;
-                    <a href="/funds/transactions?kind=deposit" className="text-active">
+                    <span className="gx-text-primary gx-link" onClick={this.goTransactions}>
                       {intl.formatMessage({id: 'history'})}&nbsp;
-                    </a>
+                    </span>
                     <FormattedMessage id="deposit.note.2.second"/>
                   </li>
                 </ul>
-                <div className={'gx-m-2'}>
-                  <a target="_blank"
-                     rel="noopener noreferrer"
-                     href={infoUrl}>
-                    <Text type={'warning'}>
-                      <Icon type="info-circle" theme="filled"/>&nbsp;
-                      <FormattedMessage id="what's"/>&nbsp;
-                      {currentSymbol.toUpperCase()}?
-                    </Text>
-                  </a>
-                </div>
+                <a
+                  className={'gx-m-2'}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href={infoUrl}>
+                  <Icon type="info-circle" theme="filled"/>&nbsp;
+                  <FormattedMessage id="what's"/>&nbsp;
+                  {currentSymbol.toUpperCase()}?
+                </a>
               </Card>
             </Col>
             <Col span={12} xxl={12} xl={12} lg={12} md={24} sm={24} xs={24} className={'gx-p-1'}>
