@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { FormattedMessage, injectIntl } from 'react-intl'
-import { Button, Col, Icon, Row, Spin, Table, Typography } from 'antd'
+import { Button, Icon, Spin, Table } from 'antd'
 import { getAuthStatus } from '../../appRedux/actions/User'
 import { getTableLocaleData } from '../../util/helpers'
 import _ from 'lodash'
@@ -9,8 +9,6 @@ import { deleteApiToken, getApiTokens } from '../../api/axiosAPIs'
 import { API_TOKEN_EDIT, API_TOKEN_NEW } from '../../constants/Paths'
 import { IconNotification } from '../../components/IconNotification'
 import { SUCCESS } from '../../constants/AppConfigs'
-
-const {Text} = Typography
 
 class ApiTokens extends React.Component {
   constructor(props) {
@@ -30,43 +28,42 @@ class ApiTokens extends React.Component {
     return null
   }
 
-  buildData() {
-    let that = this
-
-    this.setState({loading: true})
+  fetchData = () => {
     getApiTokens()
       .then(response => {
-        that.setState({tokens: response.data, loading: false})
+        this.setState({tokens: response.data})
       })
       .catch(error => {
         console.log(error)
-        that.setState({tokens: [], loading: false})
+        this.setState({tokens: []})
       })
   }
 
-  handleEdit = (token) => {
-    const {id, label, access_key, trusted_ip_list} = token
-    const ipString = trusted_ip_list ? trusted_ip_list.join(', ') : ''
-    this.props.history.push(`/${API_TOKEN_EDIT}?id=${id}&label=${label}&access_key=${access_key}&trusted_ip_list=${ipString}`)
+  onEdit = (token) => {
+    const {id, label, accessKey, trustedIpList} = token
+    const ipString = trustedIpList ? trustedIpList.join(', ') : ''
+    this.props.history.push({
+      pathname: `/${API_TOKEN_EDIT}`,
+      state: {token: {id, label, accessKey, ipString}}
+    })
   }
 
-  handleDelete = (token) => {
-    let that = this
+  onDelete = (token) => {
     const {intl} = this.props
     deleteApiToken(token.id)
       .then(response => {
-        that.buildData()
+        this.fetchData()
         IconNotification(SUCCESS, intl.formatMessage({id: 'delete.token.success'}))
       })
   }
 
-  handleCreate = (token) => {
+  onCreate = () => {
     this.props.history.push(`/${API_TOKEN_NEW}`)
   }
 
   componentDidMount() {
     this.props.getAuthStatus()
-    this.buildData()
+    this.fetchData()
   }
 
   getColumns() {
@@ -75,46 +72,32 @@ class ApiTokens extends React.Component {
       {
         title: intl.formatMessage({id: 'label'}),
         dataIndex: 'label',
-        align: 'left',
-        render: (value) => {
-          return (
-            <Text>{value}</Text>
-          )
-        }
+        align: 'left'
       },
       {
         title: intl.formatMessage({id: 'access.key'}),
-        dataIndex: 'access_key',
-        align: 'center',
-        render: (value) => {
-          return (
-            <Text>{value}</Text>
-          )
-        }
+        dataIndex: 'accessKey',
+        align: 'center'
       },
       {
         title: intl.formatMessage({id: 'date'}),
         dataIndex: 'date',
-        align: 'center',
-        render: (value) => {
-          return (
-            <Text>{value}</Text>
-          )
-        }
+        align: 'center'
       },
       {
         title: intl.formatMessage({id: 'operation'}),
-        //dataIndex: 'date',
+        dataIndex: 'id',
         align: 'center',
         render: (value, record) => {
           return (
-            <Row type={'flex'} justify={'center'}>
-              <Col><Button type='link' size='large' className='gx-mt-0 gx-mb-0 gx-mr-3'
-                           onClick={() => this.handleEdit(record)}><Icon type="edit"/></Button>
-                <Button type='link' size='large' className='gx-mt-0 gx-mb-0 gx-ml-3'
-                        onClick={() => this.handleDelete(record)}><Icon type="delete"/></Button>
-              </Col>
-            </Row>
+            <div>
+              <Button type='link' onClick={() => this.onEdit(record)}>
+                <Icon type="edit"/>
+              </Button>
+              <Button type='link' onClick={() => this.onDelete(record)}>
+                <Icon type="delete"/>
+              </Button>
+            </div>
           )
         }
       }
@@ -133,8 +116,8 @@ class ApiTokens extends React.Component {
         data.push({
           id: token.id,
           label: (!token.label || !token.label.length) ? ' - ' : token.label,
-          access_key: token.access_key,
-          trusted_ip_list: token.trusted_ip_list,
+          accessKey: token.access_key,
+          trustedIpList: token.trusted_ip_list,
           date: date
         })
       })
@@ -143,16 +126,16 @@ class ApiTokens extends React.Component {
     return (
       <div>
         <h1 className="gx-mt-4 gx-mb-4"><FormattedMessage id="api.tokens"/></h1>
+        <Button type='primary' onClick={this.onCreate}><FormattedMessage id="api.tokens.create"/></Button>
         <Spin spinning={loader} size="large">
-          {/* Components */}
+          <Table
+            className={'gx-table-responsive'}
+            columns={this.getColumns()}
+            dataSource={data}
+            locale={getTableLocaleData(intl)}
+            rowKey="id"
+            size='middle'/>
         </Spin>
-        <Button type='primary' onClick={this.handleCreate}><FormattedMessage id="api.tokens.create"/></Button>
-        <Table className={'gx-table-responsive'}
-               columns={this.getColumns()}
-               dataSource={data}
-               locale={getTableLocaleData}
-               size='large'
-        />
       </div>
     )
   }

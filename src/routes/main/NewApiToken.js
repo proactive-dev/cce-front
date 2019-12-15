@@ -1,15 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { FormattedMessage, injectIntl } from 'react-intl'
-import { Button, Card, Col, Form, Icon, Input, Modal, Row, Spin, Typography } from 'antd'
+import { Button, Card, Form, Icon, Input, Modal, Spin } from 'antd'
+import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { getAuthStatus } from '../../appRedux/actions/User'
 import { newApiToken } from '../../api/axiosAPIs'
 import { IconNotification } from '../../components/IconNotification'
 import { SUCCESS } from '../../constants/AppConfigs'
-import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { API_TOKENS } from '../../constants/Paths'
 
-const {Text, Title} = Typography
 const InputGroup = Input.Group
 
 class NewApiToken extends React.Component {
@@ -55,121 +54,98 @@ class NewApiToken extends React.Component {
     })
   }
 
-  copyAccessKey = () => {
+  onAccessKeyCopied = () => {
     IconNotification(SUCCESS, this.props.intl.formatMessage({id: 'copy.access.key.success'}))
   }
 
-  copySecretKey = () => {
-    IconNotification(SUCCESS, this.props.intl.formatMessage({id: 'copy.secrete.key.success'}))
+  onSecretKeyCopied = () => {
+    IconNotification(SUCCESS, this.props.intl.formatMessage({id: 'copy.secret.key.success'}))
   }
 
-  handleCloseModal = () => {
+  onModalClose = () => {
     this.setState({visibleToken: false, token: null})
     this.props.history.push(`/${API_TOKENS}`)
   }
 
   render() {
     const {intl} = this.props
-    const {loader, token} = this.state
+    const {loader, token, visibleToken} = this.state
     const {getFieldDecorator} = this.props.form
     const accessKey = token ? token.access_key : intl.formatMessage({id: 'unknown'})
     const secretKey = token ? token.secret_key : intl.formatMessage({id: 'unknown'})
 
     return (
-      <div>
+      <div className="gx-mb-4">
         <h1 className="gx-mt-4 gx-mb-4"><FormattedMessage id="create.token"/></h1>
-        <Spin spinning={loader} size="large">
-          {/* Components */}
+        <Spin
+          className={'gx-auth-container'}
+          spinning={loader}
+          size="large">
+          <Card
+            className={'gx-auth-content gx-text-center'}
+            bordered={false}>
+            <img className='gx-mb-3' alt="" src={require('assets/images/api.png')}/>
+            <br/>
+            <span className='gx-fs-lg'><FormattedMessage id="api.tokens.create.description"/></span>
+            <Form
+              className="gx-text-left"
+              onSubmit={this.handleSubmit}>
+              <Form.Item
+                label={intl.formatMessage({id: 'label'})}
+                className={'gx-mt-2'}>
+                {getFieldDecorator('label', {
+                  rules: [{required: true, message: intl.formatMessage({id: 'alert.fieldRequired'})}]
+                })(
+                  <Input/>
+                )}
+              </Form.Item>
+              <Form.Item
+                label={intl.formatMessage({id: 'google.auth.code'})}
+                className={'gx-mt-2'}>
+                {getFieldDecorator('twoFactor', {
+                  rules: [{required: true, message: intl.formatMessage({id: 'alert.fieldRequired'})}]
+                })(
+                  <Input/>
+                )}
+              </Form.Item>
+              <Button type="primary" className='auth-form-button gx-mt-1' htmlType="submit">
+                <FormattedMessage id="submit"/>
+              </Button>
+            </Form>
+          </Card>
         </Spin>
-        <Row type='flex' justify='center'>
-          <Col>
-            <Card bordered={false} style={{maxWidth: 600}}>
-              <Row type='flex' justify='center'>
-                <Col>
-                  <img alt="" src={require('assets/images/api.png')}/>
-                </Col>
-              </Row>
-              <Row type='flex' justify='center' className='gx-mt-2'>
-                <Col>
-                  <Text className={'gx-fs-lg'}>
-                    <FormattedMessage id="api.tokens.create.description"/>
-                  </Text>
-                </Col>
-              </Row>
-              <Form onSubmit={this.handleSubmit}>
-                <Form.Item label={intl.formatMessage({id: 'label'})} className={'gx-mt-2'} wrapperCol={{sm: 24}}
-                           style={{width: '100%', margin: 0}}>
-                  {getFieldDecorator('label', {
-                    rules: [{required: true, message: intl.formatMessage({id: 'alert.fieldRequired'})}]
-                  })(
-                    <Input/>)}
-                </Form.Item>
-
-                <Form.Item label={intl.formatMessage({id: 'google.auth.code'})} className={'gx-mt-2'}
-                           wrapperCol={{sm: 24}} style={{width: '100%', margin: 0}}>
-                  {getFieldDecorator('twoFactor', {
-                    rules: [{required: true, message: intl.formatMessage({id: 'alert.fieldRequired'})}]
-                  })(
-                    <Input/>)}
-                </Form.Item>
-                <Row type='flex' justify='center' className='gx-mt-2'>
-                  <Col>
-                    <Button type="primary" htmlType="submit">
-                      <FormattedMessage id="submit"/>
-                    </Button>
-                  </Col>
-                </Row>
-              </Form>
-            </Card>
-          </Col>
-        </Row>
-
         <Modal
-          visible={this.state.visibleToken}
-          // footer={null}
+          visible={visibleToken}
           title={intl.formatMessage({id: 'success'})}
-          onOk={this.handleCloseModal}
-          onCancel={this.handleCloseModal}
-          cancelButtonProps={{hidden: true}}
-        >
-          <Row type="flex" justify='center'>
-            <Col align={'left'}>
-              <Text className='gx-fs-lg' type='warning'
-                    strong>{intl.formatMessage({id: 'create.api.desc1'})}</Text><br/>
-              <Text className='gx-fs-lg' type='warning' strong>{intl.formatMessage({id: 'create.api.desc2'})}</Text>
-            </Col>
-          </Row>
-          <br/>
-          <Row type="flex">
-            <Col span={24}>
-              <div style={{width: '100%', marginBottom: 16}}>
-                <InputGroup compact>
-                  <Input addonBefore={'Access Key:'} defaultValue={accessKey} readOnly style={{width: '85%'}}/>
-                  <CopyToClipboard
-                    text={accessKey}
-                    onCopy={() => this.copyAccessKey()}
-                  >
-                    <Button><Icon type="copy"/></Button>
-                  </CopyToClipboard>
-                </InputGroup>
-              </div>
-            </Col>
-          </Row>
-          <Row type="flex">
-            <Col span={24}>
-              <div style={{width: '100%', marginBottom: 16}}>
-                <InputGroup compact>
-                  <Input addonBefore={'Secrete Key:'} defaultValue={secretKey} readOnly style={{width: '85%'}}/>
-                  <CopyToClipboard
-                    text={secretKey}
-                    onCopy={() => this.copySecretKey()}
-                  >
-                    <Button><Icon type="copy"/></Button>
-                  </CopyToClipboard>
-                </InputGroup>
-              </div>
-            </Col>
-          </Row>
+          onOk={this.onModalClose}
+          onCancel={this.onModalClose}
+          cancelButtonProps={{hidden: true}}>
+          <h4 className='gx-fs-primary gx-text-primary'>{intl.formatMessage({id: 'create.api.desc1'})}</h4>
+          <h4 className='gx-fs-primary gx-text-primary'>{intl.formatMessage({id: 'create.api.desc2'})}</h4>
+          <InputGroup className={'gx-mt-4'} compact>
+            <Input
+              addonBefore={`${intl.formatMessage({id: 'access.key'})}:`}
+              defaultValue={accessKey}
+              readOnly
+              style={{width: '85%'}}/>
+            <CopyToClipboard
+              text={accessKey}
+              onCopy={() => this.onAccessKeyCopied()}>
+              <Button><Icon type="copy"/></Button>
+            </CopyToClipboard>
+          </InputGroup>
+          <InputGroup compact>
+            <Input
+              addonBefore={`${intl.formatMessage({id: 'secret.key'})}:`}
+              defaultValue={secretKey}
+              readOnly
+              style={{width: '85%'}}/>
+            <CopyToClipboard
+              text={secretKey}
+              onCopy={() => this.onSecretKeyCopied()}>
+              <Button><Icon type="copy"/></Button>
+            </CopyToClipboard>
+          </InputGroup>
         </Modal>
       </div>
     )
