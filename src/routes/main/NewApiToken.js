@@ -77,7 +77,7 @@ class NewApiToken extends React.Component {
 
     return (
       <div>
-        <h1 className="gx-mt-4 gx-mb-4"><FormattedMessage id="api.tokens"/></h1>
+        <h1 className="gx-mt-4 gx-mb-4"><FormattedMessage id="create.token"/></h1>
         <Spin spinning={loader} size="large">
           {/* Components */}
         </Spin>

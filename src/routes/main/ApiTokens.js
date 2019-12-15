@@ -134,6 +134,7 @@ class ApiTokens extends React.Component {
           id: token.id,
           label: (!token.label || !token.label.length) ? ' - ' : token.label,
           access_key: token.access_key,
+          trusted_ip_list: token.trusted_ip_list,
           date: date
         })
       })

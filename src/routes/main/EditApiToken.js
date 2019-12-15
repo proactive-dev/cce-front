@@ -44,18 +44,18 @@ class EditApiToken extends React.Component {
         ip: values.trusted_ip_list
       })
 
-      this.setState({id: values.id, label: values.label, accessKey: values.access_key, ip: values.trusted_ip_list})
+      this.setState({id: values.id})
     }
   }
 
   handleSubmit = (e) => {
     e.preventDefault()
-    const {id, label, ip} = this.state
+    const {id} = this.state
     this.props.form.validateFields((err, values) => {
       if (!err) {
         let formData = new FormData()
         formData.append('api_token[label]', values.label)
-        formData.append('api_token[ip_whitelist]', ip)
+        formData.append('api_token[ip_whitelist]', values.ip)
         formData.append('two_factor[type]', 'app')
         formData.append('two_factor[otp]', values.twoFactor)
         formData.append('commit', 'Confirm')
@@ -75,7 +75,7 @@ class EditApiToken extends React.Component {
     const {getFieldDecorator} = this.props.form
     return (
       <div>
-        <h1 className="gx-mt-4 gx-mb-4"><FormattedMessage id="api.tokens"/></h1>
+        <h1 className="gx-mt-4 gx-mb-4"><FormattedMessage id="update.token"/></h1>
         <Spin spinning={loader} size="large">
           {/* Components */}
         </Spin>
@@ -103,7 +103,7 @@ class EditApiToken extends React.Component {
                     <Input/>)}
                 </Form.Item>
 
-                <Form.Item label={intl.formatMessage({id: 'accessKey'})} className={'gx-mt-2'} wrapperCol={{sm: 24}}
+                <Form.Item label={intl.formatMessage({id: 'access.key'})} className={'gx-mt-2'} wrapperCol={{sm: 24}}
                            style={{width: '100%', margin: 0}}>
                   {getFieldDecorator('accessKey', {
                     rules: []
@@ -111,7 +111,7 @@ class EditApiToken extends React.Component {
                     <Input readOnly/>)}
                 </Form.Item>
 
-                <Form.Item label={intl.formatMessage({id: 'ip'})} className={'gx-mt-2'} wrapperCol={{sm: 24}}
+                <Form.Item label={intl.formatMessage({id: 'ip.whitelist'})} className={'gx-mt-2'} wrapperCol={{sm: 24}}
                            style={{width: '100%', margin: 0}}>
                   {getFieldDecorator('ip', {
                     rules: []
