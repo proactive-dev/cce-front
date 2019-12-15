@@ -75,7 +75,7 @@ class SimpleMarketInfo extends React.Component {
   }
 
   render() {
-    const {tickers} = this.props
+    const {intl, tickers} = this.props
     let data = []
     if (!_.isEmpty(tickers)) {
       let filteredTickers = HOME_SYMBOLS.reduce((obj, key) => {
@@ -116,7 +116,7 @@ class SimpleMarketInfo extends React.Component {
              columns={this.getColumns()}
              dataSource={data}
              pagination={false}
-             locale={getTableLocaleData}
+             locale={getTableLocaleData(intl)}
              rowKey="market"
              onRow={(record) => ({
                onClick: () => {
