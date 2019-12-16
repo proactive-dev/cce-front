@@ -64,3 +64,7 @@ export const BASE_PRICE_SYMBOL = '$'
 export const DEFAULT_PRECISION = 8
 
 export const ALMOST_ZERO = 0.0000001
+
+export const HISTORY_TYPE_DEPOSIT = 'deposit'
+export const HISTORY_TYPE_WITHDRAWAL = 'withdraw'
+

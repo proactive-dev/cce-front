@@ -3,15 +3,17 @@ import { connect } from 'react-redux'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import { getAuthStatus } from '../../appRedux/actions/User'
 import { getAccounts } from '../../appRedux/actions/Accounts'
-import { Card, Col, Icon, Row, Spin, Typography } from 'antd'
+import { Button, Card, Col, Icon, Row, Spin, Typography } from 'antd'
 import _ from 'lodash'
 import DepositAddress from '../../components/DepositAddress'
 import CurrencySelect from '../../components/CurrencySelect'
 import BalanceInfo from '../../components/BalanceInfo'
 import { IconNotification } from '../../components/IconNotification'
-import { SUCCESS } from '../../constants/AppConfigs'
+import { HISTORY_TYPE_DEPOSIT, SUCCESS } from '../../constants/AppConfigs'
 import { CURRENCIES } from '../../constants/Currencies'
 import { TRANSACTIONS } from '../../constants/Paths'
+import TransactionHistoryTable from '../../components/TransactionHistoryTable'
+import { getDeposits } from '../../api/axiosAPIs'
 
 const {Text} = Typography
 
@@ -22,7 +24,8 @@ class Deposit extends React.Component {
     this.state = {
       loader: false,
       accounts: [],
-      currentSymbol: CURRENCIES[0].symbol
+      currentSymbol: CURRENCIES[0].symbol,
+      deposits: []
     }
   }
 
@@ -37,11 +40,28 @@ class Deposit extends React.Component {
   componentDidMount() {
     this.props.getAuthStatus()
     this.props.getAccounts()
+    this.fetchDeposits()
 
     const {location} = this.props
     if (!_.isEmpty(location.state) && !_.isEmpty(location.state.currency)) {
       this.setState({currentSymbol: location.state.currency})
     }
+  }
+
+  fetchDeposits = () => {
+    getDeposits()
+      .then(response => {
+        if (response.data) {
+          let deposits = []
+          response.data.map(deposit => {
+            let tx = deposit
+            let currency = CURRENCIES.find(item => item.symbol === tx.currency)
+            tx.precision = currency.precision
+            deposits.push(tx)
+          })
+          this.setState({deposits})
+        }
+      })
   }
 
   onSelectCurrency = (value) => {
@@ -55,13 +75,13 @@ class Deposit extends React.Component {
   goTransactions = () => {
     this.props.history.push({
       pathname: `/${TRANSACTIONS}`,
-      state: {kind: 0}
+      state: {kind: HISTORY_TYPE_DEPOSIT}
     })
   }
 
   render() {
     const {intl} = this.props
-    const {loader, accounts, currentSymbol} = this.state
+    const {loader, accounts, currentSymbol, deposits} = this.state
     const result = accounts.find(account => account.currency.code === currentSymbol)
     const account = result === undefined ? {} : result
     const infoUrl = !_.isEmpty(account) ? account.currency.info_url : ''
@@ -112,6 +132,18 @@ class Deposit extends React.Component {
               </Card>
             </Col>
           </Row>
+          <Card
+            title={intl.formatMessage({id: 'history'})}
+            extra={
+              <Button type="link" className="gx-m-2"
+                      onClick={this.goTransactions}>
+                <u>{intl.formatMessage({id: 'view.all'})}</u>
+              </Button>
+            }>
+            <TransactionHistoryTable
+              data={_.reverse(deposits || []).slice(0, 5)}
+              kind={HISTORY_TYPE_DEPOSIT}/>
+          </Card>
         </Spin>
       </div>
     )
