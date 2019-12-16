@@ -10,7 +10,7 @@ class Terms extends React.Component {
       <div>
         <h1 className="gx-mt-4 gx-mb-4"><FormattedMessage id="terms.use"/></h1>
         <div className="agreementCon">
-          <h2 style={{padding: '24px 0 0 0'}}>[{intl.formatMessage({id:'last.updated'})} 29 Nov
+          <h2 style={{padding: '24px 0 0 0'}}>[{intl.formatMessage({id: 'last.updated'})} 29 Nov
             2018]</h2>
           <p>This agreement is between you and the service operator, <a className="jumpLink" href="/"
                                                                         target="_blank">{SITE_NAME}</a>. By using
