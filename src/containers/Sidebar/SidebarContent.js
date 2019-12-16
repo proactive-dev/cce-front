@@ -7,9 +7,10 @@ import CustomScrollbars from '../../components/CustomScrollbars'
 import SidebarLogo from './SidebarLogo'
 import Auxiliary from 'util/Auxiliary'
 import { THEME_TYPE_LITE } from '../../constants/ThemeSetting'
-import { EXCHANGE, LOGOUT, MARKETS } from '../../constants/Paths'
+import { COIN_CASTING, EXCHANGE, LOGOUT, MARKETS, PRIZE_CENTER } from '../../constants/Paths'
 import { AUTH_MENUS, ORDER_MENUS, USER_MENUS, WALLET_MENUS } from '../../constants/Menus'
 import LogoutMenu from '../../components/LogoutMenu'
+import PrizeCenterMenu from '../../components/PrizeCenterMenu'
 
 const SubMenu = Menu.SubMenu
 
@@ -87,6 +88,20 @@ class SidebarContent extends Component {
                     )
                   }
                 </SubMenu>
+              }
+              {
+                authStatus &&
+                <Menu.Item key={COIN_CASTING}>
+                  <Link to={`/${COIN_CASTING}`}>
+                    <FormattedMessage id="coin.casting"/>
+                  </Link>
+                </Menu.Item>
+              }
+              {
+                authStatus &&
+                <Menu.Item key={PRIZE_CENTER}>
+                  <PrizeCenterMenu/>
+                </Menu.Item>
               }
               {
                 authStatus &&

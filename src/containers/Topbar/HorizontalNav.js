@@ -4,8 +4,9 @@ import { connect } from 'react-redux'
 import { Menu } from 'antd'
 import { Link } from 'react-router-dom'
 import { NAV_STYLE_INSIDE_HEADER_HORIZONTAL } from '../../constants/ThemeSetting'
-import { EXCHANGE, MARKETS } from '../../constants/Paths'
+import { COIN_CASTING, EXCHANGE, MARKETS, PRIZE_CENTER } from '../../constants/Paths'
 import { ORDER_MENUS, WALLET_MENUS } from '../../constants/Menus'
+import PrizeCenterMenu from '../../components/PrizeCenterMenu'
 
 const SubMenu = Menu.SubMenu
 
@@ -91,6 +92,20 @@ class HorizontalNav extends Component {
               )
             }
           </SubMenu>
+        }
+        {
+          authStatus &&
+          <Menu.Item key={COIN_CASTING}>
+            <Link to={`/${COIN_CASTING}`}>
+              <FormattedMessage id="coin.casting"/>
+            </Link>
+          </Menu.Item>
+        }
+        {
+          authStatus &&
+          <Menu.Item key={PRIZE_CENTER}>
+            <PrizeCenterMenu/>
+          </Menu.Item>
         }
       </Menu>
     )

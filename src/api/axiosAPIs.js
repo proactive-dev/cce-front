@@ -1,6 +1,6 @@
 import axios from 'axios'
 import * as axiosConfig from './axiosConfig'
-import { HOST_URL } from '../constants/AppConfigs'
+import { HOST_URL, PRIZE_CENTER_LINK } from '../constants/AppConfigs'
 
 const getHeaders = {
   // 'Access-Control-Allow-Origin': '*',
@@ -145,7 +145,7 @@ export const getMember = () => {
 }
 
 export const updateMember = (data) => {
-  return axiosRequest('post', axiosConfig.MEMBER_URL, data)
+  return axiosRequest('put', axiosConfig.MEMBER_URL, data)
 }
 
 export const getAllOrderHistory = () => {
@@ -262,4 +262,8 @@ export const moveFunds = (data) => {
 
 export const getRefData = (data = null, needLoader = false) => {
   return axiosRequest('get', axiosConfig.REF_DATA_URL, data, needLoader)
+}
+
+export const goPrizeCenter = (data) => {
+  return axiosRequest('post', PRIZE_CENTER_LINK, data)
 }

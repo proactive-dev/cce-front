@@ -10,7 +10,10 @@ import AccountsOverview from '../../components/AccountsOverview'
 import ApiTokenCard from '../../components/ApiTokenCard'
 import LoginHistoryTable from '../../components/LoginHistoryTable'
 import UserSecurityCard from '../../components/UserSecurityCard'
+import { IconNotification } from '../../components/IconNotification'
 import { ADDR_MANAGEMENT, CHANGE_PWD, G_AUTH_DISABLE, G_AUTH_ENABLE, VERIFICATION } from '../../constants/Paths'
+import { activate, updateMember } from '../../api/axiosAPIs'
+import { ERROR, SUCCESS } from '../../constants/AppConfigs'
 
 const TabPane = Tabs.TabPane
 
@@ -40,11 +43,25 @@ class UserCenter extends React.Component {
   }
 
   activate = () => {
-
+    activate()
+      .then(response => {
+        IconNotification(SUCCESS, this.props.intl.formatMessage({id: 'send.email.succeed'}))
+      })
+      .catch(error => {
+        IconNotification(ERROR, this.props.intl.formatMessage({id: 'send.email.failed'}))
+        console.log(error.response)
+      })
   }
 
-  updateFeeConfiguration = () => {
+  updateFeeConfiguration = (e) => {
+    const value = e.target.checked
+    let formData = new FormData()
+    formData.append('member[commission_status]', value)
 
+    updateMember(formData)
+      .then(response => {
+        this.props.getProfile()
+      })
   }
 
   render() {

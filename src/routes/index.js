@@ -39,6 +39,7 @@ import {
   API_TOKENS,
   BALANCES,
   CHANGE_PWD,
+  COIN_CASTING,
   DEPOSIT,
   E_404,
   EXCHANGE,
@@ -63,7 +64,7 @@ import {
   VERIFICATION,
   WITHDRAWAL
 } from '../constants/Paths'
-import { API_DOC_URL } from '../constants/AppConfigs'
+import { API_DOC_URL, CC_LINK } from '../constants/AppConfigs'
 
 const AppRoute = ({match}) => (
   <div className="gx-main-content-wrapper">
@@ -99,6 +100,8 @@ const AppRoute = ({match}) => (
       <Route exact path={`${match.url}${TERMS}`} component={Terms}/>
       <Route exact path={`${match.url}${API}`}
              render={() => <CustomRedirect path={`${API_DOC_URL}`}/>}/>
+      <Route exact path={`${match.url}${COIN_CASTING}`}
+             render={() => <CustomRedirect path={`${CC_LINK}`}/>}/>
       <Route exact path={`${match.url}${EXCHANGE}`}
              render={() => <CustomRedirect path={`${match.url}${EXCHANGE}/${MARKET_LIST[0].id}`}/>}/>
       <Redirect from='*' to={`/${E_404}`}/>
