@@ -5,15 +5,16 @@ import { Link } from 'react-router-dom'
 import { Button, Card, Checkbox, Col, Form, Input, Row, Select, Spin, Typography } from 'antd'
 import _ from 'lodash'
 import { getCurrencyBySymbol, getFixed, isXRP } from '../../util/helpers'
-import { getAddresses, newWithdraw } from '../../api/axiosAPIs'
+import { getAddresses, getWithdraws, newWithdraw } from '../../api/axiosAPIs'
 import { getAuthStatus } from '../../appRedux/actions/User'
 import { getAccounts } from '../../appRedux/actions/Accounts'
 import CurrencySelect from '../../components/CurrencySelect'
 import BalanceInfo from '../../components/BalanceInfo'
 import { IconNotification } from '../../components/IconNotification'
-import { SUCCESS } from '../../constants/AppConfigs'
+import { HISTORY_TYPE_WITHDRAWAL, SUCCESS } from '../../constants/AppConfigs'
 import { CURRENCIES } from '../../constants/Currencies'
-import { ADDR_MANAGEMENT } from '../../constants/Paths'
+import { ADDR_MANAGEMENT, TRANSACTIONS } from '../../constants/Paths'
+import TransactionHistoryTable from '../../components/TransactionHistoryTable'
 
 const {Text} = Typography
 const {Option} = Select
@@ -31,7 +32,8 @@ class Withdrawal extends React.Component {
       getAmount: 0,
       account: {},
       twoFactor: '',
-      addrTagChecked: false
+      addrTagChecked: false,
+      withdraws: []
     }
   }
 
@@ -61,12 +63,36 @@ class Withdrawal extends React.Component {
   componentDidMount() {
     this.props.getAuthStatus()
     this.props.getAccounts()
+    this.fetchWithdraws()
 
     const {location} = this.props
     if (!_.isEmpty(location.state) && !_.isEmpty(location.state.currency)) {
       this.setState({currentSymbol: location.state.currency})
       this.updateStateAddrs(location.state.currency)
     }
+  }
+
+  fetchWithdraws = () => {
+    getWithdraws()
+      .then(response => {
+        if (response.data) {
+          let data = response.data
+          let withdraws = []
+          data.map(withdraw => {
+            let tx = withdraw
+            let currency = CURRENCIES.find(item => item.symbol === tx.currency)
+            tx.precision = currency.precision
+            if (tx.currency === currency.feeSymbol) {
+              tx.feeSymbolPrecision = currency.precision
+            }  else {
+              let feeSymbol = CURRENCIES.find(item => item.feeSymbol === currency.feeSymbol)
+              tx.feeSymbolPrecision = feeSymbol.precision
+            }
+            withdraws.push(tx)
+          })
+          this.setState({withdraws})
+        }
+      })
   }
 
   onSelectCurrency = (value) => {
@@ -134,6 +160,13 @@ class Withdrawal extends React.Component {
     })
   }
 
+  goTransactions = () => {
+    this.props.history.push({
+      pathname: `/${TRANSACTIONS}`,
+      state: {kind: HISTORY_TYPE_WITHDRAWAL}
+    })
+  }
+
   checkAmount = (rule, value, callback) => {
     let amount = parseFloat(value)
     if (amount > 0) {
@@ -164,7 +197,7 @@ class Withdrawal extends React.Component {
   render() {
     const {intl} = this.props
     const {getFieldDecorator} = this.props.form
-    const {loader, currentSymbol, addrs, getAmount, account, addrTagChecked} = this.state
+    const {loader, currentSymbol, addrs, getAmount, account, addrTagChecked, withdraws} = this.state
 
     const coin = getCurrencyBySymbol(currentSymbol)
     const balance = !_.isEmpty(account) ? getFixed(parseFloat(account.balance), parseInt(account.currency.precision)) : 0.0
@@ -281,10 +314,20 @@ class Withdrawal extends React.Component {
                     <FormattedMessage id="submit"/>
                   </Button>
                 </Form>
-
               </Card>
             </Col>
           </Row>
+          <Card title={intl.formatMessage({id: 'history'})}>
+            <div className="gx-text-right" style={{height: '10px'}}>
+              <Button type="link" className="gx-m-2"
+                      onClick={this.goTransactions}>
+                <u>{intl.formatMessage({id: 'view.all'})}</u>
+              </Button>
+            </div>
+            <TransactionHistoryTable
+              data={_.reverse(withdraws || []).slice(0, 5)}
+              kind={HISTORY_TYPE_WITHDRAWAL}/>
+          </Card>
         </Spin>
       </div>
     )
