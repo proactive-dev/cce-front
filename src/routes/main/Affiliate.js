@@ -49,21 +49,23 @@ class Affiliate extends Component {
     const refLink = gerRefLink(refId)
 
     return (
-      <Spin spinning={loader} size="large">
+      <div>
         <h1 className="gx-mt-4 gx-mb-4"><FormattedMessage id="affiliate"/></h1>
-        {
-          !_.isEmpty(refId) && <AffiliateLink link={refLink}/>
-        }
-        <Card className="gx-card">
+        <Spin spinning={loader} size="large">
+          {
+            !_.isEmpty(refId) && <AffiliateLink link={refLink}/>
+          }
+          <Card className="gx-card">
           <span className="gx-mb-4 gx-flex-row">
             <Icon type="user" className="gx-fs-xxl gx-ml-4 gx-mr-4"/>
             <h2>{intl.formatMessage({id: 'affiliate.direct.downline.users'}, {count: totalCount})}</h2>
           </span>
-          <AffiliateTree
-            treeData={treeData}
-          />
-        </Card>
-      </Spin>
+            <AffiliateTree
+              treeData={treeData}
+            />
+          </Card>
+        </Spin>
+      </div>
     )
   }
 }
