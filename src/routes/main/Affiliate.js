@@ -26,7 +26,7 @@ class Affiliate extends Component {
   }
 
   loadRefData = () => {
-    getRefData()
+    getRefData(null, true)
       .then(response => {
         if (!_.isEmpty(response.data)) {
           const {referral_id, map, count} = response.data
@@ -41,8 +41,6 @@ class Affiliate extends Component {
 
   componentDidMount() {
     this.loadRefData()
-    const {loader} = this.props
-    this.setState({loader})
   }
 
   render() {
@@ -71,8 +69,9 @@ class Affiliate extends Component {
 }
 
 const mapStateToProps = ({progress}) => {
-  const {loader} = progress
-  return {loader}
+  return {
+    loader: progress.loader
+  }
 }
 
 export default connect(mapStateToProps, null)(injectIntl(Affiliate))
