@@ -52,18 +52,11 @@ class Deposit extends React.Component {
     getDeposits()
       .then(response => {
         if (response.data) {
-          let data = response.data
           let deposits = []
-          data.map(deposit => {
+          response.data.map(deposit => {
             let tx = deposit
             let currency = CURRENCIES.find(item => item.symbol === tx.currency)
             tx.precision = currency.precision
-            if (tx.currency === currency.feeSymbol) {
-              tx.feeSymbolPrecision = currency.precision
-            }  else {
-              let feeSymbol = CURRENCIES.find(item => item.feeSymbol === currency.feeSymbol)
-              tx.feeSymbolPrecision = feeSymbol.precision
-            }
             deposits.push(tx)
           })
           this.setState({deposits})
@@ -139,13 +132,14 @@ class Deposit extends React.Component {
               </Card>
             </Col>
           </Row>
-          <Card title={intl.formatMessage({id: 'history'})}>
-            <div className="gx-text-right" style={{height: '10px'}}>
+          <Card
+            title={intl.formatMessage({id: 'history'})}
+            extra={
               <Button type="link" className="gx-m-2"
                       onClick={this.goTransactions}>
                 <u>{intl.formatMessage({id: 'view.all'})}</u>
               </Button>
-            </div>
+            }>
             <TransactionHistoryTable
               data={_.reverse(deposits || []).slice(0, 5)}
               kind={HISTORY_TYPE_DEPOSIT}/>

@@ -8,10 +8,12 @@ import TransactionHistoryTable from '../../components/TransactionHistoryTable'
 import { getDeposits, getWithdraws } from '../../api/axiosAPIs'
 import { CSVLink } from 'react-csv'
 import { convertToDate, getFixed } from '../../util/helpers'
-import { HISTORY_TYPE_DEPOSIT, HISTORY_TYPE_WITHDRAWAL, REGX } from '../../constants/AppConfigs'
+import { HISTORY_TYPE_DEPOSIT, HISTORY_TYPE_WITHDRAWAL } from '../../constants/AppConfigs'
 import { CURRENCIES } from '../../constants/Currencies'
 
 const TabPane = Tabs.TabPane
+
+const REGX = /[TZ]/gi
 
 class Transactions extends React.Component {
   constructor(props) {
@@ -74,12 +76,6 @@ class Transactions extends React.Component {
       let tx = transaction
       let currency = CURRENCIES.find(item => item.symbol === tx.currency)
       tx.precision = currency.precision
-      if (tx.currency === currency.feeSymbol) {
-        tx.feeSymbolPrecision = currency.precision
-      } else {
-        let feeSymbol = CURRENCIES.find(item => item.feeSymbol === currency.feeSymbol)
-        tx.feeSymbolPrecision = feeSymbol.precision
-      }
       transactions.push(tx)
     })
     this.setState({transactions: transactions, exportData, exportReady: true})
@@ -103,18 +99,11 @@ class Transactions extends React.Component {
       const transaction = data[i]
       let currency = CURRENCIES.find(item => item.symbol === transaction.currency)
       let precision = currency.precision
-      let feeSymbolPrecision = 0
-      if (transaction.currency === currency.feeSymbol) {
-        feeSymbolPrecision = currency.precision
-      } else {
-        let feesymbol = CURRENCIES.find(item => item.feeSymbol === currency.feeSymbol)
-        feeSymbolPrecision = feesymbol.precision
-      }
       const date = transaction.created_at.replace(REGX, ' ').replace('.000', '')
       const status = intl.formatMessage({id: `${kind}.${transaction.aasm_state}`}).toUpperCase()
       const coin = transaction.currency.toUpperCase()
       const amount = getFixed(transaction.amount, precision)
-      const commission = getFixed(transaction.fee, feeSymbolPrecision)
+      const commission = getFixed(transaction.fee, precision)
       const txID = transaction.txid
       exportData.push([
         date,

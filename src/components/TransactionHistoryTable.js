@@ -1,14 +1,9 @@
 import React from 'react'
 import { Table } from 'antd'
 import { injectIntl } from 'react-intl'
-import { getFixed, getTableLocaleData } from '../util/helpers'
-import { REGX } from '../constants/AppConfigs'
+import { getFixed, getTableLocaleData, strTrunc } from '../util/helpers'
 
-function strTrunc(str, n) {
-  return (str && str.length > n) ?
-    str.substr(0, Math.round(n / 2)) + '...' + str.substr(str.length - Math.round(n / 2), str.length - 1) :
-    str
-}
+const REGX = /[TZ]/gi
 
 class TransactionHistoryTable extends React.Component {
 
@@ -29,7 +24,7 @@ class TransactionHistoryTable extends React.Component {
         dataIndex: 'aasm_state',
         align: 'center',
         render: (value) => {
-          return intl.formatMessage({id: `${kind}.${value}`}).toUpperCase()
+          return intl.formatMessage({id: `${kind}.${value}`})
         }
       },
       {
@@ -53,7 +48,7 @@ class TransactionHistoryTable extends React.Component {
         dataIndex: 'fee',
         align: 'center',
         render: (value, record) => {
-          return getFixed(value, record.feeSymbolPrecision)
+          return getFixed(value, record.precision)
         }
       },
       {

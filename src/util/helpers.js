@@ -219,4 +219,10 @@ export function numberFormat(inputNumber) {
   return inputNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 }
 
+export function strTrunc(str, n) {
+  return (str && str.length > n) ?
+    str.substr(0, Math.round(n / 2)) + '...' + str.substr(str.length - Math.round(n / 2), str.length - 1) :
+    str
+}
+
 

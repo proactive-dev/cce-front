@@ -76,18 +76,11 @@ class Withdrawal extends React.Component {
     getWithdraws()
       .then(response => {
         if (response.data) {
-          let data = response.data
           let withdraws = []
-          data.map(withdraw => {
+          response.data.map(withdraw => {
             let tx = withdraw
             let currency = CURRENCIES.find(item => item.symbol === tx.currency)
             tx.precision = currency.precision
-            if (tx.currency === currency.feeSymbol) {
-              tx.feeSymbolPrecision = currency.precision
-            }  else {
-              let feeSymbol = CURRENCIES.find(item => item.feeSymbol === currency.feeSymbol)
-              tx.feeSymbolPrecision = feeSymbol.precision
-            }
             withdraws.push(tx)
           })
           this.setState({withdraws})
@@ -317,13 +310,14 @@ class Withdrawal extends React.Component {
               </Card>
             </Col>
           </Row>
-          <Card title={intl.formatMessage({id: 'history'})}>
-            <div className="gx-text-right" style={{height: '10px'}}>
+          <Card
+            title={intl.formatMessage({id: 'history'})}
+            extra={
               <Button type="link" className="gx-m-2"
                       onClick={this.goTransactions}>
                 <u>{intl.formatMessage({id: 'view.all'})}</u>
               </Button>
-            </div>
+            }>
             <TransactionHistoryTable
               data={_.reverse(withdraws || []).slice(0, 5)}
               kind={HISTORY_TYPE_WITHDRAWAL}/>

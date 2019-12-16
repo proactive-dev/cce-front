@@ -68,4 +68,3 @@ export const ALMOST_ZERO = 0.0000001
 export const HISTORY_TYPE_DEPOSIT = 'deposit'
 export const HISTORY_TYPE_WITHDRAWAL = 'withdraw'
 
-export const REGX = /[TZ]/gi
