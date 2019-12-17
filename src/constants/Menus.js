@@ -6,10 +6,16 @@ import {
   LOGIN,
   OPEN_ORDERS,
   ORDER_HISTORY,
+  PLD_AFFILIATE_HISTORY,
+  PLD_PRESALE_HISTORY,
+  PLD_PROFIT_HISTORY,
   REFERRAL,
   REGISTER,
   TRADE_HISTORY,
   TRANSACTIONS,
+  TSF_EXCHANGE,
+  TSF_PROFIT,
+  TSF_PURCHASE,
   USER,
   WITHDRAWAL
 } from './Paths'
@@ -75,5 +81,35 @@ export const AUTH_MENUS = [
   {
     path: REGISTER,
     title: 'auth.register'
+  }
+]
+
+export const TSF_MENUS = [
+  {
+    path: TSF_PURCHASE,
+    title: 'purchase'
+  },
+  {
+    path: TSF_PROFIT,
+    title: 'profit.program'
+  },
+  {
+    path: TSF_EXCHANGE,
+    title: 'exchange'
+  }
+]
+
+export const PLD_MENUS = [
+  {
+    path: PLD_PRESALE_HISTORY,
+    title: 'purchase'
+  },
+  {
+    path: PLD_PROFIT_HISTORY,
+    title: 'profits'
+  },
+  {
+    path: PLD_AFFILIATE_HISTORY,
+    title: 'affiliate.history'
   }
 ]

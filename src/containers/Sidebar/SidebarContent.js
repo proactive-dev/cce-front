@@ -8,7 +8,7 @@ import SidebarLogo from './SidebarLogo'
 import Auxiliary from 'util/Auxiliary'
 import { THEME_TYPE_LITE } from '../../constants/ThemeSetting'
 import { COIN_CASTING, EXCHANGE, LOGOUT, MARKETS, PRIZE_CENTER } from '../../constants/Paths'
-import { AUTH_MENUS, ORDER_MENUS, USER_MENUS, WALLET_MENUS } from '../../constants/Menus'
+import { AUTH_MENUS, ORDER_MENUS, PLD_MENUS, TSF_MENUS, USER_MENUS, WALLET_MENUS } from '../../constants/Menus'
 import LogoutMenu from '../../components/LogoutMenu'
 import PrizeCenterMenu from '../../components/PrizeCenterMenu'
 
@@ -80,6 +80,38 @@ class SidebarContent extends Component {
                   }>
                   {
                     ORDER_MENUS.map(({path, title}) =>
+                      <Menu.Item key={path}>
+                        <Link to={`/${path}`}>
+                          <FormattedMessage id={title}/>
+                        </Link>
+                      </Menu.Item>
+                    )
+                  }
+                </SubMenu>
+              }
+              {
+                authStatus &&
+                <SubMenu
+                  key="tsf"
+                  title={'TSF'}>
+                  {
+                    TSF_MENUS.map(({path, title}) =>
+                      <Menu.Item key={path}>
+                        <Link to={`/${path}`}>
+                          <FormattedMessage id={title}/>
+                        </Link>
+                      </Menu.Item>
+                    )
+                  }
+                </SubMenu>
+              }
+              {
+                authStatus &&
+                <SubMenu
+                  key="pld"
+                  title={'PLD'}>
+                  {
+                    PLD_MENUS.map(({path, title}) =>
                       <Menu.Item key={path}>
                         <Link to={`/${path}`}>
                           <FormattedMessage id={title}/>

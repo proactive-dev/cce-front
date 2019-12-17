@@ -52,6 +52,9 @@ import {
   MARKETS,
   OPEN_ORDERS,
   ORDER_HISTORY,
+  PLD_AFFILIATE_HISTORY,
+  PLD_PRESALE_HISTORY,
+  PLD_PROFIT_HISTORY,
   PRIVACY,
   REFERRAL,
   REGISTER,
@@ -60,11 +63,20 @@ import {
   TRADE_HISTORY,
   TRADING_RULES,
   TRANSACTIONS,
+  TSF_EXCHANGE,
+  TSF_PROFIT,
+  TSF_PURCHASE,
   USER,
   VERIFICATION,
   WITHDRAWAL
 } from '../constants/Paths'
 import { API_DOC_URL, CC_LINK } from '../constants/AppConfigs'
+import ProfitHistory from './pld/ProfitHistory'
+import PresaleHistory from './pld/PresaleHistory'
+import AffiliateHistory from './pld/AffiliateHistory'
+import Convert from './tsf/Convert'
+import ProfitProgram from './tsf/ProfitProgram'
+import Purchase from './tsf/Purchase'
 
 const AppRoute = ({match}) => (
   <div className="gx-main-content-wrapper">
@@ -98,6 +110,12 @@ const AppRoute = ({match}) => (
       <Route exact path={`${match.url}${FEE_RULES}`} component={FeeRules}/>
       <Route exact path={`${match.url}${PRIVACY}`} component={Privacy}/>
       <Route exact path={`${match.url}${TERMS}`} component={Terms}/>
+      <Route exact path={`${match.url}${TSF_PURCHASE}`} component={Purchase}/>
+      <Route exact path={`${match.url}${TSF_PROFIT}`} component={ProfitProgram}/>
+      <Route exact path={`${match.url}${TSF_EXCHANGE}`} component={Convert}/>
+      <Route exact path={`${match.url}${PLD_PRESALE_HISTORY}`} component={PresaleHistory}/>
+      <Route exact path={`${match.url}${PLD_PROFIT_HISTORY}`} component={ProfitHistory}/>
+      <Route exact path={`${match.url}${PLD_AFFILIATE_HISTORY}`} component={AffiliateHistory}/>
       <Route exact path={`${match.url}${API}`}
              render={() => <CustomRedirect path={`${API_DOC_URL}`}/>}/>
       <Route exact path={`${match.url}${COIN_CASTING}`}
