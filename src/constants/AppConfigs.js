@@ -1,5 +1,6 @@
 export const SITE_NAME = '365 Exchange'
-export const COPYRIGHT_COMPANY = 'NuROGIX, Inc. All Rights Reserved.'
+export const COMPANY_NAME = 'NuROGIX, Inc.'
+export const COPYRIGHT_COMPANY = `${COMPANY_NAME} All Rights Reserved.`
 
 export const LANGUAGES = [
   {
