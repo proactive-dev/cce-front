@@ -1,6 +1,6 @@
 import React from 'react'
 import { FormattedMessage, injectIntl } from 'react-intl'
-import { Badge, Card, Icon, Table, Tabs } from 'antd'
+import { Card, Icon, Table, Tabs } from 'antd'
 import { EX_COIN_SYMBOL, KEY_COIN_SYMBOL } from '../../constants/AppConfigs'
 import { getTableLocaleData } from '../../util/helpers'
 import { LEVELS } from '../../constants/Levels'
@@ -70,11 +70,13 @@ class FeeRules extends React.Component {
       },
       {
         title: () => {
-          return <div>
-            <FormattedMessage id="maker"/>
-            <Icon type="fire" className="gx-ml-2 gx-text-yellow" theme="filled"/>
-            <b className="gx-text-yellow">{EX_COIN_SYMBOL}</b>
-          </div>
+          return (
+            <div>
+              <FormattedMessage id="maker"/>
+              <Icon type="fire" className="gx-ml-2 gx-text-amber" theme="filled"/>
+              <b className="gx-text-amber">{EX_COIN_SYMBOL}</b>
+            </div>
+          )
         },
         dataIndex: 'maker.holding',
         align: 'center',
@@ -84,11 +86,13 @@ class FeeRules extends React.Component {
       },
       {
         title: () => {
-          return <div>
-            <FormattedMessage id="taker"/>
-            <Icon type="fire" className="gx-ml-2 gx-text-yellow" theme="filled"/>
-            <b className="gx-text-yellow">{EX_COIN_SYMBOL}</b>
-          </div>
+          return (
+            <div>
+              <FormattedMessage id="taker"/>
+              <Icon type="fire" className="gx-ml-2 gx-text-amber" theme="filled"/>
+              <b className="gx-text-amber">{EX_COIN_SYMBOL}</b>
+            </div>
+          )
         },
         dataIndex: 'taker.holding',
         align: 'center',
@@ -108,8 +112,12 @@ class FeeRules extends React.Component {
         dataIndex: 'symbol',
         align: 'center',
         render: (value) => {
-          return <div><img width={20} height={20} className="gx-mr-1"
-                           src={require(`assets/images/coins/${value}.png`)}/>{value.toUpperCase()}</div>
+          return (
+            <div>
+              <img width={20} height={20} className="gx-mr-1" src={require(`assets/images/coins/${value}.png`)}/>
+              {value.toUpperCase()}
+            </div>
+          )
         }
       },
       {
@@ -132,11 +140,8 @@ class FeeRules extends React.Component {
 
   render() {
     const {intl} = this.props
-    let data = []
-    CURRENCIES.map(item => {
-      if (item.visible && item.type === 'coin') {
-        data.push(item)
-      }
+    let data = CURRENCIES.filter(function (item) {
+      return (item.visible && item.type === 'coin')
     })
 
     return (
@@ -149,15 +154,11 @@ class FeeRules extends React.Component {
             tab={intl.formatMessage({id: 'trading.fees'})}>
             <Card>
               <h2><FormattedMessage id="trading.fees"/></h2>
-              <Badge
-                className="gx-mt-4 gx-ml-4" color={'black'}
-                text={intl.formatMessage({id: 'trading.fees.desc.1'})}/>
-              <Badge
-                className="gx-mt-2 gx-ml-4" color={'black'}
-                text={intl.formatMessage({id: 'trading.fees.desc.2'})}/>
-              <Badge
-                className="gx-mt-2 gx-ml-4" color={'black'}
-                text={intl.formatMessage({id: 'trading.fees.desc.3'})}/>
+              <ul>
+                <li className="gx-mt-4 gx-ml-4"><FormattedMessage id="trading.fees.desc.1"/></li>
+                <li className="gx-mt-4 gx-ml-4"><FormattedMessage id="trading.fees.desc.2"/></li>
+                <li className="gx-mt-4 gx-ml-4"><FormattedMessage id="trading.fees.desc.3"/></li>
+              </ul>
               <hr/>
               <Table
                 className="gx-table-responsive gx-mb-4"
@@ -175,9 +176,13 @@ class FeeRules extends React.Component {
             tab={intl.formatMessage({id: 'deposit.withdrawal.fees'})}>
             <Card>
               <h2><FormattedMessage id="deposit.fees"/></h2>
-              <Badge className="gx-m-4" color={'black'} text={intl.formatMessage({id: 'free'})}/>
+              <ul>
+                <li className="gx-m-4"><FormattedMessage id="free"/></li>
+              </ul>
               <h2><FormattedMessage id="withdrawal.fees"/></h2>
-              <Badge className="gx-m-4" color={'black'} text={intl.formatMessage({id: 'withdrawal.fee.desc'})}/>
+              <ul>
+                <li className="gx-m-4"><FormattedMessage id="withdrawal.fee.desc"/></li>
+              </ul>
               <hr/>
               <Table
                 className="gx-table-responsive gx-mb-4"
