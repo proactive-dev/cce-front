@@ -1,7 +1,7 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
 import { injectIntl } from 'react-intl'
-import { Button, Popover, Table } from 'antd'
+import { Popover, Table } from 'antd'
 import _ from 'lodash'
 import { getCoinFixed, getFixed, getTableLocaleData } from '../util/helpers'
 import { ESTIMATE_SYMBOL } from '../constants/AppConfigs'
@@ -15,13 +15,15 @@ class MainAccounts extends React.Component {
         dataIndex: 'symbol',
         align: 'center',
         render: (value) => {
-          return <div>
-            <img
-              className="gx-m-2"
-              src={require(`assets/images/coins/${value.toLowerCase()}.png`)}
-              alt={value} style={{maxWidth: 16, verticalAlign: 'middle'}}/>
-            {value.toUpperCase()}
-          </div>
+          return (
+            <div>
+              <img
+                className="gx-m-2"
+                src={require(`assets/images/coins/${value.toLowerCase()}.png`)}
+                alt={value} style={{maxWidth: 16, verticalAlign: 'middle'}}/>
+              {value.toUpperCase()}
+            </div>
+          )
         }
       },
       {
@@ -29,13 +31,14 @@ class MainAccounts extends React.Component {
         dataIndex: 'name',
         align: 'center',
         render: (value, record) => {
-          return <div className={'fullName'}>
+          return (
             <a target="_blank"
                rel="noopener noreferrer"
                title={`${value} Info`}
-               href={record.infoUrl}>{value}
+               href={record.infoUrl}>
+              {value}
             </a>
-          </div>
+          )
         }
       },
       {
@@ -43,7 +46,7 @@ class MainAccounts extends React.Component {
         dataIndex: 'total',
         align: 'center',
         render: (value, record) => {
-          return <div className={'total f-right'}>{getFixed(value, record.precision)}</div>
+          return getFixed(value, record.precision)
         }
       },
       {
@@ -51,7 +54,7 @@ class MainAccounts extends React.Component {
         dataIndex: 'available',
         align: 'center',
         render: (value, record) => {
-          return <div className={'usable f-right'}>{getFixed(value, record.precision)}</div>
+          return getFixed(value, record.precision)
         }
       },
       {
@@ -59,7 +62,7 @@ class MainAccounts extends React.Component {
         dataIndex: 'locked',
         align: 'center',
         render: (value, record) => {
-          return <div className={'locked f-right'}>{getFixed(value, record.precision)}</div>
+          return getFixed(value, record.precision)
         }
       },
       {
@@ -67,35 +70,39 @@ class MainAccounts extends React.Component {
         dataIndex: 'estimation',
         align: 'center',
         render: (value) => {
-          return <div className={'equalValue f-right'}>{getCoinFixed(value, ESTIMATE_SYMBOL)}</div>
+          return getCoinFixed(value, ESTIMATE_SYMBOL)
         }
       },
       {
         title: '',
         align: 'center',
         render: (record) => {
-          return <div className={'equalValue f-right'}>
-            <Button type="link" className="gx-m-2"
-                    onClick={() => this.props.onDeposit(record.symbol)}>
-              <u>{intl.formatMessage({id: 'deposit'})}</u>
-            </Button>
-            <Button type="link" className="gx-m-2"
-                    onClick={() => this.props.onWithdrawal(record.symbol)}>
-              <u>{intl.formatMessage({id: 'withdrawal'})}</u>
-            </Button>
-            {
-              _.isEmpty(record.markets) ?
-                <u className={'gx-link gx-text-light-grey'}>{intl.formatMessage({id: 'trade'})}</u>
-                :
-                <Popover
-                  overlayClassName="gx-popover-horizontal"
-                  placement="bottomRight"
-                  content={this.getTradeMenuContents(record.markets)}
-                  trigger="click">
-                  <u className={'gx-link'}>{intl.formatMessage({id: 'trade'})}</u>
-                </Popover>
-            }
-          </div>
+          return (
+            <div>
+              <u
+                className="gx-link gx-m-2"
+                onClick={() => this.props.onDeposit(record.symbol)}>
+                {intl.formatMessage({id: 'deposit'})}
+              </u>
+              <u
+                className="gx-link gx-m-2"
+                onClick={() => this.props.onWithdrawal(record.symbol)}>
+                {intl.formatMessage({id: 'withdrawal'})}
+              </u>
+              {
+                _.isEmpty(record.markets) ?
+                  <u className={'gx-link gx-text-light-grey gx-m-2'}>{intl.formatMessage({id: 'trade'})}</u>
+                  :
+                  <Popover
+                    overlayClassName="gx-popover-horizontal"
+                    placement="bottomRight"
+                    content={this.getTradeMenuContents(record.markets)}
+                    trigger="click">
+                    <u className={'gx-link gx-m-2'}>{intl.formatMessage({id: 'trade'})}</u>
+                  </Popover>
+              }
+            </div>
+          )
         }
       }
     ]

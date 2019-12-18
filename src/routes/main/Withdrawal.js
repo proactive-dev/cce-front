@@ -198,7 +198,7 @@ class Withdrawal extends React.Component {
       <div>
         <h1 className="gx-mt-4 gx-mb-4"><FormattedMessage id="withdrawal"/></h1>
         <Spin spinning={loader} size="large">
-          <Row type='flex' gutter={12}>
+          <Row className="gx-m-0">
             <Col span={12} xxl={12} xl={12} lg={12} md={24} sm={24} xs={24} className={'gx-p-1'}>
               <Card className="gx-h-100" bordered={false}>
                 <CurrencySelect value={currentSymbol} onChange={this.onSelectCurrency}/>
@@ -311,7 +311,9 @@ class Withdrawal extends React.Component {
             </Col>
           </Row>
           <Card
+            className="gx-m-1"
             title={intl.formatMessage({id: 'history'})}
+            bordered={false}
             extra={
               <Button type="link" className="gx-m-2"
                       onClick={this.goTransactions}>
