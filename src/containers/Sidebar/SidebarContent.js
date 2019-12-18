@@ -7,30 +7,33 @@ import CustomScrollbars from '../../components/CustomScrollbars'
 import SidebarLogo from './SidebarLogo'
 import Auxiliary from 'util/Auxiliary'
 import { THEME_TYPE_LITE } from '../../constants/ThemeSetting'
-import { COIN_CASTING, EXCHANGE, LOGOUT, MARKETS, PRIZE_CENTER } from '../../constants/Paths'
+import { ADMIN, COIN_CASTING, EXCHANGE, LOGOUT, MARKETS, PRIZE_CENTER } from '../../constants/Paths'
 import { AUTH_MENUS, ORDER_MENUS, PLD_MENUS, TSF_MENUS, USER_MENUS, WALLET_MENUS } from '../../constants/Menus'
 import LogoutMenu from '../../components/LogoutMenu'
 import PrizeCenterMenu from '../../components/PrizeCenterMenu'
+import AdminMenu from '../../components/AdminMenu'
 
 const SubMenu = Menu.SubMenu
 
 class SidebarContent extends Component {
 
   state = {
-    authStatus: false
+    authStatus: false,
+    profile: {}
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const {authStatus} = nextProps
-    if (authStatus !== prevState.authStatus) {
-      return {authStatus}
+    const {authStatus, profile} = nextProps
+    if ((authStatus !== prevState.authStatus) || (profile !== prevState.profile)) {
+      return {authStatus, profile}
     }
     return null
   }
 
   render() {
     const {themeType, pathname} = this.props
-    const {authStatus} = this.state
+    const {authStatus, profile} = this.state
+    const {isAdmin} = profile || {}
     const selectedKeys = pathname.substr(1)
     const defaultOpenKeys = selectedKeys.split('/')[1]
     return (
@@ -136,6 +139,12 @@ class SidebarContent extends Component {
                 </Menu.Item>
               }
               {
+                authStatus && isAdmin &&
+                <Menu.Item key={ADMIN}>
+                  <AdminMenu noIcon={true}/>
+                </Menu.Item>
+              }
+              {
                 authStatus &&
                 <SubMenu
                   key="user"
@@ -181,8 +190,8 @@ SidebarContent.propTypes = {}
 
 const mapStateToProps = ({settings, user}) => {
   const {pathname, navStyle} = settings
-  const {authStatus} = user
-  return {pathname, navStyle, authStatus}
+  const {authStatus, profile} = user
+  return {pathname, navStyle, authStatus, profile}
 }
 
 export default connect(mapStateToProps)(SidebarContent)

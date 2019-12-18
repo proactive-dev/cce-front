@@ -33,6 +33,7 @@ import Terms from './common/Terms'
 import { MARKETS as MARKET_LIST } from '../constants/Markets'
 import {
   ADDR_MANAGEMENT,
+  ADMIN,
   API,
   API_TOKEN_EDIT,
   API_TOKEN_NEW,
@@ -70,7 +71,7 @@ import {
   VERIFICATION,
   WITHDRAWAL
 } from '../constants/Paths'
-import { API_DOC_URL, CC_LINK } from '../constants/AppConfigs'
+import { ADMIN_URL, API_DOC_URL, CC_LINK } from '../constants/AppConfigs'
 import ProfitHistory from './pld/ProfitHistory'
 import PresaleHistory from './pld/PresaleHistory'
 import AffiliateHistory from './pld/AffiliateHistory'
@@ -116,12 +117,14 @@ const AppRoute = ({match}) => (
       <Route exact path={`${match.url}${PLD_PRESALE_HISTORY}`} component={PresaleHistory}/>
       <Route exact path={`${match.url}${PLD_PROFIT_HISTORY}`} component={ProfitHistory}/>
       <Route exact path={`${match.url}${PLD_AFFILIATE_HISTORY}`} component={AffiliateHistory}/>
+      <Route exact path={`${match.url}${EXCHANGE}`}
+             render={() => <CustomRedirect path={`${match.url}${EXCHANGE}/${MARKET_LIST[0].id}`}/>}/>
+      <Route exact path={`${match.url}${ADMIN}`}
+             render={() => <CustomRedirect path={`${ADMIN_URL}`}/>}/>
       <Route exact path={`${match.url}${API}`}
              render={() => <CustomRedirect path={`${API_DOC_URL}`}/>}/>
       <Route exact path={`${match.url}${COIN_CASTING}`}
              render={() => <CustomRedirect path={`${CC_LINK}`}/>}/>
-      <Route exact path={`${match.url}${EXCHANGE}`}
-             render={() => <CustomRedirect path={`${match.url}${EXCHANGE}/${MARKET_LIST[0].id}`}/>}/>
       <Redirect from='*' to={`/${E_404}`}/>
     </Switch>
   </div>
