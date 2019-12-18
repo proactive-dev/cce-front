@@ -156,12 +156,12 @@ export const getAllTradeHistory = () => {
   return axiosRequest('get', axiosConfig.HISTORY_TRADE_URL)
 }
 
-export const getOrderHistory = (params) => {
-  return axiosRequest('get', `${axiosConfig.HISTORY_ORDER_URL}?page=${params.page}&perPage=${params.perPage}&search=${params.search}`)
+export const getOrderHistory = ({page, perPage, search}) => {
+  return axiosRequest('get', `${axiosConfig.HISTORY_ORDER_URL}?page=${page}&perPage=${perPage}&search=${search}`)
 }
 
-export const getTradeHistory = (params) => {
-  return axiosRequest('get', `${axiosConfig.HISTORY_TRADE_URL}?page=${params.page}&perPage=${params.perPage}&search=${params.search}`)
+export const getTradeHistory = ({page, perPage, search}) => {
+  return axiosRequest('get', `${axiosConfig.HISTORY_TRADE_URL}?page=${page}&perPage=${perPage}&search=${search}`)
 }
 
 export const getAddresses = () => {
@@ -200,8 +200,8 @@ export const cancelWithdraw = (currency, id) => {
   return axiosRequest('delete', `${axiosConfig.WITHDRAW_URL}/${currency}/${id}`)
 }
 
-export const getTickets = (params) => {
-  return axiosRequest('get', `${axiosConfig.TICKETS_URL}?page=${params.page}&perPage=${params.perPage}`)
+export const getTickets = ({page, perPage}) => {
+  return axiosRequest('get', `${axiosConfig.TICKETS_URL}?page=${page}&perPage=${perPage}`)
 }
 
 export const newTicket = (data) => {
