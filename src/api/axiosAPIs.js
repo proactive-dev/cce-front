@@ -267,3 +267,43 @@ export const getRefData = (data = null, needLoader = false) => {
 export const goPrizeCenter = (data) => {
   return axiosRequest('post', PRIZE_CENTER_LINK, data)
 }
+
+export const getPurchases = ({currency, page, perPage}) => {
+  return axiosRequest('get', `${axiosConfig.PURCHASES_URL}?currency=${currency}&page=${page}&perPage=${perPage}`)
+}
+
+export const getPurchaseOptions = (data) => {
+  return axiosRequest('post', axiosConfig.PURCHASE_OPTIONS_URL, data)
+}
+
+export const preparePurchase = (data) => {
+  return axiosRequest('post', axiosConfig.PURCHASE_PREPARE_URL, data)
+}
+
+export const newPurchase = (data) => {
+  return axiosRequest('post', axiosConfig.PURCHASES_URL, data)
+}
+
+export const getPurchaseProfits = ({currency, page, perPage}) => {
+  return axiosRequest('get', `${axiosConfig.PURCHASE_PROFITS_URL}?currency=${currency}&page=${page}&perPage=${perPage}`)
+}
+
+export const getPurchaseAffiliates = ({currency, page, perPage}) => {
+  return axiosRequest('get', `${axiosConfig.PURCHASE_AFFILIATES_URL}?currency=${currency}&page=${page}&perPage=${perPage}`)
+}
+
+export const getInvests = () => {
+  return axiosRequest('get', axiosConfig.INVESTS_URL)
+}
+
+export const newInvest = (data) => {
+  return axiosRequest('post', axiosConfig.INVESTS_URL, data)
+}
+
+export const getPointExchanges = () => {
+  return axiosRequest('get', axiosConfig.POINT_EXCHANGES_URL)
+}
+
+export const newPointExchange = (data) => {
+  return axiosRequest('post', axiosConfig.POINT_EXCHANGES_URL, data)
+}
