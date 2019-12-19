@@ -9,8 +9,6 @@ import { IconNotification } from '../../components/IconNotification'
 import { SUCCESS } from '../../constants/AppConfigs'
 import { API_TOKENS } from '../../constants/Paths'
 
-const InputGroup = Input.Group
-
 class NewApiToken extends React.Component {
   constructor(props) {
     super(props)
@@ -84,7 +82,7 @@ class NewApiToken extends React.Component {
           <Card
             className={'gx-auth-content gx-text-center'}
             bordered={false}>
-            <img className='gx-mb-3' alt="" src={require('assets/images/api.png')}/>
+            <img className='gx-mb-3' alt="api" src={require('assets/images/api.png')}/>
             <br/>
             <span className='gx-fs-lg'><FormattedMessage id="api.tokens.create.description"/></span>
             <Form
@@ -120,32 +118,32 @@ class NewApiToken extends React.Component {
           onOk={this.onModalClose}
           onCancel={this.onModalClose}
           cancelButtonProps={{hidden: true}}>
-          <h4 className='gx-fs-primary gx-text-primary'>{intl.formatMessage({id: 'create.api.desc1'})}</h4>
-          <h4 className='gx-fs-primary gx-text-primary'>{intl.formatMessage({id: 'create.api.desc2'})}</h4>
-          <InputGroup className={'gx-mt-4'} compact>
-            <Input
-              addonBefore={`${intl.formatMessage({id: 'access.key'})}:`}
-              defaultValue={accessKey}
-              readOnly
-              style={{width: '85%'}}/>
-            <CopyToClipboard
-              text={accessKey}
-              onCopy={() => this.onAccessKeyCopied()}>
-              <Button><Icon type="copy"/></Button>
-            </CopyToClipboard>
-          </InputGroup>
-          <InputGroup compact>
-            <Input
-              addonBefore={`${intl.formatMessage({id: 'secret.key'})}:`}
-              defaultValue={secretKey}
-              readOnly
-              style={{width: '85%'}}/>
-            <CopyToClipboard
-              text={secretKey}
-              onCopy={() => this.onSecretKeyCopied()}>
-              <Button><Icon type="copy"/></Button>
-            </CopyToClipboard>
-          </InputGroup>
+          <h4 className='gx-text-primary'>{intl.formatMessage({id: 'create.api.desc1'})}</h4>
+          <h4 className='gx-text-primary'>{intl.formatMessage({id: 'create.api.desc2'})}</h4>
+          <Input
+            className={'gx-m-1'}
+            addonBefore={intl.formatMessage({id: 'access.key'})}
+            addonAfter={
+              <CopyToClipboard
+                text={accessKey}
+                onCopy={this.onAccessKeyCopied}>
+                <Icon type="copy"/>
+              </CopyToClipboard>
+            }
+            defaultValue={accessKey}
+            readOnly/>
+          <Input
+            className={'gx-m-1'}
+            addonBefore={intl.formatMessage({id: 'secret.key'})}
+            addonAfter={
+              <CopyToClipboard
+                text={secretKey}
+                onCopy={this.onSecretKeyCopied}>
+                <Icon type="copy"/>
+              </CopyToClipboard>
+            }
+            defaultValue={secretKey}
+            readOnly/>
         </Modal>
       </div>
     )

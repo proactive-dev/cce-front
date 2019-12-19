@@ -95,11 +95,10 @@ class UserCenter extends React.Component {
             <Card
               className="gx-card-full gx-card-widget gx-mt-2 gx-mb-2"
               bordered={false}
-              title={intl.formatMessage({id: 'overview'})}>
+              title={intl.formatMessage({id: 'login.activities'})}>
               <LoginHistoryTable
                 data={_.reverse(logins || []).slice(0, 5)}
-                pagination={false}
-              />
+                pagination={false}/>
             </Card>
           </TabPane>
           <TabPane
