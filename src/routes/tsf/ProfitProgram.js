@@ -2,10 +2,13 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import { Button, Card, Col, Form, Input, InputNumber, Row, Select, Spin, Table } from 'antd'
-import { getAuthStatus } from '../../appRedux/actions/User'
+import { getAuthStatus, getProfile } from '../../appRedux/actions/User'
+import { getAccounts } from '../../appRedux/actions/Accounts'
 import { getInvests, newInvest } from '../../api/axiosAPIs'
-import _ from 'lodash'
 import { getTableLocaleData, getTimeForTable } from '../../util/helpers'
+import { IconNotification } from '../../components/IconNotification'
+import { SUCCESS } from '../../constants/AppConfigs'
+import _ from 'lodash'
 
 const FormItem = Form.Item
 const Option = Select.Option
@@ -37,6 +40,7 @@ class ProfitProgram extends React.Component {
 
   componentDidMount() {
     this.props.getAuthStatus()
+    this.props.getProfile()
     this.getHistory()
   }
 
@@ -117,6 +121,7 @@ class ProfitProgram extends React.Component {
           productCount: 1,
           twoFactor: ''
         })
+        IconNotification(SUCCESS, this.props.intl.formatMessage({id: 'success'}))
         this.props.getAccounts()
         this.getHistory()
       })
@@ -217,7 +222,7 @@ class ProfitProgram extends React.Component {
                       wrapperCol={{sm: 24}}
                       className={'gx-w-100 gx-m-2'}>
                       {getFieldDecorator('twoFactor', {
-                        rules: [{required: false, message: intl.formatMessage({id: 'alert.fieldRequired'})}]
+                        rules: [{required: true, message: intl.formatMessage({id: 'alert.fieldRequired'})}]
                       })(
                         <Input onChange={this.onChangeTwoFactor}/>
                       )}
@@ -248,7 +253,7 @@ class ProfitProgram extends React.Component {
 }
 
 const mapDispatchToProps = {
-  getAuthStatus
+  getAuthStatus, getAccounts, getProfile
 }
 
 const mapStateToProps = ({progress, accounts, user}) => {
