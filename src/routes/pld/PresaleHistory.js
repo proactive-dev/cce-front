@@ -46,7 +46,6 @@ class PresaleHistory extends React.Component {
         const pageCount = Math.ceil(totalLength / perPage)
         this.setState({purchases, pageCount})
       })
-
   }
 
   onChangeTable = (pagination, filters, sorter) => {
