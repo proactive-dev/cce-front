@@ -44,7 +44,7 @@ class FeeRules extends React.Component {
       },
       {
         title: () => {
-          return <div>{EX_COIN_SYMBOL}&nbsp;&nbsp;<FormattedMessage id="balance"/></div>
+          return <div>{EX_COIN_SYMBOL}&nbsp;&nbsp;<FormattedMessage id="holding.balance"/></div>
         },
         dataIndex: 'holding.amount',
         align: 'center',

@@ -123,7 +123,7 @@ class ResetPassword extends Component {
                 }]
               })(
                 <Input.Password prefix={<Icon type="lock" style={{color: 'rgba(0,0,0,.25)'}}/>}
-                                placeholder={intl.formatMessage({id: 'new.password'})}/>
+                                placeholder={intl.formatMessage({id: 'password.new'})}/>
               )}
             </FormItem>
             <FormItem>
