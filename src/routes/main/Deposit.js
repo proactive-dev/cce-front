@@ -51,7 +51,7 @@ class Deposit extends React.Component {
       .then(response => {
         if (response.data) {
           let deposits = []
-          response.data.map(deposit => {
+          response.data.forEach(deposit => {
             let tx = deposit
             let currency = CURRENCIES.find(item => item.symbol === tx.currency)
             tx.precision = currency.precision

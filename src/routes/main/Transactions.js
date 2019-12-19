@@ -72,7 +72,7 @@ class Transactions extends React.Component {
   onSetData(data) {
     let exportData = this.buildExportData(data)
     let transactions = []
-    data.map(transaction => {
+    data.forEach(transaction => {
       let tx = transaction
       let currency = CURRENCIES.find(item => item.symbol === tx.currency)
       tx.precision = currency.precision

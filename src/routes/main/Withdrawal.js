@@ -76,7 +76,7 @@ class Withdrawal extends React.Component {
       .then(response => {
         if (response.data) {
           let withdraws = []
-          response.data.map(withdraw => {
+          response.data.forEach(withdraw => {
             let tx = withdraw
             let currency = CURRENCIES.find(item => item.symbol === tx.currency)
             tx.precision = currency.precision
