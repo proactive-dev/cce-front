@@ -39,10 +39,10 @@ class DepositAddress extends React.Component {
     return (
       <div>
         <h5>{symbol.toUpperCase()} <FormattedMessage id="deposit.address"/>:</h5>
-        <p className={'gx-m-3 gx-p-2 h4'}>
+        <p className={'gx-border gx-mt-3 gx-mb-5 gx-p-2 h4'} style={{wordBreak: 'break-all'}}>
           {account.payment_address.deposit_address}
         </p>
-        <Row type="flex" justify='center' className={'gx-mt-3'}>
+        <Row type="flex" justify='center'>
           <Col>
             <Button type="normal" icon={'qrcode'} onClick={this.showQRCode}>
               <FormattedMessage id="show.qrcode"/>

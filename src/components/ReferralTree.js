@@ -42,7 +42,7 @@ const getParentKey = (key, tree) => {
   return parentKey
 }
 
-class AffiliateTree extends React.Component {
+class ReferralTree extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -133,17 +133,15 @@ class AffiliateTree extends React.Component {
     return (
       <div>
         <Search
-          className="gx-mb-3"
+          className="gx-mb-3 gx-mw-400"
           addonBefore={intl.formatMessage({id: 'search.id'})}
           placeholder={intl.formatMessage({id: 'search.inputKey'})}
           onSearch={this.onSearch}
-          style={{maxWidth: '480px'}}
           enterButton/>
         <Tree
           onExpand={this.onExpand}
           expandedKeys={keyList}
-          autoExpandParent={autoExpandParent}
-        >
+          autoExpandParent={autoExpandParent}>
           {this.renderTreeNodes(treeData)}
         </Tree>
       </div>
@@ -151,4 +149,4 @@ class AffiliateTree extends React.Component {
   }
 }
 
-export default injectIntl(AffiliateTree)
+export default injectIntl(ReferralTree)

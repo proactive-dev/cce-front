@@ -71,7 +71,7 @@ class TFAuthentication extends Component {
     return (
       <div className="gx-text-center">
         <h1 className="gx-m-5"><FormattedMessage id="auth.code.verification"/></h1>
-        <Spin className="gx-auth-container" spinning={loader} size="large">
+        <Spin className="gx-auth-container gx-mb-4" spinning={loader} size="large">
           <Form
             className="gx-auth-content gx-text-left"
             onSubmit={this.handleSubmit}>

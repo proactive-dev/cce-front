@@ -103,7 +103,7 @@ class ResetPassword extends Component {
     const {getFieldDecorator} = this.props.form
 
     return (
-      <div className="gx-text-center">
+      <div className="gx-text-center gx-mb-2">
         <h1 className="gx-m-5"><FormattedMessage id="auth.resetPassword"/></h1>
         <Spin className="gx-auth-container" spinning={loader} size="large">
           <Form

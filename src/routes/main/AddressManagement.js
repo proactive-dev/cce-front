@@ -162,7 +162,7 @@ class AddressManagement extends React.Component {
             <Col span={12} xxl={24} xl={24} lg={24} md={24} sm={24} xs={24}>
               <Card bordered={false}>
                 <Search
-                  className="gx-mb-3 gx-w-50"
+                  className="gx-mb-3 gx-mw-400"
                   addonBefore={intl.formatMessage({id: 'coin'})}
                   placeholder={intl.formatMessage({id: 'search.inputKey'})}
                   onSearch={this.onSearch}

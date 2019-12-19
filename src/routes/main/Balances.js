@@ -112,8 +112,8 @@ class Balances extends React.Component {
                 <Form layout="inline">
                   <Form.Item>
                     <Search
+                      className='gx-mw-400'
                       onSearch={this.onSearch}
-                      style={{maxWidth: '200px'}}
                       enterButton/>
                   </Form.Item>
                   <Form.Item>

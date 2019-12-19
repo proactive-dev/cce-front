@@ -201,7 +201,6 @@ class TradeHistory extends React.Component {
               {
                 exportReady &&
                 <CSVLink
-                  className="gx-text-right"
                   data={exportData}
                   filename={`${convertToDate(new Date())}_trades.csv`}>
                   {intl.formatMessage({id: 'export.trade.history'})}

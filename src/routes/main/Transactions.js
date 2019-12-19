@@ -147,11 +147,10 @@ class Transactions extends React.Component {
               key={HISTORY_TYPE_WITHDRAWAL}
               tab={intl.formatMessage({id: 'withdrawal'})}/>
           </Tabs>
-          <div className="gx-text-right">
+          <div className="gx-text-right gx-mb-2">
             {
               exportReady &&
               <CSVLink
-                className="gx-text-right"
                 data={exportData}
                 filename={`${convertToDate(new Date())}_${kind === HISTORY_TYPE_DEPOSIT ? HISTORY_TYPE_DEPOSIT : 'withdrawal'}.csv`}>
                 {intl.formatMessage({id: `export.${kind === HISTORY_TYPE_DEPOSIT ? HISTORY_TYPE_DEPOSIT : 'withdrawal'}.history`})}

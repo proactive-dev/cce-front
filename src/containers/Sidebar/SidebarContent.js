@@ -46,6 +46,12 @@ class SidebarContent extends Component {
               selectedKeys={[selectedKeys]}
               theme={themeType === THEME_TYPE_LITE ? 'lite' : 'dark'}
               mode="inline">
+              {
+                authStatus && isAdmin &&
+                <Menu.Item key={ADMIN}>
+                  <AdminMenu noIcon={true}/>
+                </Menu.Item>
+              }
               <Menu.Item key={MARKETS}>
                 <Link to={`/${MARKETS}`}>
                   <FormattedMessage id="markets"/>
@@ -136,12 +142,6 @@ class SidebarContent extends Component {
                 authStatus &&
                 <Menu.Item key={PRIZE_CENTER}>
                   <PrizeCenterMenu/>
-                </Menu.Item>
-              }
-              {
-                authStatus && isAdmin &&
-                <Menu.Item key={ADMIN}>
-                  <AdminMenu noIcon={true}/>
                 </Menu.Item>
               }
               {

@@ -223,7 +223,6 @@ class OrderHistory extends React.Component {
               {
                 exportReady &&
                 <CSVLink
-                  className="gx-text-right"
                   data={exportData}
                   filename={`${convertToDate(new Date())}_orders.csv`}>
                   {intl.formatMessage({id: 'export.order.history'})}
