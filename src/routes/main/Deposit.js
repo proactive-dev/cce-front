@@ -141,7 +141,8 @@ class Deposit extends React.Component {
             }>
             <TransactionHistoryTable
               data={_.reverse(deposits || []).slice(0, 5)}
-              kind={HISTORY_TYPE_DEPOSIT}/>
+              kind={HISTORY_TYPE_DEPOSIT}
+              pagination={false}/>
           </Card>
         </Spin>
       </div>

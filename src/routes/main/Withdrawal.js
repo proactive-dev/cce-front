@@ -325,7 +325,8 @@ class Withdrawal extends React.Component {
             }>
             <TransactionHistoryTable
               data={_.reverse(withdraws || []).slice(0, 5)}
-              kind={HISTORY_TYPE_WITHDRAWAL}/>
+              kind={HISTORY_TYPE_WITHDRAWAL}
+              pagination={false}/>
           </Card>
         </Spin>
       </div>

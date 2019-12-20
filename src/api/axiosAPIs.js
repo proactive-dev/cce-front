@@ -17,12 +17,12 @@ const jsonHeaders = {
   'Content-Type': 'application/json'
 }
 
-export const axiosRequest = (method, url, reqData = null, needLoader = true) => {
+export const axiosRequest = (method, url, reqData = null, needLoader = true, withCredentials = true) => {
   let reqConfig = {
     url: url,
     method: method,
     baseURL: HOST_URL,
-    withCredentials: true,
+    withCredentials: withCredentials,
     needLoader: needLoader, // custom config for show loader
     headers: getHeaders // default: get
   }
@@ -93,7 +93,7 @@ export const getMarkets = (needLoader = false) => {
 }
 
 export const getTickers = (needLoader = false) => {
-  return axiosRequest('get', axiosConfig.TICKERS_URL, null, needLoader)
+  return axiosRequest('get', axiosConfig.TICKERS_URL, null, needLoader, false)
 }
 
 export const getTicker = (market, needLoader = false) => {
