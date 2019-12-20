@@ -14,69 +14,83 @@ class MarketOverview extends React.Component {
   }
 
   getColumns() {
-    const {intl} = this.props
-    return [
-      {
-        title: intl.formatMessage({id: 'pair'}),
-        dataIndex: 'name',
-        align: 'left',
-        render: (value) => {
-          return <span className={'gx-font-weight-bold'}>{value}</span>
+    const {intl, simple} = this.props
+    let columns = []
+
+    let pairName = simple ? 'market' : 'pair'
+    let priceName = simple ? 'price' : 'last.price'
+
+    columns.push({
+      title: intl.formatMessage({id: pairName}),
+      dataIndex: 'name',
+      align: 'left',
+      sortDirections: ['descend', 'ascend'],
+      defaultSortOrder: 'ascend',
+      sorter: (a, b) => a.name.localeCompare(b.name),
+      render: (value) => {
+        return <span className={'gx-font-weight-bold'}>{value}</span>
+      }
+    })
+
+    columns.push({
+      title: intl.formatMessage({id: priceName}),
+      dataIndex: 'last',
+      align: 'left',
+      render: (value, record) => {
+        let className = ''
+        if (record.lastTrend > 0) {
+          className = 'gx-text-green'
+        } else if (record.lastTrend < 0) {
+          className = 'gx-text-red'
         }
-      },
-      {
-        title: intl.formatMessage({id: 'last.price'}),
-        dataIndex: 'last',
-        align: 'left',
-        render: (value, record) => {
-          let className = ''
-          if (record.lastTrend > 0) {
-            className = 'gx-text-green'
-          } else if (record.lastTrend < 0) {
-            className = 'gx-text-red'
+        return <span className={className}>{getFixed(value, record.bidFixed)}</span>
+      }
+    })
+
+    columns.push({
+      title: intl.formatMessage({id: 'change'}),
+      dataIndex: 'change',
+      align: 'right',
+      render: (value) => {
+        let className = ''
+        if (value > 0) {
+          className = 'gx-text-green'
+        } else if (value < 0) {
+          className = 'gx-text-red'
+        }
+        return <span className={className}>{getPointFixed(value)}%</span>
+      }
+    })
+
+    if (!simple) {
+      columns.push(
+        {
+          title: intl.formatMessage({id: 'high'}),
+          dataIndex: 'high',
+          align: 'right',
+          render: (value, record) => {
+            return getFixed(value, record.bidFixed)
           }
-          return <span className={className}>{getFixed(value, record.bidFixed)}</span>
         }
-      },
-      {
-        title: intl.formatMessage({id: 'change'}),
-        dataIndex: 'change',
-        align: 'right',
-        render: (value) => {
-          let className = ''
-          if (value > 0) {
-            className = 'gx-text-green'
-          } else if (value < 0) {
-            className = 'gx-text-red'
-          }
-          return <span className={className}>{getPointFixed(value)}%</span>
-        }
-      },
-      {
-        title: intl.formatMessage({id: 'high'}),
-        dataIndex: 'high',
-        align: 'right',
-        render: (value, record) => {
-          return getFixed(value, record.bidFixed)
-        }
-      },
-      {
+      )
+      columns.push({
         title: intl.formatMessage({id: 'low'}),
         dataIndex: 'low',
         align: 'right',
         render: (value, record) => {
           return getFixed(value, record.bidFixed)
         }
-      },
-      {
+      })
+      columns.push({
         title: intl.formatMessage({id: 'volume'}),
         dataIndex: 'vol',
         align: 'right',
         render: (value) => {
           return getPointFixed(value)
         }
-      }
-    ]
+      })
+    }
+    return columns
   }
 
   handleClick = (market) => {
@@ -84,7 +98,7 @@ class MarketOverview extends React.Component {
   }
 
   render() {
-    const {tickers, markets} = this.props
+    const {tickers, markets, simple} = this.props
     let data = []
     if (!_.isEmpty(tickers)) {
       let prevData = this.prevData
@@ -118,18 +132,20 @@ class MarketOverview extends React.Component {
     }
 
     return (
-      <Table className={'gx-table-responsive'}
-             columns={this.getColumns()}
-             dataSource={data}
-             pagination={false}
-             locale={getTableLocaleData}
-             rowKey="id"
-             size='medium'
-             onRow={(record) => ({
-               onClick: () => {
-                 this.handleClick(record.id)
-               }
-             })}/>
+      <Table
+        className={simple ? 'gx-table-responsive gx-table-no-bordered gx-table-row-compact' : 'gx-table-responsive'}
+        columns={this.getColumns()}
+        dataSource={data}
+        pagination={false}
+        scroll={simple ? {y: 240} : {}}
+        locale={getTableLocaleData}
+        rowKey="id"
+        size={simple ? 'small' : 'medium'}
+        onRow={(record) => ({
+          onClick: () => {
+            this.handleClick(record.id)
+          }
+        })}/>
     )
   }
 }
