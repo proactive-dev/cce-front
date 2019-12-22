@@ -2,10 +2,10 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import { Spin, Table } from 'antd'
-import { getAuthStatus } from '../../appRedux/actions/User'
-import { getFiatFixed, getTableLocaleData, getTimeForTable } from '../../util/helpers'
-import { getPurchaseAffiliates, getPurchaseConfigs } from '../../api/axiosAPIs'
 import _ from 'lodash'
+import { getAuthStatus } from '../../appRedux/actions/User'
+import { getCoinFixed, getFiatFixed, getTableLocaleData, getTimeForTable } from '../../util/helpers'
+import { getPurchaseAffiliates, getPurchaseConfigs } from '../../api/axiosAPIs'
 
 const CURRENCY = 'PLD'
 const USD = 'USD'
@@ -34,34 +34,34 @@ class AffiliateHistory extends React.Component {
   }
 
   componentDidMount() {
+    const {pagination} = this.state
     this.props.getAuthStatus()
-    this.fetchData()
+    this.fetchData({page: pagination.current})
   }
 
-  fetchData = () => {
-    let {page, perPage} = this.state
-    getPurchaseConfigs().then(response => {
-      if (!_.isEmpty(response.data) && !_.isEmpty(response.data.purchase)) {
-        this.setState({pldPrice: response.data.purchase.pld_usd})
-      }
-    })
+  fetchData = ({page, perPage}) => {
+    getPurchaseConfigs()
+      .then(response => {
+        if (!_.isEmpty(response.data) && !_.isEmpty(response.data.purchase)) {
+          this.setState({pldPrice: response.data.purchase.pld_usd || 0.0})
+        }
+      })
 
-    let reqParams = {page, perPage: perPage, currency: CURRENCY}
-
-    getPurchaseAffiliates(reqParams)
+    getPurchaseAffiliates({page, perPage, currency: CURRENCY})
       .then(response => {
         if (!_.isEmpty(response.data)) {
-          const totalLength = response.data.total_length
-          const referrals = response.data.referrals
-          const pageCount = Math.ceil(totalLength / perPage)
-          this.setState({referrals, pageCount})
+          const {total_length, referrals} = response.data
+          const pageCount = Math.ceil(total_length / perPage)
+          const pagination = {...this.state.pagination}
+          pagination.total = total_length
+          this.setState({referrals, pageCount, pagination})
         }
       })
   }
 
   onChangeTable = (pagination, filters, sorter) => {
     this.setState({pagination, page: pagination.current})
-    this.fetchData()
+    this.fetchData({page: pagination.current})
   }
 
   getColumns() {
@@ -82,7 +82,7 @@ class AffiliateHistory extends React.Component {
         dataIndex: 'total',
         align: 'center',
         render: (value, record) => {
-          return `${value} ${record.currency.toUpperCase()} ≈ (${getFiatFixed(value * pldPrice)}} ${USD})`
+          return `${getCoinFixed(value, record.currency)} ${record.currency.toUpperCase()} ≈ (${getFiatFixed(value * pldPrice)} ${USD})`
         }
       },
       {

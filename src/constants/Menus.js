@@ -102,7 +102,7 @@ export const TSF_MENUS = [
 export const PLD_MENUS = [
   {
     path: PLD_PRESALE_HISTORY,
-    title: 'purchase'
+    title: 'purchase.history'
   },
   {
     path: PLD_PROFIT_HISTORY,
