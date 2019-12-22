@@ -5,6 +5,7 @@ import { Spin, Table } from 'antd'
 import { getAuthStatus } from '../../appRedux/actions/User'
 import { getTableLocaleData, getTimeForTable } from '../../util/helpers'
 import { getPurchaseProfits } from '../../api/axiosAPIs'
+import _ from 'lodash'
 
 const CURRENCY = 'PLD'
 
@@ -14,7 +15,7 @@ class ProfitHistory extends React.Component {
 
     this.state = {
       loader: false,
-      purchases: [],
+      profits: [],
       page: 1,
       pageCount: 1,
       perPage: 10,
@@ -41,10 +42,12 @@ class ProfitHistory extends React.Component {
 
     getPurchaseProfits(reqParams)
       .then(response => {
-        const totalLength = response.data.total_length
-        const profits = response.data.profits
-        const pageCount = Math.ceil(totalLength / perPage)
-        this.setState({profits, pageCount})
+        if (!_.isEmpty(response.data)) {
+          const totalLength = response.data.total_length
+          const profits = response.data.profits
+          const pageCount = Math.ceil(totalLength / perPage)
+          this.setState({profits, pageCount})
+        }
       })
   }
 

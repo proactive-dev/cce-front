@@ -3,9 +3,8 @@ import { connect } from 'react-redux'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import { Spin, Table } from 'antd'
 import { getAuthStatus } from '../../appRedux/actions/User'
-import { getCoinFixed, getFixed, getTableLocaleData, getTimeForTable } from '../../util/helpers'
-import { getPurchaseAffiliates } from '../../api/axiosAPIs'
-import { getAccounts } from '../../appRedux/actions/Accounts'
+import { getFiatFixed, getTableLocaleData, getTimeForTable } from '../../util/helpers'
+import { getPurchaseAffiliates, getPurchaseConfigs } from '../../api/axiosAPIs'
 import _ from 'lodash'
 
 const CURRENCY = 'PLD'
@@ -21,14 +20,15 @@ class AffiliateHistory extends React.Component {
       page: 1,
       pageCount: 1,
       perPage: 10,
-      pagination: {}
+      pagination: {},
+      pldPrice: 0
     }
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const {loader, accounts} = nextProps
-    if ((loader !== prevState.loader) || (!_.isEmpty(accounts) && accounts !== prevState.accounts)) {
-      return {loader, accounts}
+    const {loader} = nextProps
+    if (loader !== prevState.loader) {
+      return {loader}
     }
     return null
   }
@@ -40,14 +40,22 @@ class AffiliateHistory extends React.Component {
 
   fetchData = () => {
     let {page, perPage} = this.state
+    getPurchaseConfigs().then(response => {
+      if (!_.isEmpty(response.data) && !_.isEmpty(response.data.purchase)) {
+        this.setState({pldPrice: response.data.purchase.pld_usd})
+      }
+    })
+
     let reqParams = {page, perPage: perPage, currency: CURRENCY}
 
     getPurchaseAffiliates(reqParams)
       .then(response => {
-        const totalLength = response.data.total_length
-        const referrals = response.data.referrals
-        const pageCount = Math.ceil(totalLength / perPage)
-        this.setState({referrals, pageCount})
+        if (!_.isEmpty(response.data)) {
+          const totalLength = response.data.total_length
+          const referrals = response.data.referrals
+          const pageCount = Math.ceil(totalLength / perPage)
+          this.setState({referrals, pageCount})
+        }
       })
   }
 
@@ -58,10 +66,7 @@ class AffiliateHistory extends React.Component {
 
   getColumns() {
     const {intl} = this.props
-    const {accounts} = this.state
-    const result = accounts.find(account => account.currency.code === CURRENCY.toLowerCase())
-    const account = (_.isUndefined(result) || _.isEmpty(result)) ? {} : result
-    const pldPrice = !_.isEmpty(account) ? getFixed(parseFloat(account.balance), parseInt(account.currency.precision)) : 0.0
+    const {pldPrice} = this.state
 
     return [
       {
@@ -74,10 +79,10 @@ class AffiliateHistory extends React.Component {
       },
       {
         title: intl.formatMessage({id: 'amount'}),
-        dataIndex: 'amount',
+        dataIndex: 'total',
         align: 'center',
         render: (value, record) => {
-          return `${value} ${record.currency.toUpperCase()} ≈ (${getCoinFixed(value * pldPrice, USD)}} ${USD})`
+          return `${value} ${record.currency.toUpperCase()} ≈ (${getFiatFixed(value * pldPrice)}} ${USD})`
         }
       },
       {
@@ -95,7 +100,6 @@ class AffiliateHistory extends React.Component {
     return (
       <div>
         <h1 className="gx-mt-4 gx-mb-4">
-          {CURRENCY}&nbsp;
           <FormattedMessage id="purchase"/>&nbsp;
           <FormattedMessage id="affiliate.history"/>
         </h1>
@@ -115,13 +119,12 @@ class AffiliateHistory extends React.Component {
 }
 
 const mapDispatchToProps = {
-  getAuthStatus, getAccounts
+  getAuthStatus
 }
 
-const mapStateToProps = ({progress, accounts}) => {
+const mapStateToProps = ({progress}) => {
   return {
-    loader: progress.loader,
-    accounts: accounts.accounts
+    loader: progress.loader
   }
 }
 

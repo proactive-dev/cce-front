@@ -5,6 +5,7 @@ import { Spin, Table } from 'antd'
 import { getAuthStatus } from '../../appRedux/actions/User'
 import { getTableLocaleData, getTimeForTable } from '../../util/helpers'
 import { getPurchases } from '../../api/axiosAPIs'
+import _ from 'lodash'
 
 const CURRENCY = 'PLD'
 
@@ -41,10 +42,12 @@ class PresaleHistory extends React.Component {
 
     getPurchases(reqParams)
       .then(response => {
-        const totalLength = response.data.total_length
-        const purchases = response.data.purchases
-        const pageCount = Math.ceil(totalLength / perPage)
-        this.setState({purchases, pageCount})
+        if (_.isEmpty(response.data)) {
+          const totalLength = response.data.total_length
+          const purchases = response.data.purchases
+          const pageCount = Math.ceil(totalLength / perPage)
+          this.setState({purchases, pageCount})
+        }
       })
   }
 
@@ -108,9 +111,8 @@ class PresaleHistory extends React.Component {
     return (
       <div>
         <h1 className="gx-mt-4 gx-mb-4">
-          <FormattedMessage id="purchase"/>
-          &nbsp;{CURRENCY}&nbsp;
-          <FormattedMessage id="history"/>
+          {CURRENCY}&nbsp;
+          <FormattedMessage id="purchase.history"/>
         </h1>
         <Spin spinning={loader} size="large">
           <Table className="gx-table-responsive gx-mt-4 gx-mb-4"
