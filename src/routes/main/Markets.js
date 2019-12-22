@@ -60,7 +60,7 @@ class Home extends React.Component {
     return (
       <Spin spinning={loader} size="large">
         <Card
-          className="gx-card-full gx-card-widget gx-m-5 gx-pl-2 gx-pr-2 gx-pt-1 gx-pb-4"
+          className="gx-card-full gx-card-widget gx-p-4 gx-pl-2 gx-pr-2"
           bordered={false}>
           <Tabs className="gx-mt-3" activeKey={filter} size={'large'} onChange={this.onTabChange}>
             {

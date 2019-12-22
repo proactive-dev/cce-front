@@ -20,12 +20,12 @@ class ReferralLink extends Component {
       <Card className="gx-card gx-mb-1" title={intl.formatMessage({id: 'referral.link'})}>
         <Form layout="inline">
           <FormItem
-            className="gx-pl-4 gx-mr-4"
+            className="gx-pl-2"
             label={intl.formatMessage({id: 'referral.link'})}>
             <span className="ant-form-text">{link}</span>
           </FormItem>
           <FormItem
-            className="gx-ml-2">
+            className="gx-ml-4">
             <CopyToClipboard
               style={{margin: 'auto'}}
               text={link}
