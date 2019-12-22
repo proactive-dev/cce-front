@@ -292,6 +292,10 @@ export const getPurchaseAffiliates = ({currency, page, perPage}) => {
   return axiosRequest('get', `${axiosConfig.PURCHASE_AFFILIATES_URL}?currency=${currency}&page=${page}&perPage=${perPage}`)
 }
 
+export const getPurchaseConfigs = (needLoader = false) => {
+  return axiosRequest('get', axiosConfig.PURCHASE_CONFIG_URL, null, needLoader)
+}
+
 export const getInvests = () => {
   return axiosRequest('get', axiosConfig.INVESTS_URL)
 }

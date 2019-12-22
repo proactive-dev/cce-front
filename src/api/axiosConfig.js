@@ -37,6 +37,7 @@ export const WITHDRAW_URL = `${HOST_URL}/withdraws`
 export const MOVE_FUNDS_URL = `${HOST_URL}/move_funds`
 export const TICKETS_URL = `${HOST_URL}/tickets`
 export const PURCHASES_URL = `${HOST_URL}/purchases`
+export const PURCHASE_CONFIG_URL = `${HOST_URL}/configs/purchase`
 export const PURCHASE_PREPARE_URL = `${PURCHASES_URL}/prepare`
 export const PURCHASE_OPTIONS_URL = `${PURCHASES_URL}/options`
 export const PURCHASE_PROFITS_URL = `${PURCHASES_URL}/profits`
