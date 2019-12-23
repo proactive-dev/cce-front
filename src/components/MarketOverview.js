@@ -138,7 +138,6 @@ class MarketOverview extends React.Component {
         dataSource={data}
         pagination={false}
         scroll={simple ? {y: 240} : {}}
-        locale={getTableLocaleData}
         rowKey="id"
         size={simple ? 'small' : 'medium'}
         onRow={(record) => ({

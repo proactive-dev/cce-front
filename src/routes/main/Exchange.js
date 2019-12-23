@@ -199,17 +199,22 @@ class Exchange extends React.Component {
                   <Card size='small'>
                     <Row type='flex' gutter={3}>
                       <Col span={12}>
-                        <OrderEntry
-                          kind="buy"
-                          market={market}
-                          ticker={ticker}
-                        />
+                        <Card size='small'>
+                          <OrderEntry
+                            kind="buy"
+                            market={market}
+                            lastPrice={_.isEmpty(ticker) ? 0 : ticker.last}
+                          />
+                        </Card>
                       </Col>
                       <Col span={12}>
-                        <OrderEntry
-                          kind="sell"
-                          market={market}
-                        />
+                        <Card size='small'>
+                          <OrderEntry
+                            kind="sell"
+                            market={market}
+                            lastPrice={_.isEmpty(ticker) ? 0 : ticker.last}
+                          />
+                        </Card>
                       </Col>
                     </Row>
                   </Card>
