@@ -72,3 +72,6 @@ export const ALMOST_ZERO = 0.0000001
 export const HISTORY_TYPE_DEPOSIT = 'deposit'
 export const HISTORY_TYPE_WITHDRAWAL = 'withdraw'
 
+export const PURCHASE_TIME_LIMIT = 10 * 60 * 1000 // 10 minutes
+export const TSF_AMOUNT_MAX = 1000000000
+
