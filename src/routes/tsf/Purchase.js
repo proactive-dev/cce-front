@@ -1,15 +1,15 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import { Button, Col, Divider, Form, InputNumber, Result, Row, Spin, Statistic } from 'antd'
 import { getAuthStatus } from '../../appRedux/actions/User'
 import { getAccounts } from '../../appRedux/actions/Accounts'
 import { getPurchaseOptions, newPurchase, preparePurchase } from '../../api/axiosAPIs'
-import { isMobile } from 'react-device-detect'
 import _ from 'lodash'
 import { USER } from '../../constants/Paths'
 import { IconNotification } from '../../components/IconNotification'
-import { ERROR } from '../../constants/AppConfigs'
+import { ERROR, PURCHASE_TIME_LIMIT } from '../../constants/AppConfigs'
+import { getFiatFixed } from '../../util/helpers'
 
 const FormItem = Form.Item
 const {Countdown} = Statistic
@@ -18,20 +18,20 @@ const formItemLayout = {
   labelCol: {
     xs: {span: 24},
     sm: {span: 8},
-    md: {span: 6},
-    lg: {span: 6}
+    md: {span: 10},
+    lg: {span: 10}
   },
   wrapperCol: {
     xs: {span: 24},
     sm: {span: 16},
-    md: {span: 16},
-    lg: {span: 16}
+    md: {span: 14},
+    lg: {span: 14}
   }
 }
 
-const currency = 'ETH'
-const fiatCurrency = 'USD'
-const PRODUCT_CURRENCY = 'TSF'
+const PURCHASE_COIN = 'ETH'
+const PRODUCT_COIN = 'TSF'
+const FIAT_CURRENCY = 'USD'
 
 class Purchase extends React.Component {
   constructor(props) {
@@ -49,7 +49,7 @@ class Purchase extends React.Component {
       productCount: 0,
       amount: 0,
       fee: 0,
-      isExistProduct: false,
+      isExistProduct: true,
       errorMsg: 'alert.invalidData'
     }
   }
@@ -62,17 +62,17 @@ class Purchase extends React.Component {
     return null
   }
 
-  handleSubmit = (e) => {
+  onSubmit = (e) => {
     e.preventDefault()
     this.props.form.validateFields((err, values) => {
       if (!err) {
         const {curStep} = this.state
         if (curStep === 0) {
-          this.doPreparePurchase()
+          this.preparePurchase()
         } else if (curStep === 1) {
-          this.doNewPurchase()
+          this.newPurchase()
         } else {
-          this.doReset()
+          this.reset()
         }
       }
     })
@@ -93,50 +93,46 @@ class Purchase extends React.Component {
   }
 
   fetchPurchaseOptions = () => {
-    let params = {currency: currency, fiat: fiatCurrency, product_currency: PRODUCT_CURRENCY}
+    let params = {currency: PURCHASE_COIN, fiat: FIAT_CURRENCY, product_currency: PRODUCT_COIN}
     getPurchaseOptions(params)
       .then(response => {
         if (!_.isEmpty(response.data)) {
           const {rate, product_rate, products} = response.data
-          if (rate > 0 && product_rate > 0 && !_.isEmpty(products)) {
+          if (!rate || !product_rate || _.isEmpty(products) || _.isUndefined(products)) {
+            this.setState({errorMsg: 'alert.emptyData', isExistProduct: false})
+          } else if (rate > 0 && product_rate > 0) {
             const product = products[0]
             this.setState({rate, products, product, productRate: product_rate, isExistProduct: true})
           } else {
-            if (!rate && !!products && !product_rate) {
-              this.setState({errorMsg: 'alert.emptyData'})
-            } else {
-              this.setState({errorMsg: 'alert.invalidData'})
-            }
+            this.setState({errorMsg: 'alert.invalidData', isExistProduct: false})
           }
         }
       })
   }
 
-  doPreparePurchase = () => {
+  preparePurchase = () => {
     const {productCount, product} = this.state
     const {intl} = this.props
-    let params = {product_id: product.id, product_count: productCount, currency: currency.toLowerCase()}
+    let params = {product_id: product.id, product_count: productCount, currency: PURCHASE_COIN.toLowerCase()}
 
     preparePurchase(params)
       .then(response => {
         if (!_.isEmpty(response.data)) {
           const {rate, amount, fee} = response.data
-          if (rate > 0 && amount > 0 && fee >= 0) {
+          if (!rate || !amount || (!fee && fee !== 0)) {
+            IconNotification(ERROR, intl.formatMessage({id: 'alert.emptyData'}))
+          } else if (rate > 0 && amount > 0 && fee >= 0) {
             this.setState({rate, amount, fee, curStep: 1})
           } else {
-            if (!rate && !amount && !fee) {
-              IconNotification(ERROR, intl.formatMessage({id: 'alert.emptyData'}))
-            } else {
-              IconNotification(ERROR, intl.formatMessage({id: 'alert.invalidData'}))
-            }
+            IconNotification(ERROR, intl.formatMessage({id: 'alert.invalidData'}))
           }
         }
       })
   }
 
-  doNewPurchase = () => {
+  newPurchase = () => {
     const {productCount, product} = this.state
-    let params = {product_id: product.id, product_count: productCount, currency: currency.toLowerCase()}
+    let params = {product_id: product.id, product_count: productCount, currency: PURCHASE_COIN.toLowerCase()}
 
     newPurchase(params)
       .then(response => {
@@ -149,7 +145,7 @@ class Purchase extends React.Component {
       })
   }
 
-  doReset = () => {
+  reset = () => {
     this.setState({curStep: 0, productCount: 0, amount: 0, fee: 0})
   }
 
@@ -166,7 +162,7 @@ class Purchase extends React.Component {
     this.props.history.push('/')
   }
 
-  goUser = () => {
+  goUserCenter = () => {
     this.props.history.push(`/${USER}`)
   }
 
@@ -179,69 +175,67 @@ class Purchase extends React.Component {
     const {loader, curStep, rate, product, productRate, accounts, productCount, amount, fee, isExistProduct, errorMsg} = this.state
     const {getFieldDecorator} = this.props.form
     const {sales_price, label} = product
-    const result = accounts.find(account => account.currency.code === PRODUCT_CURRENCY.toLowerCase())
+    const result = accounts.find(account => account.currency.code.toLowerCase() === PRODUCT_COIN.toLowerCase())
 
     let balance = 0
     if (!_.isUndefined(result) && !_.isEmpty(result)) {
       balance = result.balance || 0
     }
-    const fiatBalance = (balance * rate).toFixed(2).toString()
-    const totalFiat = (productCount * sales_price * productRate).toFixed(2).toString()
-    const deadline = Date.now() + 1000 * 60 * 10
+    const fiatBalance = getFiatFixed(balance * rate)
+    const totalFiat = getFiatFixed(productCount * sales_price * productRate)
 
     return (
       <div>
         <h1 className="gx-mt-4 gx-mb-4"><FormattedMessage id="purchase"/></h1>
-        <Spin className="gx-auth-container" spinning={loader} size="large">
-          <div className={!isMobile ? 'gx-offset-3' : 'gx-ml-0'} style={!isMobile ? {marginRight: '30%'} : {}}>
-            <Form
-              onSubmit={this.handleSubmit}>
+        <Spin className={'gx-mb-4'} spinning={loader} size="large">
+          {
+            !isExistProduct &&
+            <Result
+              status="warning"
+              title={intl.formatMessage({id: 'alert.invalidRequest'})}
+              subTitle={intl.formatMessage({id: errorMsg})}
+              extra={[
+                <Fragment>
+                  <Button key={'home'} type="primary" onClick={this.goHome}>
+                    <FormattedMessage id="go.home"/>
+                  </Button>
+                  <Button key={'user'} type="primary" onClick={this.goUserCenter}>
+                    <FormattedMessage id="go.user"/>
+                  </Button>
+                </Fragment>
+              ]}/>
+          }
+          {
+            (curStep === 1) &&
+            <Fragment>
+              <FormattedMessage id="deadline"/>&nbsp;
+              <Countdown value={Date.now() + PURCHASE_TIME_LIMIT} onFinish={this.onCountDownCompleted}/>
+              <Divider/>
+            </Fragment>
+          }
+          {
+            curStep < 2 &&
+            <Form onSubmit={this.onSubmit}>
               {
-                !isExistProduct &&
-                <div>
-                  <Result
-                    status="warning"
-                    title={intl.formatMessage({id: 'alert.request'})}
-                    subTitle={intl.formatMessage({id: errorMsg})}
-                    extra={[
-                      <div key={'btn'}>
-                        <Button className="gx-text-center" type="primary" onClick={this.goUser}>
-                          <FormattedMessage id="go.user"/>
-                        </Button>
-                        <Button className="gx-text-center" type="primary" onClick={this.goHome}>
-                          <FormattedMessage id="go.home"/>
-                        </Button>
-                      </div>
-                    ]}/>
-                </div>
-              }
-              {
-                (curStep === 1) &&
-                <div>
-                  <FormItem
-                    {...formItemLayout}
-                    label={intl.formatMessage({id: 'deadline'})}>
-                    <Countdown value={deadline} onFinish={this.onCountDownCompleted}/>
-                  </FormItem>
-                  <Divider/>
-                </div>
-              }
-              {
-                ((curStep === 0 || curStep === 1) && isExistProduct) &&
+                (curStep < 2) && isExistProduct &&
                 <FormItem
                   {...formItemLayout}
                   label={intl.formatMessage({id: 'balance'})}>
-                  <div>{balance} {currency} / {fiatBalance} {fiatCurrency}</div>
+                  {balance}&nbsp;{PURCHASE_COIN}&nbsp;/&nbsp;{fiatBalance}&nbsp;{FIAT_CURRENCY}
                 </FormItem>
               }
               {
-                (curStep === 0 && isExistProduct) &&
-                <div>
+                (curStep === 0) && isExistProduct &&
+                <Fragment>
                   <FormItem
-                    className="gx-mt-0 gx-mb-0"
                     {...formItemLayout}
                     label={intl.formatMessage({id: 'product'})}>
-                    {getFieldDecorator('product', {
+                    {label}
+                  </FormItem>
+                  <FormItem
+                    {...formItemLayout}
+                    label={intl.formatMessage({id: 'amount'})}>
+                    {getFieldDecorator('amount', {
                       initialValue: productCount,
                       rules: [{
                         required: true, message: intl.formatMessage({id: 'alert.fieldRequired'})
@@ -249,24 +243,17 @@ class Purchase extends React.Component {
                         validator: this.checkAmount
                       }]
                     })(
-                      <div>
-                        {label}
-                        <InputNumber
-                          className="gx-ml-2 gx-mr-2"
-                          min={0}
-                          value={productCount}
-                          onChange={this.onChangeCount}/>
-                        <FormattedMessage id="set"/>
-                      </div>
+                      <InputNumber
+                        pattern="[0-9]*"
+                        min={0}
+                        onChange={this.onChangeCount}/>
                     )}
+                    &nbsp;<FormattedMessage id="set"/>
                   </FormItem>
                   <FormItem
-                    className="gx-mt-0 gx-mb-0"
                     {...formItemLayout}
-                    label={intl.formatMessage({id: 'price'})}>
-                    {getFieldDecorator('balance')(
-                      <div>{productRate} {fiatCurrency}</div>
-                    )}
+                    label={`${PRODUCT_COIN} ${intl.formatMessage({id: 'price'})}`}>
+                    {productRate}&nbsp;{FIAT_CURRENCY}
                   </FormItem>
                   <Divider/>
                   <div className="gx-text-right">
@@ -274,56 +261,41 @@ class Purchase extends React.Component {
                       <FormattedMessage id="next"/>
                     </Button>
                   </div>
-                </div>
+                </Fragment>
               }
               {
                 (curStep === 1) &&
-                <div>
-                  <div>
-                    <FormItem
-                      className="gx-mt-0 gx-mb-0"
-                      {...formItemLayout}
-                      label={intl.formatMessage({id: 'product'})}>
-                      <div>{label}</div>
-                    </FormItem>
-                    <FormItem
-                      className="gx-mt-0 gx-mb-0"
-                      {...formItemLayout}
-                      label={intl.formatMessage({id: 'amount'})}>
-                      <div>{productCount} <FormattedMessage id="set"/></div>
-                    </FormItem>
-                    <FormItem
-                      className="gx-mt-0 gx-mb-0"
-                      {...formItemLayout}
-                      label={intl.formatMessage({id: 'total'})}>
-                      <div>{totalFiat} {fiatCurrency}</div>
-                    </FormItem>
-                    <FormItem
-                      className="gx-mt-0 gx-mb-0"
-                      {...formItemLayout}
-                      label={intl.formatMessage({id: 'price'})}>
-                      {getFieldDecorator('balance')(
-                        <div>{productRate} {fiatCurrency}</div>
-                      )}
-                    </FormItem>
-                    <FormItem
-                      className="gx-mt-0 gx-mb-0"
-                      {...formItemLayout}
-                      label={`${intl.formatMessage({id: 'needed'})} ${currency}`}>
-                      {getFieldDecorator('balance')(
-                        <div>{amount} {currency}</div>
-                      )}
-                    </FormItem>
-                    <FormItem
-                      className="gx-mt-0 gx-mb-0"
-                      {...formItemLayout}
-                      label={intl.formatMessage({id: 'gas'})}>
-                      {getFieldDecorator('gas')(
-                        <div>{fee} {currency}</div>
-                      )}
-                    </FormItem>
-
-                  </div>
+                <Fragment>
+                  <FormItem
+                    {...formItemLayout}
+                    label={intl.formatMessage({id: 'product'})}>
+                    {label}
+                  </FormItem>
+                  <FormItem
+                    {...formItemLayout}
+                    label={intl.formatMessage({id: 'amount'})}>
+                    {productCount} <FormattedMessage id="set"/>
+                  </FormItem>
+                  <FormItem
+                    {...formItemLayout}
+                    label={intl.formatMessage({id: 'total'})}>
+                    {totalFiat}&nbsp;{FIAT_CURRENCY}
+                  </FormItem>
+                  <FormItem
+                    {...formItemLayout}
+                    label={`${PRODUCT_COIN} ${intl.formatMessage({id: 'price'})}`}>
+                    {productRate}&nbsp;{FIAT_CURRENCY}
+                  </FormItem>
+                  <FormItem
+                    {...formItemLayout}
+                    label={`${intl.formatMessage({id: 'needed'})} ${PURCHASE_COIN}`}>
+                    {amount}&nbsp;{PURCHASE_COIN}
+                  </FormItem>
+                  <FormItem
+                    {...formItemLayout}
+                    label={intl.formatMessage({id: 'gas'})}>
+                    {fee}&nbsp;{PURCHASE_COIN}
+                  </FormItem>
                   <Divider/>
                   <Row className="gx-mt-4">
                     <Col xl={12} lg={12} sm={12} xs={12} className="gx-text-left">
@@ -337,22 +309,27 @@ class Purchase extends React.Component {
                       </Button>
                     </Col>
                   </Row>
-                </div>
-              }
-              {
-                curStep === 2 &&
-                <b>
-                  <FormattedMessage id="purchase.req.success"/>
-                  <Divider/>
-                  <div className="gx-text-right">
-                    <Button type="primary" htmlType="submit">
-                      <FormattedMessage id="reset"/>
-                    </Button>
-                  </div>
-                </b>
+                </Fragment>
               }
             </Form>
-          </div>
+          }
+          {
+            curStep === 2 &&
+            <Result
+              status="success"
+              title={intl.formatMessage({id: 'success'})}
+              subTitle={intl.formatMessage({id: 'purchase.req.success'})}
+              extra={[
+                <Fragment>
+                  <Button key={'home'} type="primary" onClick={this.goHome}>
+                    <FormattedMessage id="go.home"/>
+                  </Button>
+                  <Button key={'reset'} type="primary" onClick={this.onSubmit}>
+                    <FormattedMessage id="reset"/>
+                  </Button>
+                </Fragment>
+              ]}/>
+          }
         </Spin>
       </div>
     )

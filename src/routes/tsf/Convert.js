@@ -1,20 +1,36 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { FormattedMessage, injectIntl } from 'react-intl'
-import { Button, Card, Col, Form, Input, InputNumber, Row, Select, Spin, Table } from 'antd'
+import { Button, Card, Col, Form, Icon, Input, InputNumber, Row, Select, Spin, Table } from 'antd'
+import _ from 'lodash'
 import { getAuthStatus, getProfile } from '../../appRedux/actions/User'
 import { getAccounts } from '../../appRedux/actions/Accounts'
 import { getPointExchanges, newPointExchange } from '../../api/axiosAPIs'
 import { getTableLocaleData, getTimeForTable } from '../../util/helpers'
 import { IconNotification } from '../../components/IconNotification'
-import { SUCCESS } from '../../constants/AppConfigs'
-import _ from 'lodash'
+import { SUCCESS, TSF_AMOUNT_MAX } from '../../constants/AppConfigs'
 
 const FormItem = Form.Item
 const Option = Select.Option
 
-const Coins = ['TSF', 'ETH']
-const POINT = 'TSFP'
+const CONVERT_COINS = ['TSF', 'ETH']
+const POINT_SYMBOL = 'TSFP'
+const FEE_PERCENT = 0.01
+
+const formItemLayout = {
+  labelCol: {
+    xs: {span: 24},
+    sm: {span: 10},
+    md: {span: 10},
+    lg: {span: 8}
+  },
+  wrapperCol: {
+    xs: {span: 24},
+    sm: {span: 14},
+    md: {span: 14},
+    lg: {span: 16}
+  }
+}
 
 class Convert extends React.Component {
   constructor(props) {
@@ -24,8 +40,7 @@ class Convert extends React.Component {
       loader: false,
       amount: 1,
       accounts: [],
-      history: [],
-      twoFactor: ''
+      history: []
     }
   }
 
@@ -40,6 +55,7 @@ class Convert extends React.Component {
   componentDidMount() {
     this.props.getAuthStatus()
     this.props.getProfile()
+    this.props.getAccounts()
     this.getHistory()
   }
 
@@ -50,6 +66,7 @@ class Convert extends React.Component {
         title: intl.formatMessage({id: 'date'}),
         dataIndex: 'created_at',
         align: 'center',
+        width: 160,
         render: (value) => {
           return getTimeForTable(value)
         }
@@ -59,7 +76,7 @@ class Convert extends React.Component {
         dataIndex: 'amount',
         align: 'center',
         render: (value) => {
-          return `${value} TSFP`
+          return `${value} ${POINT_SYMBOL}`
         }
       },
       {
@@ -89,43 +106,37 @@ class Convert extends React.Component {
     callback(this.props.intl.formatMessage({id: 'alert.shouldBePositive'}))
   }
 
-  handleSubmit = (e) => {
+  onSubmit = (e) => {
     e.preventDefault()
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.doNewInvest(values)
+        this.newPointExchange(values)
       }
     })
   }
 
-  tfaStatus = () => {
+  newPointExchange = (values) => {
     const {profile} = this.state
-    return profile && profile.tfaStatus
-  }
-
-  doNewInvest = (values) => {
-    const {profile, twoFactor} = this.state
 
     const params = {
       point_exchange: {
         member_id: profile.id,
-        currency: values.coins.toLowerCase(),
+        currency: values.coin.toLowerCase(),
         amount: values.amount,
-        fee: values.amount / 100
+        fee: values.amount * FEE_PERCENT
       },
       two_factor: {
         type: 'app',
-        otp: twoFactor
+        otp: !!values.twoFactor ? values.twoFactor : ''
       }
     }
-    
+
     newPointExchange(params)
       .then(response => {
         IconNotification(SUCCESS, this.props.intl.formatMessage({id: 'purchase.req.success'}))
+        this.props.form.resetFields()
         this.setState({
-          unit: Coins[0],
-          amount: 1,
-          twoFactor: ''
+          amount: 1
         })
         this.props.getAccounts()
         this.getHistory()
@@ -142,20 +153,16 @@ class Convert extends React.Component {
       })
   }
 
-  onChangeCount = (amount) => {
-    this.setState({amount: amount})
-  }
-
-  onChangeTwoFactor = (event) => {
-    const twoFactor = event.target.value
-    this.setState({twoFactor})
+  onChangeAmount = (amount) => {
+    this.setState({amount})
   }
 
   render() {
     const {intl} = this.props
     const {getFieldDecorator} = this.props.form
-    const {loader, amount, accounts, history} = this.state
-    const result = accounts.find(account => account.currency.code === POINT.toLowerCase())
+    const {loader, amount, accounts, history, profile} = this.state
+    const {tfaStatus} = profile || {}
+    const result = accounts.find(account => account.currency.code.toLowerCase() === POINT_SYMBOL.toLowerCase())
     let balance = 0
     if (!_.isUndefined(result) && !_.isEmpty(result)) {
       balance = result.balance || 0
@@ -165,30 +172,32 @@ class Convert extends React.Component {
       <div>
         <h1 className="gx-mt-4 gx-mb-4"><FormattedMessage id="exchange"/></h1>
         <Spin spinning={loader} size="large">
-          <Row type='flex' gutter={12}>
-            <Col span={12} xxl={12} xl={12} lg={12} md={24} sm={24} xs={24} className={'gx-mb-2'}>
+          <Row>
+            <Col xxl={12} xl={12} lg={16} md={20} sm={24} xs={24} className={'gx-mb-2'}>
               <Card bordered={false}>
-                <Form onSubmit={this.handleSubmit}>
+                <Form onSubmit={this.onSubmit}>
                   <FormItem
-                    label={intl.formatMessage({id: 'balance'})}
-                    wrapperCol={{sm: 24}}
-                    className={'gx-w-100 gx-m-0'}>
-                    <Input value={balance} disabled/>
+                    {...formItemLayout}
+                    label={intl.formatMessage({id: 'balance'})}>
+                    {getFieldDecorator('balance', {
+                      initialValue: balance
+                    })(
+                      <Input suffix={POINT_SYMBOL} disabled/>
+                    )}
                   </FormItem>
                   <FormItem
-                    label={intl.formatMessage({id: 'coin'})}
-                    wrapperCol={{sm: 24}}
-                    className={'gx-w-100 gx-m-0'}>
-                    {getFieldDecorator('coins', {
+                    {...formItemLayout}
+                    label={intl.formatMessage({id: 'coin'})}>
+                    {getFieldDecorator('coin', {
                       rules: [{
                         required: true, message: intl.formatMessage({id: 'alert.fieldRequired'})
                       }]
                     })(
                       <Select>
                         {
-                          Coins.map(unit => {
+                          CONVERT_COINS.map(coin => {
                             return (
-                              <Option key={unit} value={unit}>{unit}</Option>
+                              <Option key={coin} value={coin}>{coin}</Option>
                             )
                           })
                         }
@@ -196,10 +205,10 @@ class Convert extends React.Component {
                     )}
                   </FormItem>
                   <FormItem
-                    label={intl.formatMessage({id: 'amount'})}
-                    wrapperCol={{sm: 24}}
-                    className={'gx-w-100 gx-m-0'}>
+                    {...formItemLayout}
+                    label={`${POINT_SYMBOL} ${intl.formatMessage({id: 'amount'})}`}>
                     {getFieldDecorator('amount', {
+                      initialValue: amount,
                       rules: [{
                         required: true, message: intl.formatMessage({id: 'alert.fieldRequired'})
                       }, {
@@ -208,27 +217,31 @@ class Convert extends React.Component {
                     })(
                       <InputNumber
                         className="gx-w-100"
+                        pattern="[0-9]*"
                         min={0}
-                        value={amount}
-                        onChange={this.onChangeCount}/>
+                        max={TSF_AMOUNT_MAX}
+                        onChange={this.onChangeAmount}/>
                     )}
                   </FormItem>
                   <FormItem
-                    label={intl.formatMessage({id: 'fees'})}
-                    wrapperCol={{sm: 24}}
-                    className={'gx-w-100 gx-m-0'}>
-                    <Input value={amount / 100} disabled/>
+                    {...formItemLayout}
+                    label={intl.formatMessage({id: 'fees'})}>
+                    {getFieldDecorator('fees', {
+                      initialValue: amount * FEE_PERCENT
+                    })(
+                      <Input suffix={POINT_SYMBOL} disabled/>
+                    )}
                   </FormItem>
                   {
-                    this.tfaStatus() &&
+                    tfaStatus &&
                     <FormItem
-                      label={intl.formatMessage({id: '2fa'})}
-                      wrapperCol={{sm: 24}}
-                      className={'gx-w-100 gx-m-2'}>
+                      {...formItemLayout}
+                      label={intl.formatMessage({id: 'verificationCode'})}>
                       {getFieldDecorator('twoFactor', {
                         rules: [{required: true, message: intl.formatMessage({id: 'alert.fieldRequired'})}]
                       })(
-                        <Input onChange={this.onChangeTwoFactor}/>
+                        <Input prefix={<Icon type="google" style={{color: 'rgba(0,0,0,.25)'}}/>}
+                               placeholder={intl.formatMessage({id: 'google.auth.code'})}/>
                       )}
                     </FormItem>
                   }
@@ -238,9 +251,10 @@ class Convert extends React.Component {
                 </Form>
               </Card>
             </Col>
-            <Col span={12} xxl={24} xl={24} lg={24} md={24} sm={24} xs={24}>
-              <Card>
+            <Col xxl={24} xl={24} lg={24} md={24} sm={24} xs={24} className={'gx-mb-2'}>
+              <Card bordered={false}>
                 <Table className="gx-table-responsive"
+                       scroll={{y: 240}}
                        columns={this.getColumns()}
                        dataSource={history}
                        pagination={false}

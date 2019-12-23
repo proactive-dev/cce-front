@@ -1,21 +1,36 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { FormattedMessage, injectIntl } from 'react-intl'
-import { Button, Card, Col, Form, Input, InputNumber, Row, Select, Spin, Table } from 'antd'
+import { Button, Card, Col, Form, Icon, Input, InputNumber, Row, Select, Spin, Table } from 'antd'
+import _ from 'lodash'
 import { getAuthStatus, getProfile } from '../../appRedux/actions/User'
 import { getAccounts } from '../../appRedux/actions/Accounts'
 import { getInvests, newInvest } from '../../api/axiosAPIs'
 import { getTableLocaleData, getTimeForTable } from '../../util/helpers'
 import { IconNotification } from '../../components/IconNotification'
-import { SUCCESS } from '../../constants/AppConfigs'
-import _ from 'lodash'
+import { SUCCESS, TSF_AMOUNT_MAX } from '../../constants/AppConfigs'
 
 const FormItem = Form.Item
 const Option = Select.Option
 
-const UNITS = [25, 700000, 1200000]
-const PRODUCT_CURRENCY = 'TSF'
-const AYEARTIMESSTEMP = 31536000
+const UNITS = [250000, 700000, 1200000]
+const PRODUCT_COIN = 'TSF'
+const A_YEAR_TIMESTAMP = 31536000 // 365 * 24 * 60 * 60 seconds
+
+const formItemLayout = {
+  labelCol: {
+    xs: {span: 24},
+    sm: {span: 10},
+    md: {span: 10},
+    lg: {span: 8}
+  },
+  wrapperCol: {
+    xs: {span: 24},
+    sm: {span: 14},
+    md: {span: 14},
+    lg: {span: 16}
+  }
+}
 
 class ProfitProgram extends React.Component {
   constructor(props) {
@@ -25,8 +40,7 @@ class ProfitProgram extends React.Component {
       loader: false,
       productCount: 0,
       accounts: [],
-      history: [],
-      twoFactor: ''
+      history: []
     }
   }
 
@@ -41,6 +55,7 @@ class ProfitProgram extends React.Component {
   componentDidMount() {
     this.props.getAuthStatus()
     this.props.getProfile()
+    this.props.getAccounts()
     this.getHistory()
   }
 
@@ -51,6 +66,7 @@ class ProfitProgram extends React.Component {
         title: intl.formatMessage({id: 'date'}),
         dataIndex: 'created_at',
         align: 'center',
+        width: 160,
         render: (value) => {
           return getTimeForTable(value)
         }
@@ -58,7 +74,10 @@ class ProfitProgram extends React.Component {
       {
         title: intl.formatMessage({id: 'amount'}),
         dataIndex: 'unit',
-        align: 'center'
+        align: 'center',
+        render: (value) => {
+          return `${value} ${PRODUCT_COIN}`
+        }
       },
       {
         title: intl.formatMessage({id: 'set'}),
@@ -84,50 +103,44 @@ class ProfitProgram extends React.Component {
     callback(this.props.intl.formatMessage({id: 'alert.shouldBePositive'}))
   }
 
-  handleSubmit = (e) => {
+  onSubmit = (e) => {
     e.preventDefault()
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.doNewInvest(values)
+        this.newInvest(values)
       }
     })
   }
 
-  tfaStatus = () => {
+  newInvest = (values) => {
     const {profile} = this.state
-    return profile && profile.tfaStatus
-  }
-
-  doNewInvest = (values) => {
-    const {profile, twoFactor} = this.state
 
     const params = {
       invest: {
         member_id: profile.id,
-        currency: PRODUCT_CURRENCY.toLowerCase(),
-        unit: values.coins,
+        currency: PRODUCT_COIN.toLowerCase(),
+        unit: values.unit,
         count: values.productCount
       },
       two_factor: {
         type: 'app',
-        otp: twoFactor
+        otp: !!values.twoFactor ? values.twoFactor : ''
       }
     }
 
     newInvest(params)
       .then(response => {
-        this.setState({
-          unit: UNITS[0],
-          productCount: 1,
-          twoFactor: ''
-        })
         IconNotification(SUCCESS, this.props.intl.formatMessage({id: 'success'}))
+        this.props.form.resetFields()
+        this.setState({
+          productCount: 1
+        })
         this.props.getAccounts()
         this.getHistory()
       })
   }
 
-  getHistory() {
+  getHistory = () => {
     getInvests()
       .then(response => {
         let history = response.data
@@ -138,50 +151,44 @@ class ProfitProgram extends React.Component {
   }
 
   onChangeCount = (productCount) => {
-    this.setState({productCount: productCount})
-  }
-
-  onChangeTwoFactor = (event) => {
-    const twoFactor = event.target.value
-    this.setState({twoFactor})
+    this.setState({productCount})
   }
 
   render() {
     const {intl} = this.props
     const {getFieldDecorator} = this.props.form
-    const {loader, productCount, accounts, history} = this.state
-    const result = accounts.find(account => account.currency.code === PRODUCT_CURRENCY.toLowerCase())
+    const {loader, productCount, accounts, history, profile} = this.state
+    const {tfaStatus} = profile || {}
+    const result = accounts.find(account => account.currency.code.toLowerCase() === PRODUCT_COIN.toLowerCase())
     let balance = 0
     if (!_.isUndefined(result) && !_.isEmpty(result)) {
       balance = result.balance || 0
     }
-    let dataList = []
-    history.map(item => {
-      let data = item
-      let availableAt = item.created_at + 3 * AYEARTIMESSTEMP
-      data.availableAt = availableAt
-      dataList.push(data)
+    history.forEach(item => {
+      item.availableAt = item.created_at + 3 * A_YEAR_TIMESTAMP
     })
 
     return (
       <div>
         <h1 className="gx-mt-4 gx-mb-4"><FormattedMessage id="profit.program"/></h1>
         <Spin spinning={loader} size="large">
-          <Row type='flex' gutter={12}>
-            <Col span={12} xxl={12} xl={12} lg={12} md={24} sm={24} xs={24} className={'gx-mb-2'}>
+          <Row>
+            <Col xxl={12} xl={12} lg={16} md={20} sm={24} xs={24} className={'gx-mb-2'}>
               <Card bordered={false}>
-                <Form onSubmit={this.handleSubmit}>
+                <Form onSubmit={this.onSubmit}>
                   <FormItem
-                    label={intl.formatMessage({id: 'balance'})}
-                    wrapperCol={{sm: 24}}
-                    className={'gx-w-100 gx-m-0'}>
-                    <Input value={balance} disabled/>
+                    {...formItemLayout}
+                    label={intl.formatMessage({id: 'balance'})}>
+                    {getFieldDecorator('balance', {
+                      initialValue: balance
+                    })(
+                      <Input suffix={PRODUCT_COIN} disabled/>
+                    )}
                   </FormItem>
                   <FormItem
-                    label={intl.formatMessage({id: 'coin'})}
-                    wrapperCol={{sm: 24}}
-                    className={'gx-w-100 gx-m-0'}>
-                    {getFieldDecorator('coins', {
+                    {...formItemLayout}
+                    label={intl.formatMessage({id: 'coin'})}>
+                    {getFieldDecorator('unit', {
                       rules: [{
                         required: true, message: intl.formatMessage({id: 'alert.fieldRequired'})
                       }]
@@ -190,7 +197,7 @@ class ProfitProgram extends React.Component {
                         {
                           UNITS.map(unit => {
                             return (
-                              <Option key={unit} value={unit}>{unit}</Option>
+                              <Option key={unit} value={unit}>{unit} {PRODUCT_COIN}</Option>
                             )
                           })
                         }
@@ -198,10 +205,10 @@ class ProfitProgram extends React.Component {
                     )}
                   </FormItem>
                   <FormItem
-                    label={intl.formatMessage({id: 'product'})}
-                    wrapperCol={{sm: 24}}
-                    className={'gx-w-100 gx-m-0'}>
+                    {...formItemLayout}
+                    label={intl.formatMessage({id: 'set'})}>
                     {getFieldDecorator('productCount', {
+                      initialValue: productCount,
                       rules: [{
                         required: true, message: intl.formatMessage({id: 'alert.fieldRequired'})
                       }, {
@@ -210,21 +217,22 @@ class ProfitProgram extends React.Component {
                     })(
                       <InputNumber
                         className="gx-w-100"
+                        pattern="[0-9]*"
                         min={0}
-                        value={productCount}
+                        max={TSF_AMOUNT_MAX}
                         onChange={this.onChangeCount}/>
                     )}
                   </FormItem>
                   {
-                    this.tfaStatus() &&
+                    tfaStatus &&
                     <FormItem
-                      label={intl.formatMessage({id: '2fa'})}
-                      wrapperCol={{sm: 24}}
-                      className={'gx-w-100 gx-m-2'}>
+                      {...formItemLayout}
+                      label={intl.formatMessage({id: 'verificationCode'})}>
                       {getFieldDecorator('twoFactor', {
                         rules: [{required: true, message: intl.formatMessage({id: 'alert.fieldRequired'})}]
                       })(
-                        <Input onChange={this.onChangeTwoFactor}/>
+                        <Input prefix={<Icon type="google" style={{color: 'rgba(0,0,0,.25)'}}/>}
+                               placeholder={intl.formatMessage({id: 'google.auth.code'})}/>
                       )}
                     </FormItem>
                   }
@@ -234,9 +242,10 @@ class ProfitProgram extends React.Component {
                 </Form>
               </Card>
             </Col>
-            <Col span={12} xxl={24} xl={24} lg={24} md={24} sm={24} xs={24}>
-              <Card>
+            <Col xxl={24} xl={24} lg={24} md={24} sm={24} xs={24} className={'gx-mb-2'}>
+              <Card bordered={false}>
                 <Table className="gx-table-responsive"
+                       scroll={{y: 240}}
                        columns={this.getColumns()}
                        dataSource={history}
                        pagination={false}
