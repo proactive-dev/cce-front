@@ -13,7 +13,7 @@ class Privacy extends React.Component {
           <h2 className="gx-mt-4 gx-mb-4">[{intl.formatMessage({id: 'last.updated'})} 24 May 2018]</h2>
           <p>
             This Privacy Policy explains how {COMPANY_NAME} collects, uses, shares, and protects user information
-            obtained through the
+            obtained through the&nbsp;
             <a className="jumpLink" href="/" target="_blank">{SITE_NAME}</a>.
             The terms “we,” “us,” and “our” refer to {COMPANY_NAME} and its service, {SITE_NAME} .
             When we ask for certain personal information from users it is because we are required by law to collect

@@ -424,6 +424,7 @@
   "withdraw.almost_done": "发送中",
   "withdraw.canceled": "已撤销",
   "withdraw.failed": "提现出错",
+  "tag": "地址标签",
   "no.tag": "无地址标签",
   "copy.tag": "复制地址标签",
   "deposit.important": "禁止向XRP地址充值除XRP之外的资产，任何充入XRP地址的非XRP资产将不可找回。",

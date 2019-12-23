@@ -13,7 +13,7 @@ class Terms extends React.Component {
         <div>
           <h2 className="gx-mt-4 gx-mb-4">[{intl.formatMessage({id: 'last.updated'})} 29 Nov 2018]</h2>
           <p>
-            This agreement is between you and the service operator,
+            This agreement is between you and the service operator,&nbsp;
             <a className="jumpLink" href="/" target="_blank">{SITE_NAME}</a>.
             By using any services made available through {SITE_NAME} website, you agree that you have read, understood
             and accepted all of the terms and conditions contained in this Terms of Use agreement, as well as our
@@ -108,9 +108,9 @@ class Terms extends React.Component {
           <h3>Account Registration &amp; Requirements</h3>
           <h5>Registration </h5>
           <p>
-            All users must
-            <a className="jumpLink" href={`/${REGISTER}`} target="_blank" rel="noopener noreferrer">register</a>
-            for a {SITE_NAME} Account before using the site.
+            All users must&nbsp;
+            <a className="jumpLink" href={`/${REGISTER}`} target="_blank" rel="noopener noreferrer">Register</a>
+            &nbsp;for a {SITE_NAME} Account before using the site.
             To register for an account, you must provide your real name, email address and password, as well as
             accept the Terms of Use, Privacy Policy and Consent Form.
             Depending on certain conditions and in our sole discretion, we may refuse to open an account for you.
@@ -162,21 +162,22 @@ class Terms extends React.Component {
             password (including but not limited to information disclosure, information posting, consent to or
             submission of various rules and agreements by clicking on the website, online renewal of agreement, etc.).
           </p>
-          <p>You hereby agree that: <br/>
-            <ul>
-              <li>
-                you will notify {SITE_NAME} immediately if you are aware of any unauthorized use of your
-                {SITE_NAME} account and password by any person or any other violations to the security rules;
-              </li>
-              <li>
-                you will strictly observe the security, authentication, dealing, charging, withdrawal mechanism or
-                procedures of the website/service; and
-              </li>
-              <li>
-                you will log out from the website by taking proper steps at the end of every visit.
-              </li>
-            </ul>
+          <p>
+            You hereby agree that:
           </p>
+          <ul>
+            <li>
+              you will notify {SITE_NAME} immediately if you are aware of any unauthorized use of your
+              {SITE_NAME} account and password by any person or any other violations to the security rules;
+            </li>
+            <li>
+              you will strictly observe the security, authentication, dealing, charging, withdrawal mechanism or
+              procedures of the website/service; and
+            </li>
+            <li>
+              you will log out from the website by taking proper steps at the end of every visit.
+            </li>
+          </ul>
           <p>
             {SITE_NAME} will not be responsible for any loss or consequences caused by your failure to comply with
             the above Account Security provision.
@@ -189,21 +190,24 @@ class Terms extends React.Component {
             Users agree to bear the costs arising from the process of dispute resolution.
           </p>
           <h3>Guidelines for usage of services on {SITE_NAME}</h3>
-          <p>You hereby agree to observe the following covenants during your use of services on {SITE_NAME}: <br/>
-            <ul>
-              <li>
-                All the activities that you carry out during the use of {SITE_NAME} Service will be in compliance
-                with the requirements of applicable laws, regulations, as well as the various guidelines
-                of {SITE_NAME},
-              </li>
-              <li>
-                will not be in violation of public interests, public ethics or other’s legitimate interests,
-              </li>
-              <li>
-                will not constitute evasion of payable taxes or fees and will not violate this agreement or relevant
-                rules.
-              </li>
-            </ul>
+          <p>
+            You hereby agree to observe the following covenants during your use of services on {SITE_NAME}:
+          </p>
+          <ul>
+            <li>
+              All the activities that you carry out during the use of {SITE_NAME} Service will be in compliance
+              with the requirements of applicable laws, regulations, as well as the various guidelines
+              of {SITE_NAME},
+            </li>
+            <li>
+              will not be in violation of public interests, public ethics or other’s legitimate interests,
+            </li>
+            <li>
+              will not constitute evasion of payable taxes or fees and will not violate this agreement or relevant
+              rules.
+            </li>
+          </ul>
+          <p>
             If you violate the foregoing promises and thereby cause any legal consequence, you shall independently
             undertake all of the legal liabilities in your own name and indemnify {SITE_NAME} from all actions,
             claims, or costs arising from such violation.
@@ -212,25 +216,25 @@ class Terms extends React.Component {
             You will use the site in accordance with the Terms of Use and Privacy Policy, without taking acts of unfair
             competition nor attempting to intervene with the normal operation of {SITE_NAME}.
             Examples of such malicious acts include, but are not limited to
-            <br/>
-            <ul>
-              <li>using a device, software or subroutine to interfere with the site</li>
-              <li>overloading network equipments with unreasonable data loading requests</li>
-              <li>executing malicious sales or purchases on the market</li>
-            </ul>
+          </p>
+          <ul>
+            <li>using a device, software or subroutine to interfere with the site</li>
+            <li>overloading network equipments with unreasonable data loading requests</li>
+            <li>executing malicious sales or purchases on the market</li>
+          </ul>
+          <p>
             By accessing the {SITE_NAME} Service, you agree that {SITE_NAME} shall have the right to
             unilaterally determine whether you have violated any of the above covenants and take actions to apply
             relevant rules without receiving your consent or giving prior notice to you.
             Examples of such actions include, but are not limited to
-            <br/>
-            <ul>
-              <li>block and close order requests</li>
-              <li>freezing your account</li>
-              <li>reporting the incident to authorities</li>
-              <li>publishing the alleged violations and actions that have been taken</li>
-              <li>deleting any information you published that is in violation</li>
-            </ul>
           </p>
+          <ul>
+            <li>block and close order requests</li>
+            <li>freezing your account</li>
+            <li>reporting the incident to authorities</li>
+            <li>publishing the alleged violations and actions that have been taken</li>
+            <li>deleting any information you published that is in violation</li>
+          </ul>
           <p>
             If your alleged violation causes any losses to a third party, you shall solely undertake all the legal
             liabilities in your own name and hold {SITE_NAME} harmless from any loss, fine or extra expenses.
@@ -261,17 +265,16 @@ class Terms extends React.Component {
           <p>
             You acknowledge and agree, {SITE_NAME} shall not be liable for any of your losses caused by any of the
             following events, including but not limited to:
-            <br/>
-            <ul>
-              <li>Losses of profits, goodwill, usage or data or any other intangible losses</li>
-              <li>Use or failure to use {SITE_NAME} Service</li>
-              <li>Unauthorized use of your account or unauthorized alteration of your data by third parties</li>
-              <li>Your misunderstanding of {SITE_NAME} Service</li>
-              <li>
-                Any other losses related to {SITE_NAME} Service which are not directly attributable to {SITE_NAME}
-              </li>
-            </ul>
           </p>
+          <ul>
+            <li>Losses of profits, goodwill, usage or data or any other intangible losses</li>
+            <li>Use or failure to use {SITE_NAME} Service</li>
+            <li>Unauthorized use of your account or unauthorized alteration of your data by third parties</li>
+            <li>Your misunderstanding of {SITE_NAME} Service</li>
+            <li>
+              Any other losses related to {SITE_NAME} Service which are not directly attributable to {SITE_NAME}
+            </li>
+          </ul>
           <p>
             In no event shall {SITE_NAME} be liable for any failure or delay of service resulting from regular
             network maintenance or external factors such as power failure, natural disaster, service provider-side
@@ -289,7 +292,7 @@ class Terms extends React.Component {
           <h3>Announcements</h3>
           <p>
             Please be aware that all official announcements, news, promotions, competitions and airdrops will be listed
-            on the <a className="jumpLink" href="/news" target="_blank" rel="noopener noreferrer">News</a>
+            on the <a className="jumpLink" href="/news" target="_blank" rel="noopener noreferrer">News</a>&nbsp;
             page where we urge all users to refer to regularly.
             {SITE_NAME} will not be held liable or responsible in any manner of compensation should users incur
             personal losses arising from ignorance or negligence of the announcements.
@@ -303,35 +306,37 @@ class Terms extends React.Component {
             {SITE_NAME} shall have the right to keep and use the transaction data or other information related to such
             accounts.
             The above account controls may also be applied in the following cases:
-            <br/>
-            <ul>
-              <li>
-                The account is subject to a governmental proceeding, criminal investigation or other pending litigation
-              </li>
-              <li>We detect unusual activity in the account</li>
-              <li>We detect unauthorized access to the account</li>
-              <li>We are required to do so by a court order or command by a regulatory/government authority</li>
-            </ul>
+          </p>
+          <ul>
+            <li>
+              The account is subject to a governmental proceeding, criminal investigation or other pending litigation
+            </li>
+            <li>We detect unusual activity in the account</li>
+            <li>We detect unauthorized access to the account</li>
+            <li>We are required to do so by a court order or command by a regulatory/government authority</li>
+          </ul>
+          <p>
             In case of any of the following events, {SITE_NAME} shall have the right to directly terminate this
             agreement by cancelling your account, and shall have the right to permanently freeze (cancel) the
             authorizations of your account on {SITE_NAME} and withdraw the corresponding {SITE_NAME} account thereof:
-            <br/>
-            <ul>
-              <li>after {SITE_NAME} terminates services to you,</li>
-              <li>
-                you allegedly register or register in any other person’s name as {SITE_NAME} user again, directly or
-                indirectly;
-              </li>
-              <li>
-                the main content of user’s information that you have provided is untruthful, inaccurate, outdated or
-                incomplete;
-              </li>
-              <li>
-                when this agreement (including the rules) is amended, you expressly state and
-                notify {SITE_NAME} of your unwillingness to accept the amended service agreement;
-              </li>
-              <li>any other circumstances where {SITE_NAME} deems it should terminate the services.</li>
-            </ul>
+          </p>
+          <ul>
+            <li>after {SITE_NAME} terminates services to you,</li>
+            <li>
+              you allegedly register or register in any other person’s name as {SITE_NAME} user again, directly or
+              indirectly;
+            </li>
+            <li>
+              the main content of user’s information that you have provided is untruthful, inaccurate, outdated or
+              incomplete;
+            </li>
+            <li>
+              when this agreement (including the rules) is amended, you expressly state and
+              notify {SITE_NAME} of your unwillingness to accept the amended service agreement;
+            </li>
+            <li>any other circumstances where {SITE_NAME} deems it should terminate the services.</li>
+          </ul>
+          <p>
             Should the account be terminated, the account &amp; transactional information required for meeting data
             retention standards will be securely stored for five years.
             In addition, if a transaction is unfinished during the account termination process,
@@ -367,7 +372,7 @@ class Terms extends React.Component {
           <p>
             {SITE_NAME} may announce and amend its privacy policy on the platform of {SITE_NAME} from time to
             time and the privacy policy shall be an integral part of this Usage Agreement.
-            The latest version of the Privacy Policy which has included the GDPR can always be found here on
+            The latest version of the Privacy Policy which has included the GDPR can always be found here on&nbsp;
             <a className="jumpLink" href={`/${PRIVACY}`} target="_blank" rel="noopener noreferrer">Privacy</a> page.
           </p>
           <h3>Indemnity and disclaimer</h3>

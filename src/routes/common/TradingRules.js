@@ -37,6 +37,7 @@ class TradingRules extends React.Component {
   }
 
   render() {
+    const {intl} = this.props
     return (
       <div>
         <h1 className="gx-mt-4 gx-mb-4"><FormattedMessage id="trading.rules"/></h1>
@@ -44,7 +45,7 @@ class TradingRules extends React.Component {
                columns={this.getColumns()}
                dataSource={MARKETS}
                pagination={false}
-               locale={getTableLocaleData}
+               locale={getTableLocaleData(intl)}
                rowKey="id"
                size='medium'/>
       </div>

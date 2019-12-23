@@ -424,6 +424,7 @@
   "withdraw.almost_done": "Almost Done",
   "withdraw.canceled": "Cancelled",
   "withdraw.failed": "Failed",
+  "tag": "Tag",
   "no.tag": "No Tag",
   "copy.tag": "Copy Tag",
   "deposit.important": "Send only coin to this deposit address. Sending any other coin or token to this address may result in the loss of your deposit.",

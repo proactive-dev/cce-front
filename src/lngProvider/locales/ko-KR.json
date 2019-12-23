@@ -424,6 +424,7 @@
   "withdraw.almost_done": "전송중",
   "withdraw.canceled": "취소됨",
   "withdraw.failed": "실패함",
+  "tag": "태그",
   "no.tag": "태그 없음",
   "copy.tag": "태그 복사하기",
   "deposit.important": "이 주소로 다른 코인이나 토큰을 입금하지 말아주세요.",

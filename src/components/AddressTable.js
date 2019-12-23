@@ -56,7 +56,7 @@ class AddressTable extends React.Component {
   }
 
   render() {
-    const {data, filter} = this.props
+    const {intl, data, filter} = this.props
     let addresses = []
     let filteredData = data
     if (!_.isEmpty(filteredData) && filter) {
@@ -82,7 +82,7 @@ class AddressTable extends React.Component {
         columns={this.getColumns()}
         dataSource={addresses}
         pagination={false}
-        locale={getTableLocaleData}
+        locale={getTableLocaleData(intl)}
         rowKey="id"
         size='middle'/>
     )
