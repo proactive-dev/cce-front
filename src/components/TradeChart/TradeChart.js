@@ -1,9 +1,10 @@
 import React from 'react'
 import _ from 'lodash'
-import { FormattedMessage, injectIntl } from 'react-intl'
+import { injectIntl } from 'react-intl'
 import ReactHighcharts from 'react-highcharts/ReactHighstock'
-import {getOHLC} from '../../api/axiosAPIs'
+import { getOHLC } from '../../api/axiosAPIs'
 import TradeRangeSwitch from './TradeRangeSwitch'
+import { TICKER_GRAPH_INTERVAL } from '../../constants/AppConfigs'
 
 import './ToolTip.css'
 
@@ -54,7 +55,7 @@ class TradeChart extends React.Component {
     let that = this
     setInterval(function () {
       that.updateLatestData(that.state.market, that.state.minutes)
-    }, 3000)
+    }, TICKER_GRAPH_INTERVAL)
   }
 
   componentWillReceiveProps(newProps) {
