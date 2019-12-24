@@ -100,6 +100,8 @@ class TradeChart extends React.Component {
       let utc_timestamp = now.getTime() - now.getTimezoneOffset()
       let delta = (utc_timestamp - this.lastUpdatedTime) / 1000 / 60 / minutes
       delta = Math.floor(delta)
+      if (delta >= 1000)
+        delta = 999
       if (delta > 1) {
         getOHLC(market.id, minutes, delta)
           .then(response => {
