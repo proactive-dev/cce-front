@@ -134,6 +134,7 @@ class Balances extends React.Component {
               </Col>
             </Row>
             <MainAccounts
+              loader={loader}
               dataSource={data}
               onDeposit={this.goDeposit}
               onWithdrawal={this.goWithdrawal}

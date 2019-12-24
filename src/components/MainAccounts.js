@@ -123,11 +123,12 @@ class MainAccounts extends React.Component {
   }
 
   render() {
-    const {intl, dataSource} = this.props
+    const {intl, loader, dataSource} = this.props
     return (
       <Table className='gx-table-responsive gx-mt-4 gx-mb-4'
              columns={this.getColumns()}
              dataSource={dataSource}
+             loader={loader}
              pagination={false}
              locale={getTableLocaleData(intl)}
              rowKey="symbol"

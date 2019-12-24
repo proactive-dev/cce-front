@@ -66,7 +66,6 @@ class ProfitProgram extends React.Component {
         title: intl.formatMessage({id: 'date'}),
         dataIndex: 'created_at',
         align: 'center',
-        width: 160,
         render: (value) => {
           return getTimeForTable(value)
         }
@@ -245,10 +244,9 @@ class ProfitProgram extends React.Component {
             <Col xxl={24} xl={24} lg={24} md={24} sm={24} xs={24} className={'gx-mb-2'}>
               <Card bordered={false}>
                 <Table className="gx-table-responsive"
-                       scroll={{y: 240}}
                        columns={this.getColumns()}
                        dataSource={history}
-                       pagination={false}
+                       pagination={{pageSize: 5}}
                        locale={getTableLocaleData(intl)}
                        rowKey={'id'}
                        size='middle'/>

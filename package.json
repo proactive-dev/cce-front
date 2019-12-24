@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "antd": "^3.23.5",
+    "antd": "^3.26.4",
     "antd-theme-webpack-plugin": "^1.2.0",
     "axios": "^0.18.0",
     "bignumber.js": "^8.1.1",
@@ -26,7 +26,7 @@
     "react-csv": "^1.1.2",
     "react-custom-scrollbars": "^4.2.1",
     "react-device-detect": "^1.11.14",
-    "react-dom": "^16.8.6",
+    "react-dom": "npm:@hot-loader/react-dom@^16.11.0",
     "react-hot-loader": "^4.8.4",
     "react-intl": "^2.8.0",
     "react-notifications": "^1.4.3",
