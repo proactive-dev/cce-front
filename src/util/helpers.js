@@ -1,8 +1,9 @@
 import _ from 'lodash'
 import { BigNumber } from 'bignumber.js'
 import Moment from 'moment'
-import { DEFAULT_PRECISION, EX_URL, QUOTE_SYMBOL } from '../constants/AppConfigs'
+import { DEFAULT_PRECISION, EX_URL, QUOTE_SYMBOL, STABLE_SYMBOL } from '../constants/AppConfigs'
 import { CURRENCIES } from '../constants/Currencies'
+import { MARKETS } from '../constants/Markets'
 
 // main helper functions
 export const toCamelCase = (string) => {
@@ -69,6 +70,20 @@ export const getCoinNameBySymbol = (symbol) => {
   } catch (err) {
     return null
   }
+}
+
+export const getQuoteUnits = (needAll = false, concatStable = true) => {
+  let quoteUnits = MARKETS.map(market => market.quoteUnit)
+  quoteUnits = removeDuplicates(quoteUnits)
+  if (needAll) {
+    quoteUnits.unshift('')
+  }
+  if (concatStable) {
+    // Collect Stable coin markets to USD.
+    quoteUnits = quoteUnits.filter(quoteUnit => !isStableCoin(quoteUnit))
+    quoteUnits.push(`usd${STABLE_SYMBOL}`)
+  }
+  return quoteUnits
 }
 
 export const getCurrencyBySymbol = (symbol) => {
