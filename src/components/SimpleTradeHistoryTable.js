@@ -20,7 +20,7 @@ class SimpleTradeHistoryTable extends React.Component {
         align: 'left',
         render: (value, record) => {
           let className = ''
-          if (record.trend > 0) {
+          if (record.trend >= 0) {
             className = 'gx-text-green'
           } else if (record.trend < 0) {
             className = 'gx-text-red'

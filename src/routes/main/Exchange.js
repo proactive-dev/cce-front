@@ -35,7 +35,7 @@ class Exchange extends React.Component {
       market: null,
       tickers: {},
       filter: 'btc',
-      yours:false,
+      yours: false,
       term: '',
       chartMode: true
     }
@@ -96,12 +96,11 @@ class Exchange extends React.Component {
       if (trades.length >= 50) {
         trades.pop()
       }
-      this.setState({trades, lastPrice: record.price, lastTrade: record.tid})
+      this.setState({trades: trades, lastPrice: record.price, lastTrade: record.tid})
     } else if ('trades' in message) {
       // process trades
       const trades = message.trades
       if (!_.isEmpty(trades)) {
-        console.log(trades[0])
         this.setState({trades: trades, lastPrice: trades[0].price, lastTrade: trades[0].tid})
       }
     } else if ('asks' in message) {

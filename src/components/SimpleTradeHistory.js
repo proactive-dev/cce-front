@@ -17,13 +17,13 @@ class SimpleTradeHistory extends React.Component {
     }
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const {loader} = nextProps
-    if (loader !== prevState.loader) {
-      return {loader}
-    }
-    return null
-  }
+  // static getDerivedStateFromProps(nextProps, prevState) {
+  //   const {loader} = nextProps
+  //   if (loader !== prevState.loader) {
+  //     return {loader}
+  //   }
+  //   return null
+  // }
 
   render() {
     const {trades, myTrades, yours, market} = this.props
@@ -75,14 +75,15 @@ class SimpleTradeHistory extends React.Component {
   }
 }
 
-const mapDispatchToProps = {
-  getAuthStatus
-}
+// const mapDispatchToProps = {
+//   getAuthStatus
+// }
+//
+// const mapStateToProps = ({user}) => {
+//   return {
+//     authStatus: user
+//   }
+// }
 
-const mapStateToProps = ({user}) => {
-  return {
-    authStatus: user
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(SimpleTradeHistory))
+// export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(SimpleTradeHistory))
+export default injectIntl(SimpleTradeHistory)
