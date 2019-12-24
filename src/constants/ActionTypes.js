@@ -8,6 +8,7 @@ export const SHOW_LOADER = 'SHOW_LOADER'
 export const HIDE_LOADER = 'HIDE_LOADER'
 
 // Markets const
+export const GET_TICKERS = 'GET_TICKERS'
 export const GET_PRICE = 'GET_PRICE'
 export const SET_PRICE = 'SET_PRICE'
 

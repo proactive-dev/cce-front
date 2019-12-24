@@ -1,5 +1,4 @@
-import { GET_TICKERS } from '../actions'
-import { GET_PRICE, SET_PRICE } from '../../constants/ActionTypes'
+import { GET_PRICE, GET_TICKERS, SET_PRICE } from '../../constants/ActionTypes'
 
 const INIT_STATE = {
   tickers: {},
