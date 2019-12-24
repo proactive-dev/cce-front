@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import ReconnectingWebSocket from 'reconnecting-websocket'
 import { FormattedMessage, injectIntl } from 'react-intl'
-import { Card, Col, Input, Radio, Row, Spin, Typography } from 'antd'
+import { Card, Col, Input, Radio, Row, Spin } from 'antd'
 import _ from 'lodash'
 import { getAuthStatus } from '../../appRedux/actions/User'
 import { MARKETS } from '../../constants/Markets'
@@ -13,12 +13,10 @@ import TradeChart from '../../components/TradeChart'
 import TradeDepth from '../../components/TradeDepth'
 import OrderEntry from '../../components/OrderEntry'
 import { SOCKET_URL, STABLE_SYMBOL } from '../../constants/AppConfigs'
-import { isStableCoin, removeDuplicates } from '../../util/helpers'
+import { getQuoteUnits, isStableCoin } from '../../util/helpers'
 import SimpleTradeHistory from '../../components/SimpleTradeHistory'
 
-
 const Search = Input.Search
-const {Text} = Typography
 
 class Exchange extends React.Component {
   constructor(props) {
@@ -39,14 +37,8 @@ class Exchange extends React.Component {
       term: '',
       chartMode: true
     }
-    // Get Guote Units
-    let quoteUnits = MARKETS.map(market => market.quoteUnit)
-    quoteUnits = removeDuplicates(quoteUnits)
-    quoteUnits.unshift('')
-    // Collect Stable coin markets to USD.
-    quoteUnits = quoteUnits.filter(quoteUnit => !isStableCoin(quoteUnit))
-    quoteUnits.push(`usd${STABLE_SYMBOL}`)
-    this.quoteUnits = quoteUnits
+    // Get Quote Units
+    this.quoteUnits = getQuoteUnits(true)
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {

@@ -5,7 +5,7 @@ import { Card, Spin, Tabs } from 'antd'
 import _ from 'lodash'
 import MarketOverview from '../../components/MarketOverview'
 import { MARKETS } from '../../constants/Markets'
-import { isStableCoin, removeDuplicates } from '../../util/helpers'
+import { getQuoteUnits, isStableCoin } from '../../util/helpers'
 import { STABLE_SYMBOL } from '../../constants/AppConfigs'
 import { EXCHANGE } from '../../constants/Paths'
 
@@ -21,14 +21,8 @@ class Home extends React.Component {
       filter: ''
     }
 
-    // Get Guote Units
-    let quoteUnits = MARKETS.map(market => market.quoteUnit)
-    quoteUnits = removeDuplicates(quoteUnits)
-    quoteUnits.unshift('')
-    // Collect Stable coin markets to USD.
-    quoteUnits = quoteUnits.filter(quoteUnit => !isStableCoin(quoteUnit))
-    quoteUnits.push(`usd${STABLE_SYMBOL}`)
-    this.quoteUnits = quoteUnits
+    // Get Quote Units
+    this.quoteUnits = getQuoteUnits(true)
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
