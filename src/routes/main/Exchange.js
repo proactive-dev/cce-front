@@ -37,7 +37,7 @@ class Exchange extends React.Component {
       term: '',
       chartMode: true,
       yoursMode: false,
-      authStatus: false,
+      authStatus: false
     }
     // Get Quote Units
     this.quoteUnits = getQuoteUnits(true)
@@ -156,130 +156,127 @@ class Exchange extends React.Component {
     }
 
     return (
-      <div>
-        <h1 className="gx-mt-4 gx-mb-4"><FormattedMessage id="exchange"/></h1>
-        <Spin spinning={loader} size="large">
-          <Row type='flex' gutter={3}>
-            <Col span={18}>
-              <MarketBoard
-                market={market}
-                ticker={ticker}
-              />
-              <Row type='flex' gutter={3} className='gx-mt-3'>
-                <Col span={8}>
-                  <Card size="small">
-                    <OrderBook
-                      asks={asks}
-                      bids={bids}
-                      ticker={ticker}
+      <Spin spinning={loader} size="large">
+        <Row type='flex' gutter={3}>
+          <Col span={18}>
+            <MarketBoard
+              market={market}
+              ticker={ticker}
+            />
+            <Row type='flex' gutter={3} className='gx-mt-3'>
+              <Col span={8}>
+                <Card size="small">
+                  <OrderBook
+                    asks={asks}
+                    bids={bids}
+                    ticker={ticker}
+                    market={market}
+                  />
+                </Card>
+              </Col>
+              <Col span={16}>
+                <Card size='small'>
+                  <Radio.Group size='small' value={chartMode} onChange={this.handleChartMode}>
+                    <Radio.Button value={true}>Original</Radio.Button>
+                    <Radio.Button value={false}>Depth</Radio.Button>
+                  </Radio.Group>
+                  {chartMode ?
+                    <TradeChart
                       market={market}
                     />
-                  </Card>
-                </Col>
-                <Col span={16}>
-                  <Card size='small'>
-                    <Radio.Group size='small' value={chartMode} onChange={this.handleChartMode}>
-                      <Radio.Button value={true}>Original</Radio.Button>
-                      <Radio.Button value={false}>Depth</Radio.Button>
-                    </Radio.Group>
-                    {chartMode ?
-                      <TradeChart
+                    :
+                    <TradeDepth
+                      market={market}
+                      asks={asks}
+                      bids={bids}
+                    />
+                  }
+                </Card>
+                <Row type='flex' gutter={3}>
+                  <Col span={12}>
+                    <Card size='small'>
+                      <OrderEntry
+                        kind="buy"
                         market={market}
+                        lastPrice={_.isEmpty(ticker) ? 0 : ticker.last}
                       />
-                      :
-                      <TradeDepth
+                    </Card>
+                  </Col>
+                  <Col span={12}>
+                    <Card size='small'>
+                      <OrderEntry
+                        kind="sell"
                         market={market}
-                        asks={asks}
-                        bids={bids}
+                        lastPrice={_.isEmpty(ticker) ? 0 : ticker.last}
                       />
-                    }
-                  </Card>
-                  <Row type='flex' gutter={3}>
-                    <Col span={12}>
-                      <Card size='small'>
-                        <OrderEntry
-                          kind="buy"
-                          market={market}
-                          lastPrice={_.isEmpty(ticker) ? 0 : ticker.last}
-                        />
-                      </Card>
-                    </Col>
-                    <Col span={12}>
-                      <Card size='small'>
-                        <OrderEntry
-                          kind="sell"
-                          market={market}
-                          lastPrice={_.isEmpty(ticker) ? 0 : ticker.last}
-                        />
-                      </Card>
-                    </Col>
-                  </Row>
-                </Col>
-              </Row>
-            </Col>
-            <Col span={6}>
-              <Card size="small">
-                <div>
-                  <Radio.Group size='small' value={filter} onChange={this.handleFilterMarket}>
-                    {
-                      this.quoteUnits.map(quoteUnit => {
-                        return (
-                          <Radio.Button value={quoteUnit}>
-                            {_.isEmpty(quoteUnit) ? intl.formatMessage({id: 'all'}) : quoteUnit.toUpperCase()}
-                          </Radio.Button>
-                        )
-                      })
-                    }
-                  </Radio.Group>
-                  <Search
-                    size='small'
-                    className="gx-float-right"
-                    placeholder={intl.formatMessage({id: 'search'})}
-                    onSearch={this.handleMarketSearch}
-                    style={{maxWidth: 120}}/>
-                </div>
-                <MarketOverview
-                  tickers={tickers}
-                  markets={filteredMarkets}
-                  onCellClick={this.onSelectMarket}
-                  simple={true}/>
-              </Card>
-              <Card size="small">
-                <div>
-                  <FormattedMessage id='latest.trades'/>
-                  <Radio.Group
-                    className="gx-float-right"
-                    size='small' value={yoursMode} onChange={this.handleYoursMode}>
-                    <Radio.Button value={false}><FormattedMessage id='market'/></Radio.Button>
-                    <Radio.Button value={true} disabled={!this.state.authStatus}><FormattedMessage id='yours'/></Radio.Button>
-                  </Radio.Group>
-                </div>
-                {!yoursMode &&
-                <SimpleTradeHistory
-                  trades={trades}
-                  market={market}
-                  yours={yoursMode}
-                />
-                }
-                {yoursMode && this.state.authStatus &&
-                <SimpleTradeHistory
-                  myTrades={this.state.userTrades}
-                  market={market}
-                  yours={yoursMode}
-                />
-                }
-              </Card>
-            </Col>
-          </Row>
-
-        </Spin>
-      </div>
+                    </Card>
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+          </Col>
+          <Col span={6}>
+            <Card size="small">
+              <div>
+                <Radio.Group size='small' value={filter} onChange={this.handleFilterMarket}>
+                  {
+                    this.quoteUnits.map(quoteUnit => {
+                      return (
+                        <Radio.Button value={quoteUnit}>
+                          {_.isEmpty(quoteUnit) ? intl.formatMessage({id: 'all'}) : quoteUnit.toUpperCase()}
+                        </Radio.Button>
+                      )
+                    })
+                  }
+                </Radio.Group>
+                <Search
+                  size='small'
+                  className="gx-float-right"
+                  placeholder={intl.formatMessage({id: 'search'})}
+                  onSearch={this.handleMarketSearch}
+                  style={{maxWidth: 120}}/>
+              </div>
+              <MarketOverview
+                tickers={tickers}
+                markets={filteredMarkets}
+                onCellClick={this.onSelectMarket}
+                simple={true}/>
+            </Card>
+            <Card size="small">
+              <div>
+                <FormattedMessage id='latest.trades'/>
+                <Radio.Group
+                  className="gx-float-right"
+                  size='small' value={yoursMode} onChange={this.handleYoursMode}>
+                  <Radio.Button value={false}><FormattedMessage id='market'/></Radio.Button>
+                  <Radio.Button value={true} disabled={!this.state.authStatus}><FormattedMessage
+                    id='yours'/></Radio.Button>
+                </Radio.Group>
+              </div>
+              {!yoursMode &&
+              <SimpleTradeHistory
+                trades={trades}
+                market={market}
+                yours={yoursMode}
+              />
+              }
+              {yoursMode && this.state.authStatus &&
+              <SimpleTradeHistory
+                myTrades={this.state.userTrades}
+                market={market}
+                yours={yoursMode}
+              />
+              }
+            </Card>
+          </Col>
+        </Row>
+      </Spin>
     )
   }
 }
 
 const mapDispatchToProps = dispatch => ({
-  getAuthStatus,
+  getAuthStatus
 })
 
 const mapStateToProps = ({progress, user, markets}) => {

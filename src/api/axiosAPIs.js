@@ -160,8 +160,8 @@ export const getOrderHistory = (params) => {
   return axiosRequest('get', `${axiosConfig.HISTORY_ORDER_URL}?page=${params.page}&perPage=${params.perPage}&search=${params.search}`)
 }
 
-export const getTradeHistory = (params) => {
-  return axiosRequest('get', `${axiosConfig.HISTORY_TRADE_URL}?page=${params.page}&perPage=${params.perPage}&search=${params.search}`)
+export const getTradeHistory = (params, needLoader = true) => {
+  return axiosRequest('get', `${axiosConfig.HISTORY_TRADE_URL}?page=${params.page}&perPage=${params.perPage}&search=${params.search}`, null, needLoader)
 }
 
 export const getAddresses = () => {
