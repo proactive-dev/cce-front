@@ -35,22 +35,23 @@ class Exchange extends React.Component {
       filter: '',
       yours: false,
       term: '',
-      chartMode: true
+      chartMode: true,
+      yoursMode: false,
+      authStatus: false,
     }
     // Get Quote Units
     this.quoteUnits = getQuoteUnits(true)
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const {loader, tickers} = nextProps
-    if ((loader !== prevState.loader) || (!_.isEmpty(tickers) && tickers !== prevState.tickers)) {
-      return {loader, tickers}
+    const {loader, authStatus, tickers} = nextProps
+    if ((authStatus !== prevState.authStatus) || (loader !== prevState.loader) || (!_.isEmpty(tickers) && tickers !== prevState.tickers)) {
+      return {authStatus, loader, tickers}
     }
     return null
   }
 
   componentDidMount() {
-    // this.props.getAuthStatus()
     let marketId = this.props.match.params.market
     if (!_.isEmpty(marketId) && !_.isUndefined(marketId)) {
       this.onSelectMarket(marketId)
@@ -87,7 +88,7 @@ class Exchange extends React.Component {
       if (trades.length >= 50) {
         trades.pop()
       }
-      this.setState({trades, lastPrice: record.price, lastTrade: record.tid})
+      this.setState({trades: trades, lastPrice: record.price, lastTrade: record.tid})
     } else if ('trades' in message) {
       // process trades
       const trades = message.trades
@@ -108,8 +109,8 @@ class Exchange extends React.Component {
     this.setState({filter: e.target.value})
   }
 
-  handleYoursTrade = e => {
-    this.setState({yours: e.target.value})
+  handleYoursMode = e => {
+    this.setState({yoursMode: e.target.value})
   }
 
   handleMarketSearch = value => {
@@ -122,7 +123,8 @@ class Exchange extends React.Component {
 
   render() {
     const {intl, markets} = this.props
-    const {loader, tickers, market, marketId, asks, bids, trades, filter, term, chartMode, yours} = this.state
+    const {loader, tickers, market, marketId, asks, bids, trades, filter, term, chartMode, yoursMode} = this.state
+
     let ticker = {}
     if (!_.isEmpty(tickers) && market) {
 
@@ -247,15 +249,25 @@ class Exchange extends React.Component {
                   <FormattedMessage id='latest.trades'/>
                   <Radio.Group
                     className="gx-float-right"
-                    size='small' value={yours} onChange={this.handleYoursTrade}>
+                    size='small' value={yoursMode} onChange={this.handleYoursMode}>
                     <Radio.Button value={false}><FormattedMessage id='market'/></Radio.Button>
-                    <Radio.Button value={true}><FormattedMessage id='yours'/></Radio.Button>
+                    <Radio.Button value={true} disabled={!this.state.authStatus}><FormattedMessage id='yours'/></Radio.Button>
                   </Radio.Group>
                 </div>
+                {!yoursMode &&
                 <SimpleTradeHistory
                   trades={trades}
-                  yours={yours}
-                  market={market}/>
+                  market={market}
+                  yours={yoursMode}
+                />
+                }
+                {yoursMode && this.state.authStatus &&
+                <SimpleTradeHistory
+                  myTrades={this.state.userTrades}
+                  market={market}
+                  yours={yoursMode}
+                />
+                }
               </Card>
             </Col>
           </Row>
@@ -266,13 +278,14 @@ class Exchange extends React.Component {
   }
 }
 
-const mapDispatchToProps = {
-  getAuthStatus
-}
+const mapDispatchToProps = dispatch => ({
+  getAuthStatus,
+})
 
-const mapStateToProps = ({progress, markets}) => {
+const mapStateToProps = ({progress, user, markets}) => {
   return {
     loader: progress.loader,
+    authStatus: user.authStatus,
     tickers: markets.tickers
   }
 }
