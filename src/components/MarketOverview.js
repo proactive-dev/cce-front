@@ -1,10 +1,8 @@
 import React from 'react'
 import { injectIntl } from 'react-intl'
-import { withRouter } from 'react-router-dom'
 import { Table } from 'antd'
 import _ from 'lodash'
 import { getFixed, getPointFixed, getTableLocaleData, priceChange } from '../util/helpers'
-import { EXCHANGE } from '../constants/Paths'
 
 class MarketOverview extends React.Component {
   constructor(props) {
@@ -15,52 +13,50 @@ class MarketOverview extends React.Component {
 
   getColumns() {
     const {intl, simple} = this.props
-    let columns = []
-
     let pairName = simple ? 'market' : 'pair'
     let priceName = simple ? 'price' : 'last.price'
 
-    columns.push({
-      title: intl.formatMessage({id: pairName}),
-      dataIndex: 'name',
-      align: 'left',
-      sortDirections: ['descend', 'ascend'],
-      defaultSortOrder: 'ascend',
-      sorter: (a, b) => a.name.localeCompare(b.name),
-      render: (value) => {
-        return <span className={'gx-font-weight-bold'}>{value}</span>
-      }
-    })
-
-    columns.push({
-      title: intl.formatMessage({id: priceName}),
-      dataIndex: 'last',
-      align: 'left',
-      render: (value, record) => {
-        let className = ''
-        if (record.lastTrend > 0) {
-          className = 'gx-text-green'
-        } else if (record.lastTrend < 0) {
-          className = 'gx-text-red'
+    let columns = [
+      {
+        title: intl.formatMessage({id: pairName}),
+        dataIndex: 'name',
+        align: 'left',
+        sortDirections: ['descend', 'ascend'],
+        defaultSortOrder: 'ascend',
+        sorter: (a, b) => a.name.localeCompare(b.name),
+        render: (value) => {
+          return <span className={'gx-font-weight-bold'}>{value}</span>
         }
-        return <span className={className}>{getFixed(value, record.bidFixed)}</span>
-      }
-    })
-
-    columns.push({
-      title: intl.formatMessage({id: 'change'}),
-      dataIndex: 'change',
-      align: 'right',
-      render: (value) => {
-        let className = ''
-        if (value > 0) {
-          className = 'gx-text-green'
-        } else if (value < 0) {
-          className = 'gx-text-red'
+      },
+      {
+        title: intl.formatMessage({id: priceName}),
+        dataIndex: 'last',
+        align: 'left',
+        render: (value, record) => {
+          let className = ''
+          if (record.lastTrend > 0) {
+            className = 'gx-text-green'
+          } else if (record.lastTrend < 0) {
+            className = 'gx-text-red'
+          }
+          return <span className={className}>{getFixed(value, record.bidFixed)}</span>
         }
-        return <span className={className}>{getPointFixed(value)}%</span>
+      },
+      {
+        title: intl.formatMessage({id: 'change'}),
+        dataIndex: 'change',
+        align: 'right',
+        render: (value) => {
+          let className = ''
+          if (value > 0) {
+            className = 'gx-text-green'
+          } else if (value < 0) {
+            className = 'gx-text-red'
+          }
+          return <span className={className}>{getPointFixed(value)}%</span>
+        }
       }
-    })
+    ]
 
     if (!simple) {
       columns.push(
@@ -91,10 +87,6 @@ class MarketOverview extends React.Component {
       })
     }
     return columns
-  }
-
-  handleClick = (market) => {
-    this.props.history.push(`/${EXCHANGE}/${market}`)
   }
 
   render() {
@@ -133,20 +125,21 @@ class MarketOverview extends React.Component {
 
     return (
       <Table
-        className={simple ? 'gx-table-responsive gx-table-no-bordered gx-table-row-compact' : 'gx-table-responsive'}
+        className={`gx-table-responsive gx-pointer ${simple ? 'gx-table-no-bordered gx-table-row-compact' : ''}`}
         columns={this.getColumns()}
         dataSource={data}
         pagination={false}
+        locale={getTableLocaleData}
         scroll={simple ? {y: 240} : {}}
         rowKey="id"
         size={simple ? 'small' : 'medium'}
         onRow={(record) => ({
           onClick: () => {
-            this.handleClick(record.id)
+            this.props.onCellClick(record.id)
           }
         })}/>
     )
   }
 }
 
-export default withRouter(injectIntl(MarketOverview))
+export default injectIntl(MarketOverview)

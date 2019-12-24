@@ -7,6 +7,7 @@ import MarketOverview from '../../components/MarketOverview'
 import { MARKETS } from '../../constants/Markets'
 import { isStableCoin, removeDuplicates } from '../../util/helpers'
 import { STABLE_SYMBOL } from '../../constants/AppConfigs'
+import { EXCHANGE } from '../../constants/Paths'
 
 const {TabPane} = Tabs
 
@@ -42,6 +43,10 @@ class Home extends React.Component {
     this.setState({filter: activeKey})
   }
 
+  goExchange = (market) => {
+    this.props.history.push(`/${EXCHANGE}/${market}`)
+  }
+
   render() {
     const {intl} = this.props
     const {loader, tickers, filter} = this.state
@@ -71,7 +76,10 @@ class Home extends React.Component {
               )
             }
           </Tabs>
-          <MarketOverview tickers={tickers} markets={filteredMarkets}/>
+          <MarketOverview
+            tickers={tickers}
+            markets={filteredMarkets}
+            onCellClick={this.goExchange}/>
         </Card>
       </Spin>
     )

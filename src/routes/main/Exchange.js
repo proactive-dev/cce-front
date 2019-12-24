@@ -34,14 +34,15 @@ class Exchange extends React.Component {
       marketId: null,
       market: null,
       tickers: {},
-      filter: 'btc',
-      yours:false,
+      filter: '',
+      yours: false,
       term: '',
       chartMode: true
     }
     // Get Guote Units
     let quoteUnits = MARKETS.map(market => market.quoteUnit)
     quoteUnits = removeDuplicates(quoteUnits)
+    quoteUnits.unshift('')
     // Collect Stable coin markets to USD.
     quoteUnits = quoteUnits.filter(quoteUnit => !isStableCoin(quoteUnit))
     quoteUnits.push(`usd${STABLE_SYMBOL}`)
@@ -59,16 +60,14 @@ class Exchange extends React.Component {
   componentDidMount() {
     // this.props.getAuthStatus()
     let marketId = this.props.match.params.market
-    let market
     if (!_.isEmpty(marketId) && !_.isUndefined(marketId)) {
-      market = MARKETS.find(market => market.id === marketId)
-      this.setState({market})
       this.onSelectMarket(marketId)
     }
   }
 
-  onSelectMarket(marketId) {
-    this.setState({marketId, asks: [], bids: [], trades: [], lastTrade: 0, lastPrice: 0})
+  onSelectMarket = (marketId) => {
+    let market = MARKETS.find(market => market.id === marketId)
+    this.setState({market, marketId, asks: [], bids: [], trades: [], lastTrade: 0, lastPrice: 0})
     const wsClient = new ReconnectingWebSocket(`${SOCKET_URL}/${marketId}`)
     wsClient.onmessage = event => {
       this.handleSocketEvent(event)
@@ -141,13 +140,6 @@ class Exchange extends React.Component {
     }
 
     let filteredMarkets = MARKETS
-
-    if (term !== undefined && term.length) {
-      filteredMarkets = filteredMarkets.filter(market => {
-        return market.name.toLowerCase().includes(term.toLowerCase())
-      })
-    }
-
     if (!_.isEmpty(filter)) {
       filteredMarkets = filteredMarkets.filter(market => {
         const quoteUnit = market.quoteUnit
@@ -156,6 +148,12 @@ class Exchange extends React.Component {
         } else {
           return quoteUnit.toLowerCase().includes(filter.toLowerCase())
         }
+      })
+    }
+
+    if (term !== undefined && term.length) {
+      filteredMarkets = filteredMarkets.filter(market => {
+        return market.name.toLowerCase().includes(term.toLowerCase())
       })
     }
 
@@ -203,76 +201,70 @@ class Exchange extends React.Component {
                       />
                     }
                   </Card>
-                  <Card size='small'>
-                    <Row type='flex' gutter={3}>
-                      <Col span={12}>
-                        <Card size='small'>
-                          <OrderEntry
-                            kind="buy"
-                            market={market}
-                            lastPrice={_.isEmpty(ticker) ? 0 : ticker.last}
-                          />
-                        </Card>
-                      </Col>
-                      <Col span={12}>
-                        <Card size='small'>
-                          <OrderEntry
-                            kind="sell"
-                            market={market}
-                            lastPrice={_.isEmpty(ticker) ? 0 : ticker.last}
-                          />
-                        </Card>
-                      </Col>
-                    </Row>
-                  </Card>
+                  <Row type='flex' gutter={3}>
+                    <Col span={12}>
+                      <Card size='small'>
+                        <OrderEntry
+                          kind="buy"
+                          market={market}
+                          lastPrice={_.isEmpty(ticker) ? 0 : ticker.last}
+                        />
+                      </Card>
+                    </Col>
+                    <Col span={12}>
+                      <Card size='small'>
+                        <OrderEntry
+                          kind="sell"
+                          market={market}
+                          lastPrice={_.isEmpty(ticker) ? 0 : ticker.last}
+                        />
+                      </Card>
+                    </Col>
+                  </Row>
                 </Col>
               </Row>
-
             </Col>
             <Col span={6}>
               <Card size="small">
-                <Row type='flex'>
-                  <Col span={12}>
-                    <Search
-                      size='small'
-                      placeholder="Search..."
-                      onSearch={this.handleMarketSearch}
-                      style={{width: 120}}
-                    />
-                  </Col>
-                  <Col span={12}>
-                    <Radio.Group size='small' value={filter} onChange={this.handleFilterMarket}>
-                      {
-                        this.quoteUnits.map(quoteUnit => {
-                          return (
-                            <Radio.Button value={quoteUnit}>{quoteUnit.toUpperCase()}</Radio.Button>
-                          )
-                        })
-                      }
-                    </Radio.Group>
-                  </Col>
-                </Row>
-                <MarketOverview tickers={tickers} markets={filteredMarkets} simple={true}/>
+                <div>
+                  <Radio.Group size='small' value={filter} onChange={this.handleFilterMarket}>
+                    {
+                      this.quoteUnits.map(quoteUnit => {
+                        return (
+                          <Radio.Button value={quoteUnit}>
+                            {_.isEmpty(quoteUnit) ? intl.formatMessage({id: 'all'}) : quoteUnit.toUpperCase()}
+                          </Radio.Button>
+                        )
+                      })
+                    }
+                  </Radio.Group>
+                  <Search
+                    size='small'
+                    className="gx-float-right"
+                    placeholder={intl.formatMessage({id: 'search'})}
+                    onSearch={this.handleMarketSearch}
+                    style={{maxWidth: 120}}/>
+                </div>
+                <MarketOverview
+                  tickers={tickers}
+                  markets={filteredMarkets}
+                  onCellClick={this.onSelectMarket}
+                  simple={true}/>
               </Card>
               <Card size="small">
-                <Row type='flex'>
-                  <Col span={12}>
-                    <Text strong>TradeHistory</Text>
-                  </Col>
-                  <Col span={12}>
-                    <Radio.Group size='small' value={yours} onChange={this.handleYoursTrade}>
-                      <Radio.Button value={false}><FormattedMessage id='market'/></Radio.Button>
-                      <Radio.Button value={true}><FormattedMessage id='yours'/></Radio.Button>
-                    </Radio.Group>
-                  </Col>
-                </Row>
                 <div>
-                  <SimpleTradeHistory
-                    trades={trades}
-                    market={market}
-                    yours={yours}
-                  />
+                  <FormattedMessage id='latest.trades'/>
+                  <Radio.Group
+                    className="gx-float-right"
+                    size='small' value={yours} onChange={this.handleYoursTrade}>
+                    <Radio.Button value={false}><FormattedMessage id='market'/></Radio.Button>
+                    <Radio.Button value={true}><FormattedMessage id='yours'/></Radio.Button>
+                  </Radio.Group>
                 </div>
+                <SimpleTradeHistory
+                  trades={trades}
+                  yours={yours}
+                  market={market}/>
               </Card>
             </Col>
           </Row>
