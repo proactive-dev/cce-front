@@ -3,7 +3,6 @@ import { Table } from 'antd'
 import _ from 'lodash'
 import { injectIntl } from 'react-intl'
 import { setPrice } from '../../appRedux/actions/Markets'
-import { getTableLocaleData } from '../../util/helpers'
 import { connect } from 'react-redux'
 
 const MAX_FIXED = 8
@@ -78,7 +77,7 @@ class OrderBookTable extends Component {
     return (
       <div>
         <Table
-          className={'gx-table-responsive gx-table-no-bordered gx-table-row-compact'}
+          className={'gx-table-responsive gx-table-no-bordered gx-table-row-compact gx-pointer'}
           columns={this.getColumns()}
           dataSource={data}
           pagination={false}

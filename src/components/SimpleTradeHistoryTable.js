@@ -12,7 +12,7 @@ class SimpleTradeHistoryTable extends React.Component {
   }
 
   getColumns() {
-     const {intl, market} = this.props
+    const {intl, market} = this.props
     return [
       {
         title: intl.formatMessage({id: 'price'}),
@@ -43,7 +43,7 @@ class SimpleTradeHistoryTable extends React.Component {
         render: (value) => {
           return <span>{value}</span>
         }
-      },
+      }
 
     ]
   }
@@ -54,11 +54,11 @@ class SimpleTradeHistoryTable extends React.Component {
 
   render() {
     const {data, market, intl} = this.props
-    if(_.isEmpty(market) || _.isEmpty(data))
+    if (_.isEmpty(market) || _.isEmpty(data))
       return ''
     return (
       <Table
-        className={'gx-table-no-bordered gx-table-row-compact'}
+        className={'gx-table-no-bordered gx-table-row-compact gx-pointer'}
         columns={this.getColumns()}
         dataSource={data}
         pagination={false}
