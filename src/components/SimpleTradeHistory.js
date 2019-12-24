@@ -4,35 +4,72 @@ import { connect } from 'react-redux'
 import _ from 'lodash'
 import { getAuthStatus } from '../appRedux/actions/User'
 import SimpleTradeHistoryTable from './SimpleTradeHistoryTable'
+import { getTradeHistory } from '../api/axiosAPIs'
+import { MARKETS } from '../constants/Markets'
+import { USER_TRADE_HISTORY_INTERVAL } from '../constants/AppConfigs'
 
 class SimpleTradeHistory extends React.Component {
   constructor(props) {
     super(props)
 
-    const to = new Date()
-    const from = new Date(to.getTime() - (7 * 24 * 60 * 60 * 1000))
-
     this.state = {
-      authStatus: false
+      authStatus: false,
+      userTrades: []
     }
   }
 
-  // static getDerivedStateFromProps(nextProps, prevState) {
-  //   const {loader} = nextProps
-  //   if (loader !== prevState.loader) {
-  //     return {loader}
-  //   }
-  //   return null
-  // }
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const {authStatus} = nextProps
+    if (authStatus !== prevState.authStatus) {
+      return {authStatus}
+    }
+    return null
+  }
+
+  componentDidMount() {
+    const {yours} = this.props
+    if (yours) {
+      let that = this
+      setInterval(function () {
+        that.fetchTradeHistoryData()
+      }, USER_TRADE_HISTORY_INTERVAL)
+    }
+  }
+
+  fetchTradeHistoryData = () => {
+    const {authStatus} = this.state
+    if (authStatus) {
+      const {market} = this.props
+      let search = market ? ` currency=${market.code}` : ''
+      getTradeHistory({page: 0, perPage: 100, search}, false)
+        .then(response => {
+          const {trades} = response.data
+          let tradeData = []
+          for (let i = 0; i < trades.length; i++) {
+            let trade = trades[i]
+            let market = MARKETS.find(item => item.id === trade.market)
+            if (market) {
+              trade.marketName = market.name
+              trade.priceFixed = market.bid.fixed
+              trade.amountFixed = market.ask.fixed
+            }
+            trade.kind = trade.ask_member_id ? 'sell' : 'buy'
+            tradeData.push(trade)
+          }
+          this.setState({userTrades: tradeData})
+        })
+    }
+  }
 
   render() {
-    const {trades, myTrades, yours, market} = this.props
+    const {trades, yours, market} = this.props
+    const {userTrades} = this.state
     let prevTrade = {}
     let data = []
-    if (yours && !_.isEmpty(myTrades)) {
-      for (let i = 0; i < myTrades.length; i++) {
-        let trade = myTrades[i]
-        prevTrade = (i < myTrades.length - 1) ? myTrades[i + 1] : trade
+    if (yours && !_.isEmpty(userTrades)) {
+      for (let i = 0; i < userTrades.length; i++) {
+        let trade = userTrades[i]
+        prevTrade = (i < userTrades.length - 1) ? userTrades[i + 1] : trade
         let date = new Date(trade.at * 1000)
         let strDate = ('0' + (date.getMonth() + 1)).slice(-2) + '/' +
           ('0' + date.getDate()).slice(-2) + ' ' +
@@ -75,15 +112,14 @@ class SimpleTradeHistory extends React.Component {
   }
 }
 
-// const mapDispatchToProps = {
-//   getAuthStatus
-// }
-//
-// const mapStateToProps = ({user}) => {
-//   return {
-//     authStatus: user
-//   }
-// }
+const mapDispatchToProps = {
+  getAuthStatus
+}
 
-// export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(SimpleTradeHistory))
-export default injectIntl(SimpleTradeHistory)
+const mapStateToProps = ({user}) => {
+  return {
+    authStatus: user.authStatus
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(SimpleTradeHistory))

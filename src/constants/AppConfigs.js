@@ -37,7 +37,8 @@ export const G_AUTH_IOS_APP_URL = 'https://itunes.apple.com/us/app/google-authen
 export const G_AUTH_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2'
 
 export const TICKER_INTERVAL = 1000
-export const TRADE_GRAPH_INTERVAL = 60000  // 1m
+export const TICKER_GRAPH_INTERVAL = 3000
+export const USER_TRADE_HISTORY_INTERVAL = 10000
 
 export const BANNERS = [
   {
