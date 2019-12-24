@@ -9,6 +9,8 @@ import { expToFixed, getFixed } from '../util/helpers'
 import { getAuthStatus } from '../appRedux/actions/User'
 import { getPrice} from '../appRedux/actions/Markets'
 import { Button, Col, Form, InputNumber, Row } from 'antd'
+import { IconNotification } from './IconNotification'
+import { ERROR, SUCCESS } from '../constants/AppConfigs'
 
 const MAX_FIXED = 8
 
@@ -160,11 +162,11 @@ class OrderEntry extends React.Component {
     callback(this.props.intl.formatMessage({id: 'input.price'}))
   }
 
-  onSubmit = e => {
+  onSubmit = (e) => {
     e.preventDefault()
     const {market, intl, kind} = this.props
     const isBid = kind === 'buy' ? true : false
-
+    const marketId = market.id
     this.props.form.validateFields((err, values) => {
       if (!err) {
         let formData = new FormData()
@@ -173,30 +175,20 @@ class OrderEntry extends React.Component {
           formData.append('order_bid[price]', values.price)
           formData.append('order_bid[origin_volume]', values.amount)
           formData.append('order_bid[total]', values.total)
-          newOrderBid(this.props.market.id, formData)
+          newOrderBid(marketId, formData)
             .then(response => {
-              this.setState({
-                message: intl.formatMessage({id: response.data.message}),
-                amount: '',
-                total: ''
-              })
-              this.props.getAccounts()
-              this.props.getMarketData(market.id)
+              this.props.form.resetFields()
+              IconNotification(SUCCESS, this.props.intl.formatMessage({id: 'success'}))
             })
         } else {
           formData.append('order_ask[ord_type]', 'limit')
           formData.append('order_ask[price]', values.price)
           formData.append('order_ask[origin_volume]', values.amount)
           formData.append('order_ask[total]', values.total)
-          newOrderAsk(this.props.market.id, formData)
+          newOrderAsk(marketId, formData)
             .then(response => {
-              this.setState({
-                message: intl.formatMessage({id: response.data.message}),
-                amount: '',
-                total: ''
-              })
-              this.props.getAccounts()
-              this.props.getMarketData(market.id)
+              this.props.form.resetFields()
+              IconNotification(SUCCESS, this.props.intl.formatMessage({id: 'success'}))
             })
         }
       }
@@ -305,27 +297,29 @@ class OrderEntry extends React.Component {
                            style={{width: '100%'}}/>
             )}
           </Form.Item>
-        </Form>
 
-        <div>
-          {authStatus ? (
-            <Button block onClick={() => this.onSubmit(kind === 'buy')}
-                    className={kind === 'buy' ? 'gx-text-green' : 'gx-text-red'}>
-              {intl.formatMessage({id: this.props.kind})}&nbsp;{this.props.market.baseUnit.toUpperCase()}
-            </Button>
-          ) : (
-            <div>
-              <Link to="/login">{intl.formatMessage({id: 'login'})}</Link>
-              <span>
+          <div>
+            {authStatus ? (
+              <Button
+                htmlType="submit"
+                block
+                className={kind === 'buy' ? 'gx-text-green' : 'gx-text-red'}>
+                {intl.formatMessage({id: this.props.kind})}&nbsp;{this.props.market.baseUnit.toUpperCase()}
+              </Button>
+            ) : (
+              <div>
+                <Link to="/login">{intl.formatMessage({id: 'login'})}</Link>
+                <span>
                     &nbsp;
-                {intl.formatMessage({id: 'or'})}
-                &nbsp;
-                <Link to="/register">{intl.formatMessage({id: 'register'})}</Link>
+                  {intl.formatMessage({id: 'or'})}
+                  &nbsp;
+                  <Link to="/register">{intl.formatMessage({id: 'register'})}</Link>
                   </span>
-              &nbsp;{intl.formatMessage({id: 'to.trade'})}
-            </div>
-          )}
-        </div>
+                &nbsp;{intl.formatMessage({id: 'to.trade'})}
+              </div>
+            )}
+          </div>
+        </Form>
       </div>
     )
   }

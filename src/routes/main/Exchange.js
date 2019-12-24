@@ -14,6 +14,7 @@ import TradeDepth from '../../components/TradeDepth'
 import OrderEntry from '../../components/OrderEntry'
 import { SOCKET_URL, STABLE_SYMBOL } from '../../constants/AppConfigs'
 import { isStableCoin, removeDuplicates } from '../../util/helpers'
+import SimpleTradeHistory from '../../components/SimpleTradeHistory'
 
 
 const Search = Input.Search
@@ -34,6 +35,7 @@ class Exchange extends React.Component {
       market: null,
       tickers: {},
       filter: 'btc',
+      yours:false,
       term: '',
       chartMode: true
     }
@@ -99,6 +101,7 @@ class Exchange extends React.Component {
       // process trades
       const trades = message.trades
       if (!_.isEmpty(trades)) {
+        console.log(trades[0])
         this.setState({trades: trades, lastPrice: trades[0].price, lastTrade: trades[0].tid})
       }
     } else if ('asks' in message) {
@@ -115,6 +118,10 @@ class Exchange extends React.Component {
     this.setState({filter: e.target.value})
   }
 
+  handleYoursTrade = e => {
+    this.setState({yours: e.target.value})
+  }
+
   handleMarketSearch = value => {
     this.setState({term: value})
   }
@@ -125,7 +132,7 @@ class Exchange extends React.Component {
 
   render() {
     const {intl, markets} = this.props
-    const {loader, tickers, market, marketId, asks, bids, trades, filter, term, chartMode} = this.state
+    const {loader, tickers, market, marketId, asks, bids, trades, filter, term, chartMode, yours} = this.state
     let ticker = {}
     if (!_.isEmpty(tickers) && market) {
 
@@ -253,12 +260,19 @@ class Exchange extends React.Component {
                     <Text strong>TradeHistory</Text>
                   </Col>
                   <Col span={12}>
-                    <Radio.Group size='small' value={filter} onChange={this.handleFilterMarket}>
-                      <Radio.Button value={0}>market</Radio.Button>
-                      <Radio.Button value={1}>yours</Radio.Button>
+                    <Radio.Group size='small' value={yours} onChange={this.handleYoursTrade}>
+                      <Radio.Button value={false}><FormattedMessage id='market'/></Radio.Button>
+                      <Radio.Button value={true}><FormattedMessage id='yours'/></Radio.Button>
                     </Radio.Group>
                   </Col>
                 </Row>
+                <div>
+                  <SimpleTradeHistory
+                    trades={trades}
+                    market={market}
+                    yours={yours}
+                  />
+                </div>
               </Card>
             </Col>
           </Row>
