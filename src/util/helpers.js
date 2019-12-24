@@ -92,7 +92,7 @@ export const getCurrencyBySymbol = (symbol) => {
 
 export const getFixed = (value, precision = null) => {
   let fixed = precision > DEFAULT_PRECISION ? DEFAULT_PRECISION : precision
-  return BigNumber(value).toFixed(fixed).toString()
+  return BigNumber(value || 0).toFixed(fixed).toString()
 }
 
 export const isStableCoin = (sym) => {

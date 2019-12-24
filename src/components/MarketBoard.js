@@ -1,11 +1,8 @@
 import React from 'react'
 import { FormattedMessage, injectIntl } from 'react-intl'
-import { priceChange } from '../util/helpers'
-import { Typography, Col, Row } from 'antd'
-import _ from 'lodash'
-import { getFixed } from '../util/helpers'
+import { getFixed, getPointFixed, priceChange } from '../util/helpers'
+import { Col, Row } from 'antd'
 
-const {Text} = Typography
 class MarketBoard extends React.Component {
   constructor(props) {
     super(props)
@@ -14,9 +11,8 @@ class MarketBoard extends React.Component {
   }
 
   render() {
-    const {intl, market, ticker} = this.props
-
-    if(!market || _.isEmpty(market))
+    const {market, ticker} = this.props
+    if (!market)
       return ''
 
     const open = parseFloat(ticker.open)
@@ -40,52 +36,44 @@ class MarketBoard extends React.Component {
       changeClassName = 'gx-text-red'
     }
     return (
-      <div>
-        <Row type='flex'>
-          <Col span={4}>
-              <span className='gx-fs-xl gx-text-black gx-font-weight-bold'>{market.baseUnit.toUpperCase()}</span>
-              <Text> / {market.quoteUnit.toUpperCase()}</Text>
-          </Col>
-
-          <Col span={4}>
-            <FormattedMessage id="last.price"/>
-            <div className={lastClassName + ' gx-font-weight-bold'}>
-              {getFixed(last, market.bid.fixed)}
-            </div>
-          </Col>
-
-          <Col span={4}>
-            <FormattedMessage id="24h.change"/>
-            <div className={changeClassName + ' gx-font-weight-bold'}>
-              {change.toFixed(market.bid.fixed)}&nbsp;&nbsp;
-              {change > 0 && '+'}
-              {changePercent.toFixed(2)}%
-            </div>
-          </Col>
-
-          <Col span={4}>
-            <FormattedMessage id="24h.high"/>
-            <div className='gx-font-weight-bold gx-text-black'>
-              {getFixed(ticker.high, market.bid.fixed)}
-            </div>
-          </Col>
-
-          <Col span={4}>
-            <FormattedMessage id="24h.low"/>
-            <div className='gx-font-weight-bold gx-text-black'>
-              {getFixed(ticker.low, market.bid.fixed)}
-            </div>
-          </Col>
-
-          <Col span={4}>
-            <FormattedMessage id="24h.volume"/>
-            <div className='gx-font-weight-bold gx-text-black'>
-              {getFixed(ticker.vol, market.bid.fixed)}&nbsp;
-            </div>
-          </Col>
-        </Row>
-
-      </div>
+      <Row type="flex" className='gx-align-items-center'>
+        <Col span={4}>
+          <span className='h2'>{market.baseUnit.toUpperCase()}</span>
+          &nbsp;/&nbsp;{market.quoteUnit.toUpperCase()}
+        </Col>
+        <Col span={4}>
+          <FormattedMessage id="last.price"/>
+          <div className={`${lastClassName} gx-font-weight-bold`}>
+            {getFixed(last, market.bid.fixed)}
+          </div>
+        </Col>
+        <Col span={4}>
+          <FormattedMessage id="24h.change"/>
+          <div className={`${changeClassName} gx-font-weight-bold`}>
+            {getFixed(change, market.bid.fixed)}&nbsp;
+            {change > 0 && '+'}
+            {getPointFixed(changePercent)}%
+          </div>
+        </Col>
+        <Col span={4}>
+          <FormattedMessage id="24h.high"/>
+          <div className='gx-font-weight-bold gx-text-black'>
+            {getFixed(ticker.high, market.bid.fixed)}
+          </div>
+        </Col>
+        <Col span={4}>
+          <FormattedMessage id="24h.low"/>
+          <div className='gx-font-weight-bold gx-text-black'>
+            {getFixed(ticker.low, market.bid.fixed)}
+          </div>
+        </Col>
+        <Col span={4}>
+          <FormattedMessage id="24h.volume"/>
+          <div className='gx-font-weight-bold gx-text-black'>
+            {getFixed(ticker.vol, market.bid.fixed)}&nbsp;
+          </div>
+        </Col>
+      </Row>
     )
   }
 }
