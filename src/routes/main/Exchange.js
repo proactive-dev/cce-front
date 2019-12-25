@@ -15,6 +15,7 @@ import OrderEntry from '../../components/OrderEntry'
 import { SOCKET_URL, STABLE_SYMBOL } from '../../constants/AppConfigs'
 import { getQuoteUnits, isStableCoin } from '../../util/helpers'
 import SimpleTradeHistory from '../../components/SimpleTradeHistory'
+import { EXCHANGE } from '../../constants/Paths'
 
 const Search = Input.Search
 
@@ -54,17 +55,22 @@ class Exchange extends React.Component {
   componentDidMount() {
     let marketId = this.props.match.params.market
     if (!_.isEmpty(marketId) && !_.isUndefined(marketId)) {
-      this.onSelectMarket(marketId)
+      this.initMarket(marketId)
     }
   }
 
-  onSelectMarket = (marketId) => {
+  initMarket = (marketId) => {
     let market = MARKETS.find(market => market.id === marketId)
     this.setState({market, marketId, asks: [], bids: [], trades: [], lastTrade: 0, lastPrice: 0})
     const wsClient = new ReconnectingWebSocket(`${SOCKET_URL}/${marketId}`)
     wsClient.onmessage = event => {
       this.handleSocketEvent(event)
     }
+  }
+
+  onSelectMarket = (market) => {
+    this.initMarket(market)
+    this.props.history.push(`/${EXCHANGE}/${market}`)
   }
 
   handleSocketEvent(event) {
