@@ -33,6 +33,7 @@ class SimpleTradeHistory extends React.Component {
       setInterval(function () {
         that.fetchTradeHistoryData()
       }, USER_TRADE_HISTORY_INTERVAL)
+      this.fetchTradeHistoryData()
     }
   }
 
@@ -40,8 +41,8 @@ class SimpleTradeHistory extends React.Component {
     const {authStatus} = this.state
     if (authStatus) {
       const {market} = this.props
-      let search = market ? ` currency=${market.code}` : ''
-      getTradeHistory({page: 0, perPage: 100, search}, false)
+      let search = market ? `currency=${market.code}` : ''
+      getTradeHistory({page: 1, perPage: 100, search}, false)
         .then(response => {
           const {trades} = response.data
           let tradeData = []
