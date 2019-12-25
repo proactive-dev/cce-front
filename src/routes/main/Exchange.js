@@ -12,6 +12,7 @@ import OrderBook from '../../components/OrderBook/OrderBook'
 import TradeChart from '../../components/TradeChart'
 import TradeDepth from '../../components/TradeDepth'
 import OrderEntry from '../../components/OrderEntry'
+import MarketOpenOrders from '../../components/MarketOpenOrders'
 import { SOCKET_URL, STABLE_SYMBOL } from '../../constants/AppConfigs'
 import { getQuoteUnits, isStableCoin } from '../../util/helpers'
 import SimpleTradeHistory from '../../components/SimpleTradeHistory'
@@ -276,6 +277,11 @@ class Exchange extends React.Component {
             </Card>
           </Col>
         </Row>
+        <div>
+          <MarketOpenOrders
+            marketId={this.state.marketId}>
+          </MarketOpenOrders>
+        </div>
       </Spin>
     )
   }

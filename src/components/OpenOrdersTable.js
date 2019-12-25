@@ -1,12 +1,30 @@
 import React from 'react'
-import { Table } from 'antd'
+import { Button, Select, Table } from 'antd'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import { getFixed, getTableLocaleData, getTimeForTable } from '../util/helpers'
 
+const Option = Select.Option
+
 class OpenOrdersTable extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      cancelType: 'cancel.order'
+    }
+  }
 
   handleTableChange = (pagination, filters, sorter) => {
     this.props.onChange(pagination, filters, sorter)
+  }
+
+  handleCancelTypeChange = (value) => {
+    this.setState({cancelType: value})
+    this.props.onCancelType(value)
+  }
+
+  handleCancel = (value) => {
+    this.props.onCancelOrder(value)
   }
 
   getColumns() {
@@ -63,6 +81,31 @@ class OpenOrdersTable extends React.Component {
         align: 'center',
         render: (value, record) => {
           return getFixed(record.origin_volume * record.price, record.priceFixed)
+        }
+      },
+      {
+        title: <Select style={{width: 120}}
+                       defaultValue={'cancel.order'}
+                       value={this.state.cancelType}
+                       disabled={!this.props.marketMode}
+                       size={'small'}
+                       onChange={this.handleCancelTypeChange}>
+          <Option key={0} value={'cancel.order'}>---</Option>
+          <Option key={1} value={'cancel.bids'}>
+            <FormattedMessage id={'cancel.bids'}/>
+          </Option>
+          <Option key={2} value={'cancel.asks'}>
+            <FormattedMessage id={'cancel.asks'}/>
+          </Option>
+          <Option key={3} value={'cancel.all'}>
+            <FormattedMessage id={'cancel.all'}/>
+          </Option>
+        </Select>,
+        dataIndex: 'id',
+        align: 'center',
+        width: 120,
+        render: (value) => {
+          return <Button onClick={() => this.handleCancel(value)}><FormattedMessage id={'cancel'}/></Button>
         }
       }
     ]
