@@ -1,37 +1,52 @@
 import React from 'react'
 import _ from 'lodash'
-import { injectIntl } from 'react-intl'
+import { FormattedMessage, injectIntl } from 'react-intl'
 import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
-import { newOrderAsk, newOrderBid } from '../api/axiosAPIs'
-import { getAccounts } from '../appRedux/actions/Accounts'
+import { Form, Input } from 'antd'
 import { expToFixed, getFixed } from '../util/helpers'
-import { getAuthStatus } from '../appRedux/actions/User'
-import { getPrice} from '../appRedux/actions/Markets'
-import { Button, Col, Form, InputNumber, Row } from 'antd'
+import { getAccounts } from '../appRedux/actions/Accounts'
+import { ERROR, ORDER_BUY, ORDER_SELL, SUCCESS } from '../constants/AppConfigs'
+import { LOGIN, REGISTER } from '../constants/Paths'
 import { IconNotification } from './IconNotification'
-import { ERROR, SUCCESS } from '../constants/AppConfigs'
+import { newOrderAsk, newOrderBid } from '../api/axiosAPIs'
+
+const formItemLayout = {
+  labelCol: {
+    xs: {span: 24},
+    sm: {span: 6}
+  },
+  wrapperCol: {
+    xs: {span: 24},
+    sm: {span: 18}
+  }
+}
 
 const MAX_FIXED = 8
 
 class OrderEntry extends React.Component {
-  state = {
-    marketId: null,
-    accounts: [],
-    bidFixed: 0,
-    askFixed: 0,
-    totalFixed: 0,
-    authStatus: false,
-    price: '0.00000000'
+  constructor(props) {
+    super(props)
+
+    const {market, lastPrice} = this.props
+    this.bidFixed = market.bid.fixed || MAX_FIXED
+    this.askFixed = market.ask.fixed || MAX_FIXED
+    this.totalFixed = this.bidFixed + this.askFixed < MAX_FIXED ? this.bidFixed + this.askFixed : MAX_FIXED
+
+    this.state = {
+      accounts: [],
+      price: lastPrice,
+      priceInvalid: false,
+      amountInvalid: false,
+      totalInvalid: false
+    }
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const {accounts, authStatus, price} = nextProps
-    if ((authStatus !== prevState.authStatus)
-      || (!_.isEmpty(accounts) && accounts !== prevState.accounts)
-      || (price !== prevState.price))
-    {
-      return {authStatus, accounts, price}
+    const {accounts, price} = nextProps
+    if ((!_.isEmpty(accounts) && accounts !== prevState.accounts)
+      || (price !== prevState.price)) {
+      return {accounts, price}
     }
 
     return null
@@ -39,307 +54,230 @@ class OrderEntry extends React.Component {
 
   componentDidMount() {
     this.props.getAccounts()
-    this.props.getPrice()
+  }
 
-    const {market, lastPrice} = this.props
-    if (market) {
-      this.setMarket(market, lastPrice)
+  onChangePrice = e => {
+    let price = e.target.value
+    if (!!price && price > 0) {
+      this.setState({priceInvalid: false})
+      const {amountInvalid} = this.state
+      if (!amountInvalid) {
+        const amount = this.props.form.getFieldValue('amount')
+        let total = price * amount
+        total = getFixed(total, this.totalFixed)
+        this.props.form.setFieldsValue({total})
+      }
+    } else {
+      this.setState({priceInvalid: true})
     }
   }
 
-  setMarket(market, lastPrice) {
-    const bidFixed = market.bid.fixed || MAX_FIXED
-    const askFixed = market.ask.fixed || MAX_FIXED
-    const totalFixed = bidFixed + askFixed < MAX_FIXED ? bidFixed + askFixed : MAX_FIXED
-
-    this.setState({marketId: market.id, price: lastPrice, bidFixed, askFixed, totalFixed})
-  }
-
-  getFixedCount = (value) => {
-    let numbers = (typeof (value) !== 'string') ? String(value).split('.') : value.split('.')
-    if (numbers.length < 2) {
-      return 0
-    }
-
-    return numbers[1].length
-  }
-
-  setPrice(price) {
-    const amount = this.props.form.getFieldValue('amount')
-    const {totalFixed} = this.state
-
-    let total = parseFloat(price) * parseFloat(amount)
-    total = getFixed(total, totalFixed)
-    this.props.form.setFieldsValue({
-      price: price,
-      total: total
-    })
-  }
-
-  onChangePrice = value => {
-    const {bidFixed} = this.state
-    let price = value ? value : ''
-    if (this.getFixedCount(price) >= bidFixed) {
-      price = getFixed(price, bidFixed)
-    }
-
-    this.setPrice(price)
-  }
-
-  setAmount(amount) {
+  setAmount = (amount) => {
     const price = this.props.form.getFieldValue('price')
-    const {totalFixed} = this.state
-    let total = parseFloat(price) * parseFloat(amount)
-    total = getFixed(total, totalFixed)
+    let total = price * amount
+    total = getFixed(total, this.totalFixed)
 
-    this.props.form.setFieldsValue({
-      amount: amount,
-      total: total
-    })
+    this.props.form.setFieldsValue({amount, total})
   }
 
-  onChangeAmount = value => {
-    const {askFixed} = this.state
-    let amount = value ? value : ''
-    if (this.getFixedCount(amount) >= askFixed) {
-      amount = getFixed(amount, askFixed)
+  onChangeAmount = e => {
+    let amount = e.target.value
+    if (!!amount && amount > 0) {
+      this.setState({amountInvalid: false})
+      this.props.form.setFieldsValue({amount})
+      if (!this.state.priceInvalid) {
+        this.setAmount(amount)
+      }
+    } else {
+      this.setState({amountInvalid: true})
     }
-    this.setAmount(amount)
   }
 
   setTotal(total) {
-    const {price} = this.props
-    const {askFixed} = this.state
-    let amount = ''
-    if (parseFloat(price) > 0) {
-      if (total !== '') {
-        amount = parseFloat(total) / parseFloat(price)
-        amount = getFixed(amount, askFixed)
-      }
-    } else {
-      amount = getFixed(0, askFixed)
+    if (!this.state.priceInvalid && !this.state.amountInvalid) {
+      const price = this.props.form.getFieldValue('price')
+      const amount = getFixed(total / price, this.askFixed)
+      this.props.form.setFieldsValue({amount, total})
     }
-
-    this.props.form.setFieldsValue({
-      amount: amount,
-      total: total
-    })
-  }
-
-  onChangeTotal = value => {
-    const {totalFixed} = this.state
-    let total = value ? value : ''
-    if (this.getFixedCount(total) >= totalFixed) {
-      total = getFixed(total, totalFixed)
-    }
-    this.setTotal(total)
   }
 
   onClickWallet(kind, balance) {
-    const {totalFixed, askFixed} = this.state
-    if (kind === 'buy') {
-      this.setTotal(getFixed(balance, totalFixed))
-    } else if (kind === 'sell') {
-      this.setAmount(getFixed(balance, askFixed))
+    if (kind === ORDER_BUY) {
+      this.setTotal(getFixed(balance, this.totalFixed))
+    } else if (kind === ORDER_SELL) {
+      this.setAmount(getFixed(balance, this.askFixed))
     }
-  }
-
-  checkAmount = (rule, value, callback) => {
-    let amount = parseFloat(value)
-    if (amount > 0) {
-      callback()
-      return
-    }
-    callback(this.props.intl.formatMessage({id: 'input.amount'}))
-  }
-
-  checkPrice = (rule, value, callback) => {
-    let amount = parseFloat(value)
-    if (amount > 0) {
-      callback()
-      return
-    }
-    callback(this.props.intl.formatMessage({id: 'input.price'}))
   }
 
   onSubmit = (e) => {
     e.preventDefault()
-    const {market, intl, kind} = this.props
-    const isBid = kind === 'buy' ? true : false
+    const {market, intl, kind, accounts} = this.props
+    const {priceInvalid, amountInvalid} = this.state
+    const isBid = kind === ORDER_BUY
     const marketId = market.id
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        let formData = new FormData()
-        if (isBid) {
-          formData.append('order_bid[ord_type]', 'limit')
-          formData.append('order_bid[price]', values.price)
-          formData.append('order_bid[origin_volume]', values.amount)
-          formData.append('order_bid[total]', values.total)
-          newOrderBid(marketId, formData)
-            .then(response => {
-              this.props.form.resetFields()
-              IconNotification(SUCCESS, this.props.intl.formatMessage({id: 'success'}))
-            })
-        } else {
-          formData.append('order_ask[ord_type]', 'limit')
-          formData.append('order_ask[price]', values.price)
-          formData.append('order_ask[origin_volume]', values.amount)
-          formData.append('order_ask[total]', values.total)
-          newOrderAsk(marketId, formData)
-            .then(response => {
-              this.props.form.resetFields()
-              IconNotification(SUCCESS, this.props.intl.formatMessage({id: 'success'}))
-            })
-        }
-      }
-    })
+    let {price, amount} = this.props.form.getFieldsValue()
+    if (priceInvalid || amountInvalid) {
+      return
+    }
+    price = parseFloat(getFixed(price, this.bidFixed))
+    amount = parseFloat(getFixed(amount, this.askFixed))
+    let total = parseFloat(getFixed(price * amount, this.totalFixed))
+    this.props.form.setFieldsValue({price, amount, total})
+
+    // total validation with balance
+    let compareName = isBid ? market.quoteUnit : market.baseUnit
+    let account = accounts.find(item => item.currency.code === compareName) || {}
+    let balance = account.balance ? parseFloat(account.balance) : 0.0
+    if (balance < total) {
+      this.setState({totalInvalid: true})
+      return
+    }
+
+    let formData = new FormData()
+    if (isBid) {
+      formData.append('order_bid[ord_type]', 'limit')
+      formData.append('order_bid[price]', price)
+      formData.append('order_bid[origin_volume]', amount)
+      formData.append('order_bid[total]', total)
+      newOrderBid(marketId, formData)
+        .then(response => {
+          this.props.form.resetFields()
+          IconNotification(SUCCESS, intl.formatMessage({id: 'success'}))
+        })
+    } else {
+      formData.append('order_ask[ord_type]', 'limit')
+      formData.append('order_ask[price]', price)
+      formData.append('order_ask[origin_volume]', amount)
+      formData.append('order_ask[total]', total)
+      newOrderAsk(marketId, formData)
+        .then(response => {
+          this.props.form.resetFields()
+          IconNotification(SUCCESS, intl.formatMessage({id: 'success'}))
+        })
+    }
   }
 
   render() {
     const {getFieldDecorator} = this.props.form
-    const {intl, market, kind, accounts} = this.props
-    const {bidFixed, askFixed, totalFixed, authStatus} = this.state
-    const fixed = kind === 'sell' ? askFixed : bidFixed
+    const {intl, authStatus, market, kind, accounts} = this.props
+    const {priceInvalid, amountInvalid, totalInvalid, price} = this.state
+    const isBid = kind === ORDER_BUY
+    const fixed = isBid ? this.bidFixed : this.askFixed
+
+    const bidMin = expToFixed((1 / Math.pow(10, this.bidFixed)))
+    const askMin = expToFixed((1 / Math.pow(10, this.askFixed)))
+    // const totalMin = expToFixed((1 / Math.pow(10, this.totalFixed)))
 
     let balance = 0.0
     let compareName = ''
-
-    const bidMin = expToFixed((1 / Math.pow(10, bidFixed)))
-    const askMin = expToFixed((1 / Math.pow(10, askFixed)))
-    const totalMin = expToFixed((1 / Math.pow(10, totalFixed)))
-
     if (market) {
-      compareName = (kind === 'sell') ? market.baseUnit : market.quoteUnit
-      _.forEach(accounts, account => {
-        if (compareName.toString() === account.currency.code.toString()) {
-          balance = account.balance
-        }
-      })
+      compareName = isBid ? market.quoteUnit : market.baseUnit
+      let account = accounts.find(item => item.currency.code === compareName) || {}
+      balance = account.balance || 0.0
     }
-
-    const formItemLayout = {
-      labelCol: {
-        xs: {span: 24},
-        sm: {span: 8}
-      },
-      wrapperCol: {
-        xs: {span: 24},
-        sm: {span: 16}
-      }
+    let validationMsg = ''
+    if (priceInvalid) {
+      validationMsg = 'input.price'
+    } else if (amountInvalid) {
+      validationMsg = 'input.amount'
+    } else if (totalInvalid) {
+      validationMsg = 'INSUFFICIENT_BALANCE'
     }
 
     return (
       <div>
-        <Row type="flex" align="middle">
-          <Col span={12}>
-            <h3>{intl.formatMessage({id: kind})}&nbsp;{market.baseUnit.toUpperCase()}</h3>
-          </Col>
-          <Col span={12}>
-            <Button className='gx-border-0 gx-float-right' onClick={() => this.onClickWallet(kind, balance)}>
-              <img src={require('assets/images/wallet.svg')} alt="wallet" style={{width: 18, height: 18}}/>&nbsp;
-              {authStatus ? (
-                '' + parseFloat(balance).toFixed(fixed) + ' ' + compareName.toUpperCase()
-              ) : (
-                '- ' + compareName.toUpperCase()
-              )}
-            </Button>
-          </Col>
-        </Row>
-        <Form {...formItemLayout} onSubmit={this.onSubmit}>
-          <Form.Item label={intl.formatMessage({id: 'price'})}>
+        <div className='gx-mb-2'>
+          <span className={'h4'}>{intl.formatMessage({id: kind})}&nbsp;{market.baseUnit.toUpperCase()}</span>
+          <span className='gx-float-right gx-pointer' onClick={() => this.onClickWallet(kind, balance)}>
+            <img className='gx-size-15' src={require('assets/images/wallet.svg')} alt="wallet"/>&nbsp;
+            {authStatus ? getFixed(balance, fixed) : '-'}&nbsp;
+            {compareName.toUpperCase()}
+          </span>
+        </div>
+        <Form>
+          <Form.Item
+            {...formItemLayout}
+            {...priceInvalid && {
+              validateStatus: ERROR
+            }}
+            className={'gx-mb-0'}
+            label={intl.formatMessage({id: 'price'})}>
             {getFieldDecorator('price', {
-              initialValue:this.state.price,
-              rules: [{
-                required: true,
-                message: intl.formatMessage({id: 'alert.fieldRequired'})
-              }, {
-                validator: this.checkPrice
-              }]
+              initialValue: price
             })(
-              <InputNumber min={bidMin}
-                           step={bidMin}
-                           size={'medium'}
-                           suffix={market.quoteUnit.toUpperCase()}
-                           onChange={this.onChangePrice}
-                           style={{width: '100%'}}/>
+              <Input
+                className={'gx-w-100'}
+                type={'number'}
+                size={'small'}
+                min={bidMin}
+                step={bidMin}
+                onChange={this.onChangePrice}
+                addonAfter={market.quoteUnit.toUpperCase()}/>
             )}
           </Form.Item>
-
-          <Form.Item label={intl.formatMessage({id: 'amount'})}>
-            {getFieldDecorator('amount', {
-              rules: [{
-                required: true,
-                message: intl.formatMessage({id: 'alert.fieldRequired'})
-              }, {
-                validator: this.checkAmount
-              }]
-            })(
-              <InputNumber min={askMin}
-                           step={askMin}
-                           size={'medium'}
-                           suffix={market.baseUnit.toUpperCase()}
-                           onChange={this.onChangeAmount}
-                           style={{width: '100%'}}/>
+          <Form.Item
+            {...formItemLayout}
+            {...amountInvalid && {
+              validateStatus: ERROR
+            }}
+            className={'gx-mb-0'}
+            label={intl.formatMessage({id: 'amount'})}>
+            {getFieldDecorator('amount')(
+              <Input
+                className={'gx-w-100'}
+                type={'number'}
+                size={'small'}
+                min={askMin}
+                step={askMin}
+                onChange={this.onChangeAmount}
+                addonAfter={market.baseUnit.toUpperCase()}/>
             )}
           </Form.Item>
-
-          <Form.Item label={intl.formatMessage({id: 'total'})}>
-            {getFieldDecorator('total', {
-              rules: [{
-                required: true,
-                message: intl.formatMessage({id: 'alert.fieldRequired'})
-              }]
-            })(
-              <InputNumber min={0}
-                           size={'medium'}
-                           suffix={market.quoteUnit.toUpperCase()}
-                           onChange={this.onChangeTotal}
-                           style={{width: '100%'}}/>
+          <Form.Item
+            {...formItemLayout}
+            className={'gx-mb-0'}
+            label={intl.formatMessage({id: 'total'})}>
+            {getFieldDecorator('total')(
+              <Input
+                className={'gx-w-100'}
+                type={'number'}
+                size={'small'}
+                min={0}
+                addonAfter={market.quoteUnit.toUpperCase()}/>
             )}
           </Form.Item>
-
-          <div>
-            {authStatus ? (
-              <Button
-                htmlType="submit"
-                block
-                className={kind === 'buy' ? 'gx-text-green' : 'gx-text-red'}>
-                {intl.formatMessage({id: this.props.kind})}&nbsp;{this.props.market.baseUnit.toUpperCase()}
-              </Button>
-            ) : (
-              <div>
-                <Link to="/login">{intl.formatMessage({id: 'login'})}</Link>
-                <span>
-                    &nbsp;
-                  {intl.formatMessage({id: 'or'})}
-                  &nbsp;
-                  <Link to="/register">{intl.formatMessage({id: 'register'})}</Link>
-                  </span>
-                &nbsp;{intl.formatMessage({id: 'to.trade'})}
-              </div>
-            )}
+          <div className={'gx-text-danger'} style={{height: '16px'}}>
+            {validationMsg ? intl.formatMessage({id: validationMsg}) : ''}
           </div>
+          {authStatus ? (
+            <div
+              className={`gx-border gx-text-center gx-mt-2 gx-p-2 gx-pointer ${isBid ? 'gx-text-green' : 'gx-text-red'}`}
+              onClick={this.onSubmit}>
+              {intl.formatMessage({id: kind})}&nbsp;{market.baseUnit.toUpperCase()}
+            </div>
+          ) : (
+            <div className={'gx-border gx-text-center gx-mt-3 gx-p-2'}>
+              <Link to={`/${LOGIN}`} className="gx-m-1">{intl.formatMessage({id: 'auth.login'})}</Link>
+              <FormattedMessage id="or"/>
+              <Link to={`/${REGISTER}`} className="gx-m-1">{intl.formatMessage({id: 'auth.register'})}</Link>
+              <FormattedMessage id="to.trade"/>
+            </div>
+          )}
         </Form>
       </div>
     )
   }
 }
 
-const mapStateToProps = ({accounts, user, markets}) => {
+const mapStateToProps = ({accounts, markets}) => {
   return {
     accounts: accounts.accounts,
-    authStatus: user,
     price: markets.price
   }
 }
 
 const mapDispatchToProps = dispatch => ({
-  getAuthStatus,
-  getAccounts,
-  getPrice
-  // setPrice: payload => {
-  //   dispatch(cacheActions.setPrice(payload))
-  // },
+  getAccounts
 })
 
 const WrappedOrderEntryForm = Form.create()(OrderEntry)
