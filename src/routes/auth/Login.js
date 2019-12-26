@@ -67,7 +67,7 @@ class Login extends Component {
     const {getFieldDecorator} = this.props.form
 
     return (
-      <div className="gx-text-center">
+      <div className="gx-text-center gx-mb-2">
         <h1 className="gx-m-5"><FormattedMessage id="auth.login"/></h1>
         <FormattedMessage id="check.visiting"/>
         &nbsp;

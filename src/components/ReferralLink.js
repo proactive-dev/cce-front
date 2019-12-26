@@ -7,7 +7,7 @@ import { SUCCESS } from '../constants/AppConfigs'
 
 const FormItem = Form.Item
 
-class AffiliateLink extends Component {
+class ReferralLink extends Component {
 
   onCopied() {
     IconNotification(SUCCESS, this.props.intl.formatMessage({id: 'alert.copied'}))
@@ -17,15 +17,15 @@ class AffiliateLink extends Component {
     const {intl, link} = this.props
 
     return (
-      <Card className="gx-card gx-mb-1" title={intl.formatMessage({id: 'affiliate.url'})}>
+      <Card className="gx-card gx-mb-1" title={intl.formatMessage({id: 'referral.link'})}>
         <Form layout="inline">
           <FormItem
-            className="gx-pl-4 gx-mr-4"
-            label={intl.formatMessage({id: 'affiliate.url'})}>
+            className="gx-pl-2"
+            label={intl.formatMessage({id: 'referral.link'})}>
             <span className="ant-form-text">{link}</span>
           </FormItem>
           <FormItem
-            className="gx-ml-2">
+            className="gx-ml-4">
             <CopyToClipboard
               style={{margin: 'auto'}}
               text={link}
@@ -41,6 +41,6 @@ class AffiliateLink extends Component {
   }
 }
 
-const WrappedAffiliateLinkForm = Form.create()(AffiliateLink)
+const WrappedReferralLinkForm = Form.create()(ReferralLink)
 
-export default injectIntl(WrappedAffiliateLinkForm)
+export default injectIntl(WrappedReferralLinkForm)

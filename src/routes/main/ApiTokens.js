@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { FormattedMessage, injectIntl } from 'react-intl'
-import { Button, Icon, Spin, Table } from 'antd'
+import { Button, Icon, Popconfirm, Spin, Table } from 'antd'
 import { getAuthStatus } from '../../appRedux/actions/User'
 import { getTableLocaleData } from '../../util/helpers'
 import _ from 'lodash'
@@ -91,12 +91,15 @@ class ApiTokens extends React.Component {
         render: (value, record) => {
           return (
             <div>
-              <Button type='link' onClick={() => this.onEdit(record)}>
-                <Icon type="edit"/>
-              </Button>
-              <Button type='link' onClick={() => this.onDelete(record)}>
-                <Icon type="delete"/>
-              </Button>
+              <Icon className={'gx-m-1 gx-p-1 gx-text-primary'} type="edit" onClick={() => this.onEdit(record)}/>
+              <Popconfirm
+                className={'gx-m-1 gx-p-1'}
+                title={intl.formatMessage({id: 'confirm.sure'})}
+                onConfirm={e => this.onDelete(record)}
+                okText={intl.formatMessage({id: 'ok'})}
+                cancelText={intl.formatMessage({id: 'cancel'})}>
+                <Icon className='gx-text-primary' type="delete"/>
+              </Popconfirm>
             </div>
           )
         }

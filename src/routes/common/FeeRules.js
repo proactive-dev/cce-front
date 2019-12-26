@@ -44,7 +44,7 @@ class FeeRules extends React.Component {
       },
       {
         title: () => {
-          return <div>{EX_COIN_SYMBOL}&nbsp;&nbsp;<FormattedMessage id="balance"/></div>
+          return <div>{EX_COIN_SYMBOL}&nbsp;&nbsp;<FormattedMessage id="holding.balance"/></div>
         },
         dataIndex: 'holding.amount',
         align: 'center',
@@ -114,7 +114,8 @@ class FeeRules extends React.Component {
         render: (value) => {
           return (
             <div>
-              <img width={20} height={20} className="gx-mr-1" src={require(`assets/images/coins/${value}.png`)}/>
+              <img width={20} height={20} className="gx-mr-1" alt={value}
+                   src={require(`assets/images/coins/${value}.png`)}/>
               {value.toUpperCase()}
             </div>
           )

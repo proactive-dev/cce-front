@@ -112,8 +112,8 @@ class Balances extends React.Component {
                 <Form layout="inline">
                   <Form.Item>
                     <Search
+                      className='gx-mw-400'
                       onSearch={this.onSearch}
-                      style={{maxWidth: '200px'}}
                       enterButton/>
                   </Form.Item>
                   <Form.Item>
@@ -134,6 +134,7 @@ class Balances extends React.Component {
               </Col>
             </Row>
             <MainAccounts
+              loader={loader}
               dataSource={data}
               onDeposit={this.goDeposit}
               onWithdrawal={this.goWithdrawal}

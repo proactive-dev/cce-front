@@ -26,6 +26,7 @@ export const G_AUTH = 'google-auth'
 export const G_AUTH_ENABLE = `${G_AUTH}/enable`
 export const G_AUTH_DISABLE = `${G_AUTH}/disable`
 export const REFERRAL = 'referral'
+export const ADMIN = 'admin'
 export const TERMS = 'terms'
 export const PRIVACY = 'privacy'
 export const FEE_RULES = 'fees'

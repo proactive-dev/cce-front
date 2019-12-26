@@ -5,29 +5,32 @@ import { Layout } from 'antd'
 import { FormattedMessage } from 'react-intl'
 import HorizontalNav from './HorizontalNav'
 import { toggleCollapsedSideNav } from '../../appRedux/actions/Setting'
+import { AUTH_MENUS } from '../../constants/Menus'
 import LanguageMenu from '../../components/LanguageMenu'
 import TopUserMenu from '../../components/TopUserMenu'
-import { AUTH_MENUS } from '../../constants/Menus'
+import AdminMenu from '../../components/AdminMenu'
 
 const {Header} = Layout
 
 class InsideHeader extends Component {
 
   state = {
-    authStatus: false
+    authStatus: false,
+    profile: {}
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const {authStatus} = nextProps
-    if (authStatus !== prevState.authStatus) {
-      return {authStatus}
+    const {authStatus, profile} = nextProps
+    if ((authStatus !== prevState.authStatus) || (profile !== prevState.profile)) {
+      return {authStatus, profile}
     }
     return null
   }
 
   render() {
     const {navCollapsed} = this.props
-    const {authStatus} = this.state
+    const {authStatus, profile} = this.state
+    const {isAdmin} = profile || {}
 
     return (
       <div className="gx-header-horizontal gx-header-horizontal-dark gx-inside-header-horizontal">
@@ -63,6 +66,12 @@ class InsideHeader extends Component {
                     </li>
                   )
                 }
+                {
+                  authStatus && isAdmin &&
+                  <li className="gx-language gx-d-none gx-d-lg-block">
+                    <AdminMenu noIcon={true}/>
+                  </li>
+                }
                 <li className="gx-language">
                   <LanguageMenu/>
                 </li>
@@ -83,7 +92,7 @@ class InsideHeader extends Component {
 
 const mapStateToProps = ({settings, user}) => {
   const {navCollapsed} = settings
-  const {authStatus} = user
-  return {navCollapsed, authStatus}
+  const {authStatus, profile} = user
+  return {navCollapsed, authStatus, profile}
 }
 export default connect(mapStateToProps, {toggleCollapsedSideNav})(InsideHeader)

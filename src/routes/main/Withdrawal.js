@@ -2,9 +2,9 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import { Link } from 'react-router-dom'
-import { Button, Card, Checkbox, Col, Form, Input, Row, Select, Spin, Typography } from 'antd'
+import { Button, Card, Checkbox, Col, Form, Input, Row, Select, Spin } from 'antd'
 import _ from 'lodash'
-import { getCurrencyBySymbol, getFixed, isXRP } from '../../util/helpers'
+import { getCoinFixed, getCurrencyBySymbol, getFixed, isXRP } from '../../util/helpers'
 import { getAddresses, getWithdraws, newWithdraw } from '../../api/axiosAPIs'
 import { getAuthStatus } from '../../appRedux/actions/User'
 import { getAccounts } from '../../appRedux/actions/Accounts'
@@ -16,7 +16,6 @@ import { CURRENCIES } from '../../constants/Currencies'
 import { ADDR_MANAGEMENT, TRANSACTIONS } from '../../constants/Paths'
 import TransactionHistoryTable from '../../components/TransactionHistoryTable'
 
-const {Text} = Typography
 const {Option} = Select
 
 class Withdrawal extends React.Component {
@@ -47,7 +46,7 @@ class Withdrawal extends React.Component {
         this.setState({addrs})
         const {accounts} = this.state
         const result = accounts.find(account => account.currency.code === symbol)
-        let account = result === undefined ? {} : result
+        let account = (_.isUndefined(result) || _.isEmpty(result)) ? {} : result
         this.setState({account: account})
       })
   }
@@ -77,7 +76,7 @@ class Withdrawal extends React.Component {
       .then(response => {
         if (response.data) {
           let withdraws = []
-          response.data.map(withdraw => {
+          response.data.forEach(withdraw => {
             let tx = withdraw
             let currency = CURRENCIES.find(item => item.symbol === tx.currency)
             tx.precision = currency.precision
@@ -94,14 +93,14 @@ class Withdrawal extends React.Component {
     this.props.form.resetFields()
   }
 
-  handleAmountChange = (e) => {
-    const {account, currentSymbol} = this.state
+  onChangeAmount = (e) => {
+    const {currentSymbol} = this.state
     const coin = getCurrencyBySymbol(currentSymbol)
     let val = parseFloat(e.target.value)
     let amount = 0
     if (!isNaN(val)) {
       amount = parseFloat(e.target.value) - coin.withdraw.fee
-      amount = getFixed(amount, account.currency.precision)
+      amount = getCoinFixed(amount, currentSymbol)
     }
     if (amount < 0)
       amount = 0
@@ -122,7 +121,7 @@ class Withdrawal extends React.Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         const result = addrs.find(addr => addr.id === values.address)
-        if (result === undefined)
+        if (_.isUndefined(result) || _.isEmpty(result))
           return
         const addr = result
         const param = {
@@ -179,18 +178,22 @@ class Withdrawal extends React.Component {
   }
 
   setAmountAvailable = () => {
-    const {account} = this.state
-    const balance = !_.isEmpty(account) ? getFixed(parseFloat(account.balance), parseInt(account.currency.precision)) : 0.0
+    const {currentSymbol, accounts} = this.state
+    const result = accounts.find(account => account.currency.code === currentSymbol)
+    let account = (_.isUndefined(result) || _.isEmpty(result)) ? {} : result
+    const balance = _.isEmpty(currentSymbol) ? 0.0 : getCoinFixed(account.balance, currentSymbol)
     this.props.form.setFieldsValue({
       amount: balance
     })
-    this.handleAmountChange({target: {value: balance}})
+    this.onChangeAmount({target: {value: balance}})
   }
 
   render() {
     const {intl} = this.props
     const {getFieldDecorator} = this.props.form
-    const {loader, currentSymbol, addrs, getAmount, account, addrTagChecked, withdraws} = this.state
+    const {loader, currentSymbol, addrs, getAmount, accounts, addrTagChecked, withdraws} = this.state
+    const result = accounts.find(account => account.currency.code === currentSymbol)
+    const account = (_.isUndefined(result) || _.isEmpty(result)) ? {} : result
 
     const coin = getCurrencyBySymbol(currentSymbol)
     const balance = !_.isEmpty(account) ? getFixed(parseFloat(account.balance), parseInt(account.currency.precision)) : 0.0
@@ -198,7 +201,7 @@ class Withdrawal extends React.Component {
       <div>
         <h1 className="gx-mt-4 gx-mb-4"><FormattedMessage id="withdrawal"/></h1>
         <Spin spinning={loader} size="large">
-          <Row type='flex' gutter={12}>
+          <Row className="gx-m-0">
             <Col span={12} xxl={12} xl={12} lg={12} md={24} sm={24} xs={24} className={'gx-p-1'}>
               <Card className="gx-h-100" bordered={false}>
                 <CurrencySelect value={currentSymbol} onChange={this.onSelectCurrency}/>
@@ -217,7 +220,8 @@ class Withdrawal extends React.Component {
             <Col span={12} xxl={12} xl={12} lg={12} md={24} sm={24} xs={24} className={'gx-p-1'}>
               <Card className="gx-h-100 gx-p-1" bordered={false}>
                 <Form onSubmit={this.onSubmit}>
-                  <Text strong>{currentSymbol.toUpperCase()} <FormattedMessage id="withdrawal.address"/></Text>
+                  <span className={'gx-font-weight-bold'}>{currentSymbol.toUpperCase()} <FormattedMessage
+                    id="withdrawal.address"/></span>
                   {
                     _.isEmpty(addrs) && (
                       <div className='gx-ml-3 gx-mt-2'>
@@ -287,7 +291,7 @@ class Withdrawal extends React.Component {
                         validator: this.checkAmount
                       }]
                     })(
-                      <Input onChange={this.handleAmountChange}
+                      <Input min={0} type="number" onChange={this.onChangeAmount}
                              addonAfter={currentSymbol.toUpperCase()}/>
                     )}
                   </Form.Item>
@@ -311,16 +315,18 @@ class Withdrawal extends React.Component {
             </Col>
           </Row>
           <Card
+            className="gx-m-1"
             title={intl.formatMessage({id: 'history'})}
+            bordered={false}
             extra={
-              <Button type="link" className="gx-m-2"
-                      onClick={this.goTransactions}>
-                <u>{intl.formatMessage({id: 'view.all'})}</u>
-              </Button>
+              <u className="gx-link gx-m-2" onClick={this.goTransactions}>
+                {intl.formatMessage({id: 'view.all'})}
+              </u>
             }>
             <TransactionHistoryTable
               data={_.reverse(withdraws || []).slice(0, 5)}
-              kind={HISTORY_TYPE_WITHDRAWAL}/>
+              kind={HISTORY_TYPE_WITHDRAWAL}
+              pagination={false}/>
           </Card>
         </Spin>
       </div>

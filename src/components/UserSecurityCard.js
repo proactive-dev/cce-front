@@ -18,7 +18,7 @@ const UserSecurityCard = ({title, content = null, btnTitle, btnType = 'primary',
         <Col xl={6} lg={8} md={8} sm={12} xs={24} className="gx-text-right">
           <Button
             type={btnType}
-            className="gx-w-100"
+            className="gx-w-100 gx-mt-3"
             href={`/${path}`}>
             <FormattedMessage id={btnTitle}/>
           </Button>

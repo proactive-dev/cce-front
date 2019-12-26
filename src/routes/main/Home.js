@@ -30,7 +30,7 @@ class Home extends React.Component {
     return (
       <Spin spinning={loader} size="large">
         <Card
-          className="gx-card-full gx-card-widget gx-m-2"
+          className="gx-card-full gx-card-widget gx-m-1"
           bordered={false}>
           <SimpleMarketInfo tickers={tickers}/>
           <div className={'gx-m-4 gx-text-center'}>

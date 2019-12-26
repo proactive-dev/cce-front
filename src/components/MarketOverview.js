@@ -90,7 +90,8 @@ class MarketOverview extends React.Component {
   }
 
   render() {
-    const {tickers, markets, simple} = this.props
+    const {intl, tickers, markets, simple} = this.props
+
     let data = []
     if (!_.isEmpty(tickers)) {
       let prevData = this.prevData
@@ -129,8 +130,7 @@ class MarketOverview extends React.Component {
         columns={this.getColumns()}
         dataSource={data}
         pagination={false}
-        locale={getTableLocaleData}
-        scroll={simple ? {y: 240} : {}}
+        locale={getTableLocaleData(intl)}
         rowKey="id"
         size={simple ? 'small' : 'medium'}
         onRow={(record) => ({

@@ -226,7 +226,9 @@ class IdVerification extends React.Component {
             <FormItem
               {...formItemLayout}
               label={intl.formatMessage({id: 'document.photo'})}>
-              {getFieldDecorator('docFileData')(
+              {getFieldDecorator('docFileData', {
+                valuePropName: 'fileList'
+              })(
                 <Upload
                   beforeUpload={() => {
                     return false
@@ -262,7 +264,9 @@ class IdVerification extends React.Component {
             <FormItem
               {...formItemLayout}
               label={intl.formatMessage({id: 'proof.of.residence.photo'})}>
-              {getFieldDecorator('proofPhoto1')(
+              {getFieldDecorator('proofPhoto1', {
+                valuePropName: 'fileList'
+              })(
                 <Upload
                   beforeUpload={() => {
                     return false
@@ -277,7 +281,9 @@ class IdVerification extends React.Component {
             <FormItem
               {...formItemLayout}
               label={intl.formatMessage({id: 'proof.of.residence.photo'})}>
-              {getFieldDecorator('proofPhoto2')(
+              {getFieldDecorator('proofPhoto2', {
+                valuePropName: 'fileList'
+              })(
                 <Upload
                   beforeUpload={() => {
                     return false
@@ -292,7 +298,9 @@ class IdVerification extends React.Component {
             <FormItem
               {...formItemLayout}
               label={intl.formatMessage({id: 'selfie.photo'})}>
-              {getFieldDecorator('selfiePhoto')(
+              {getFieldDecorator('selfiePhoto', {
+                valuePropName: 'fileList'
+              })(
                 <Upload
                   beforeUpload={() => {
                     return false

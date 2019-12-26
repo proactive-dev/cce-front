@@ -5,10 +5,10 @@ import { Card, Icon, Spin } from 'antd'
 import _ from 'lodash'
 import { getRefData } from '../../api/axiosAPIs'
 import { gerRefLink } from '../../util/helpers'
-import AffiliateTree from '../../components/AffiliateTree'
-import AffiliateLink from '../../components/AffiliateLink'
+import ReferralTree from '../../components/ReferralTree'
+import ReferralLink from '../../components/ReferralLink'
 
-class Affiliate extends Component {
+class Referral extends Component {
 
   state = {
     loader: false,
@@ -50,19 +50,17 @@ class Affiliate extends Component {
 
     return (
       <div>
-        <h1 className="gx-mt-4 gx-mb-4"><FormattedMessage id="affiliate"/></h1>
+        <h1 className="gx-mt-4 gx-mb-4"><FormattedMessage id="referral"/></h1>
         <Spin spinning={loader} size="large">
           {
-            !_.isEmpty(refId) && <AffiliateLink link={refLink}/>
+            !_.isEmpty(refId) && <ReferralLink link={refLink}/>
           }
           <Card className="gx-card">
-          <span className="gx-mb-4 gx-flex-row">
-            <Icon type="user" className="gx-fs-xxl gx-ml-4 gx-mr-4"/>
-            <h2>{intl.formatMessage({id: 'affiliate.direct.downline.users'}, {count: totalCount})}</h2>
-          </span>
-            <AffiliateTree
-              treeData={treeData}
-            />
+            <span className="gx-mb-2 gx-flex-row">
+              <Icon type="user" className="gx-fs-xl gx-ml-2 gx-mr-2"/>
+              <h3>{intl.formatMessage({id: 'affiliate.direct.downline.users'}, {count: totalCount})}</h3>
+            </span>
+            <ReferralTree treeData={treeData}/>
           </Card>
         </Spin>
       </div>
@@ -76,4 +74,4 @@ const mapStateToProps = ({progress}) => {
   }
 }
 
-export default connect(mapStateToProps, null)(injectIntl(Affiliate))
+export default connect(mapStateToProps, null)(injectIntl(Referral))

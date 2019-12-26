@@ -1,6 +1,6 @@
 import React from 'react'
 import { injectIntl } from 'react-intl'
-import { Button, Table } from 'antd'
+import { Icon, Popconfirm, Table } from 'antd'
 import _ from 'lodash'
 import { getTableLocaleData } from '../util/helpers'
 
@@ -37,7 +37,15 @@ class AddressTable extends React.Component {
         dataIndex: 'action',
         align: 'center',
         render: (value, record) => {
-          return <Button type="link" icon={'delete'} size={'small'} onClick={e => this.onDelete(record)}/>
+          return (
+            <Popconfirm
+              title={intl.formatMessage({id: 'confirm.sure'})}
+              onConfirm={e => this.onDelete(record)}
+              okText={intl.formatMessage({id: 'ok'})}
+              cancelText={intl.formatMessage({id: 'cancel'})}>
+              <Icon className='gx-text-primary' type="delete" theme="filled"/>
+            </Popconfirm>
+          )
         }
       }
     ]
@@ -48,7 +56,7 @@ class AddressTable extends React.Component {
   }
 
   render() {
-    const {data, filter} = this.props
+    const {intl, data, filter} = this.props
     let addresses = []
     let filteredData = data
     if (!_.isEmpty(filteredData) && filter) {
@@ -74,7 +82,7 @@ class AddressTable extends React.Component {
         columns={this.getColumns()}
         dataSource={addresses}
         pagination={false}
-        locale={getTableLocaleData}
+        locale={getTableLocaleData(intl)}
         rowKey="id"
         size='middle'/>
     )

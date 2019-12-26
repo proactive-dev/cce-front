@@ -66,7 +66,7 @@ class TransactionHistoryTable extends React.Component {
     const {data, intl, pagination} = this.props
 
     return (
-      <Table className="gx-table-responsive gx-mt-4 gx-mb-4"
+      <Table className="gx-table-responsive"
              columns={this.getColumns()}
              dataSource={data}
              pagination={pagination}
