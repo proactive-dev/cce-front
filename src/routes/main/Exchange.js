@@ -184,7 +184,7 @@ class Exchange extends React.Component {
             />
             <Row type='flex' gutter={3} className='gx-mt-3'>
               <Col span={8}>
-                <Card size="small">
+                <Card size="small" className="gx-h-100">
                   <OrderBook
                     asks={asks}
                     bids={bids}
@@ -234,7 +234,7 @@ class Exchange extends React.Component {
               </Col>
             </Row>
           </Col>
-          <Col span={6}>
+          <Col span={6} style={{display: 'flex', flexDirection: 'column'}}>
             <Card size="small">
               <div>
                 <Radio.Group size='small' value={filter} onChange={this.handleFilterMarket}>
@@ -261,7 +261,7 @@ class Exchange extends React.Component {
                 onCellClick={this.onSelectMarket}
                 simple={true}/>
             </Card>
-            <Card size="small">
+            <Card size="small" style={{flex: '1 1 auto'}}>
               <div>
                 <FormattedMessage id='latest.trades'/>
                 <Radio.Group

@@ -36,7 +36,7 @@ class MarketOrderHistory extends React.Component {
       search = `${search} AND currency=${market}`
     }
 
-    getOrderHistory({page: 1, perPage: 10, search})
+    getOrderHistory({page: 1, perPage: 5, search})
       .then(response => {
         const {orders} = response.data
         let orderData = []

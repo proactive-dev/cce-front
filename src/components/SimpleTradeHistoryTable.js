@@ -62,7 +62,7 @@ class SimpleTradeHistoryTable extends React.Component {
         columns={this.getColumns()}
         dataSource={data}
         pagination={false}
-        scroll={{y: 500}}
+        scroll={{y: 485}}
         rowKey="id"
         size='small'
         showHeader={false}
