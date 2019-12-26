@@ -1,51 +1,41 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { FormattedMessage, injectIntl } from 'react-intl'
-import { getAuthStatus } from '../../appRedux/actions/User'
-import { Modal, Spin, Typography } from 'antd'
-import { clearOrder, clearOrderAsks, clearOrderBids, clearOrders, getOrderHistory } from '../../api/axiosAPIs'
-import { MARKETS } from '../../constants/Markets'
-import OpenOrdersTable from '../../components/OpenOrdersTable'
+import { getAuthStatus } from '../appRedux/actions/User'
+import { Modal, Typography } from 'antd'
+import { clearOrder, clearOrderAsks, clearOrderBids, clearOrders, getOrderHistory } from '../api/axiosAPIs'
+import { MARKETS } from '../constants/Markets'
+import OpenOrdersTable from '../components/OpenOrdersTable'
 import _ from 'lodash'
-import { IconNotification } from '../../components/IconNotification'
-import { SUCCESS } from '../../constants/AppConfigs'
+import { IconNotification } from '../components/IconNotification'
+import { SUCCESS } from '../constants/AppConfigs'
 
 const {Text} = Typography
 
-class OpenOrders extends React.Component {
+class MarketOpenOrders extends React.Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      loader: false,
       orders: [],
-      page: 1,
-      pageCount: 1,
-      perPage: 10,
-      pagination: {},
       cancelOrderId: null,
       cancelType: null,
-      confirmModal: false
+      confirmModal: false,
+      authStatus: false
     }
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const {loader} = nextProps
-    if (loader !== prevState.loader) {
-      return {loader}
+    const {authStatus} = nextProps
+    if (authStatus !== prevState.authStatus) {
+      return {authStatus}
     }
     return null
   }
 
   componentDidMount() {
-    const {pagination} = this.state
     this.props.getAuthStatus()
-    this.fetchData({page: pagination.current})
-  }
-
-  onChangeTable = (pagination, filters, sorter) => {
-    this.setState({pagination, page: pagination.current})
-    this.fetchData({page: pagination.current})
+    this.fetchData({page: 1})
   }
 
   handleCancelType = type => {
@@ -105,34 +95,32 @@ class OpenOrders extends React.Component {
   }
 
   cancelAll = () => {
-    clearOrders(this.props.market.id)
+    clearOrders(this.props.marketId)
       .then(response => {
         IconNotification(SUCCESS, this.props.intl.formatMessage({id: 'success'}))
       })
   }
 
   cancelBids = () => {
-    clearOrderBids(this.props.market.id)
+    clearOrderBids(this.props.marketId)
       .then(response => {
         IconNotification(SUCCESS, this.props.intl.formatMessage({id: 'success'}))
       })
   }
 
   cancelAsks = () => {
-    clearOrderAsks(this.props.market.id)
+    clearOrderAsks(this.props.marketId)
       .then(response => {
         IconNotification(SUCCESS, this.props.intl.formatMessage({id: 'success'}))
       })
   }
 
   fetchData = ({page}) => {
-    let {perPage} = this.state
     let search = 'state=100'
 
-    getOrderHistory({page, perPage, search})
+    getOrderHistory({page, perPage: 10, search})
       .then(response => {
-        const {total_length, orders} = response.data
-        const pageCount = Math.ceil(total_length / perPage)
+        const {orders} = response.data
         let orderData = []
         for (let i = 0; i < orders.length; i++) {
           let order = orders[i]
@@ -144,28 +132,25 @@ class OpenOrders extends React.Component {
           }
           orderData.push(order)
         }
-        const pagination = {...this.state.pagination}
-        pagination.total = total_length
-        this.setState({orders: orderData, pageCount, pagination})
+        if (this.props.onDataLoaded)
+          this.props.onDataLoaded(orderData.length)
+        this.setState({orders: orderData})
       })
   }
 
   render() {
-    const {loader, orders, pagination} = this.state
+    const {orders} = this.state
 
     return (
       <div>
-        <h1 className="gx-mt-4 gx-mb-4"><FormattedMessage id="open.orders"/></h1>
-        <Spin spinning={loader} size="large">
-          <OpenOrdersTable
-            pagination={pagination}
-            dataList={orders}
-            marketMode={false}
-            onCancelType={this.handleCancelType}
-            onCancelOrder={this.handleCancel}
-            onChange={this.onChangeTable}
-          />
-        </Spin>
+        <OpenOrdersTable
+          dataList={orders}
+          pagination={false}
+          marketMode={true}
+          onCancelType={this.handleCancelType}
+          onCancelOrder={this.handleCancel}
+          onChange={this.onChangeTable}
+        />
         <Modal
           title={<FormattedMessage id={'confirm'}/>}
           visible={this.state.confirmModal}
@@ -186,10 +171,10 @@ const mapDispatchToProps = {
   getAuthStatus
 }
 
-const mapStateToProps = ({progress}) => {
+const mapStateToProps = ({user}) => {
   return {
-    loader: progress.loader
+    authStatus: user.authStatus
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(OpenOrders))
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(MarketOpenOrders))

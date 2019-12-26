@@ -160,7 +160,7 @@ export const getOrderHistory = ({page, perPage, search}) => {
   return axiosRequest('get', `${axiosConfig.HISTORY_ORDER_URL}?page=${page}&perPage=${perPage}&search=${search}`)
 }
 
-export const getTradeHistory = ({page, perPage, search}) => {
+export const getTradeHistory = ({page, perPage, search}, needLoader = true) => {
   return axiosRequest('get', `${axiosConfig.HISTORY_TRADE_URL}?page=${page}&perPage=${perPage}&search=${search}`)
 }
 

@@ -1,10 +1,8 @@
 import React from 'react'
 import { injectIntl } from 'react-intl'
-import { withRouter } from 'react-router-dom'
 import { Table } from 'antd'
 import _ from 'lodash'
 import { getFixed, getPointFixed, getTableLocaleData, priceChange } from '../util/helpers'
-import { EXCHANGE } from '../constants/Paths'
 
 class MarketOverview extends React.Component {
   constructor(props) {
@@ -14,18 +12,24 @@ class MarketOverview extends React.Component {
   }
 
   getColumns() {
-    const {intl} = this.props
-    return [
+    const {intl, simple} = this.props
+    let pairName = simple ? 'market' : 'pair'
+    let priceName = simple ? 'price' : 'last.price'
+
+    let columns = [
       {
-        title: intl.formatMessage({id: 'pair'}),
+        title: intl.formatMessage({id: pairName}),
         dataIndex: 'name',
         align: 'left',
+        sortDirections: ['descend', 'ascend'],
+        defaultSortOrder: 'ascend',
+        sorter: (a, b) => a.name.localeCompare(b.name),
         render: (value) => {
           return <span className={'gx-font-weight-bold'}>{value}</span>
         }
       },
       {
-        title: intl.formatMessage({id: 'last.price'}),
+        title: intl.formatMessage({id: priceName}),
         dataIndex: 'last',
         align: 'left',
         render: (value, record) => {
@@ -51,40 +55,43 @@ class MarketOverview extends React.Component {
           }
           return <span className={className}>{getPointFixed(value)}%</span>
         }
-      },
-      {
-        title: intl.formatMessage({id: 'high'}),
-        dataIndex: 'high',
-        align: 'right',
-        render: (value, record) => {
-          return getFixed(value, record.bidFixed)
+      }
+    ]
+
+    if (!simple) {
+      columns.push(
+        {
+          title: intl.formatMessage({id: 'high'}),
+          dataIndex: 'high',
+          align: 'right',
+          render: (value, record) => {
+            return getFixed(value, record.bidFixed)
+          }
         }
-      },
-      {
+      )
+      columns.push({
         title: intl.formatMessage({id: 'low'}),
         dataIndex: 'low',
         align: 'right',
         render: (value, record) => {
           return getFixed(value, record.bidFixed)
         }
-      },
-      {
+      })
+      columns.push({
         title: intl.formatMessage({id: 'volume'}),
         dataIndex: 'vol',
         align: 'right',
         render: (value) => {
           return getPointFixed(value)
         }
-      }
-    ]
-  }
-
-  handleClick = (market) => {
-    this.props.history.push(`/${EXCHANGE}/${market}`)
+      })
+    }
+    return columns
   }
 
   render() {
-    const {intl, tickers, markets} = this.props
+    const {intl, tickers, markets, simple} = this.props
+
     let data = []
     if (!_.isEmpty(tickers)) {
       let prevData = this.prevData
@@ -118,20 +125,21 @@ class MarketOverview extends React.Component {
     }
 
     return (
-      <Table className={'gx-table-responsive'}
-             columns={this.getColumns()}
-             dataSource={data}
-             pagination={false}
-             locale={getTableLocaleData(intl)}
-             rowKey="id"
-             size='medium'
-             onRow={(record) => ({
-               onClick: () => {
-                 this.handleClick(record.id)
-               }
-             })}/>
+      <Table
+        className={`gx-table-responsive gx-pointer ${simple ? 'gx-table-no-bordered gx-table-row-compact' : ''}`}
+        columns={this.getColumns()}
+        dataSource={data}
+        pagination={false}
+        locale={getTableLocaleData(intl)}
+        rowKey="id"
+        size={simple ? 'small' : 'medium'}
+        onRow={(record) => ({
+          onClick: () => {
+            this.props.onCellClick(record.id)
+          }
+        })}/>
     )
   }
 }
 
-export default withRouter(injectIntl(MarketOverview))
+export default injectIntl(MarketOverview)

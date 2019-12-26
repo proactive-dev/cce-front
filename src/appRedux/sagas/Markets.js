@@ -1,6 +1,6 @@
 import { all, call, fork, put } from 'redux-saga/effects'
-import { GET_TICKERS } from '../actions'
 import { getTickers } from '../../api/axiosAPIs'
+import { GET_TICKERS } from '../../constants/ActionTypes'
 import { TICKER_INTERVAL } from '../../constants/AppConfigs'
 
 function delay(duration) {

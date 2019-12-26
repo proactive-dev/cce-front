@@ -1,8 +1,9 @@
 import _ from 'lodash'
 import { BigNumber } from 'bignumber.js'
 import Moment from 'moment'
-import { DEFAULT_PRECISION, EX_URL, QUOTE_SYMBOL } from '../constants/AppConfigs'
+import { DEFAULT_PRECISION, EX_URL, QUOTE_SYMBOL, STABLE_SYMBOL } from '../constants/AppConfigs'
 import { CURRENCIES } from '../constants/Currencies'
+import { MARKETS } from '../constants/Markets'
 
 // main helper functions
 export const toCamelCase = (string) => {
@@ -71,13 +72,27 @@ export const getCoinNameBySymbol = (symbol) => {
   }
 }
 
+export const getQuoteUnits = (needAll = false, concatStable = true) => {
+  let quoteUnits = MARKETS.map(market => market.quoteUnit)
+  quoteUnits = removeDuplicates(quoteUnits)
+  if (needAll) {
+    quoteUnits.unshift('')
+  }
+  if (concatStable) {
+    // Collect Stable coin markets to USD.
+    quoteUnits = quoteUnits.filter(quoteUnit => !isStableCoin(quoteUnit))
+    quoteUnits.push(`usd${STABLE_SYMBOL}`)
+  }
+  return quoteUnits
+}
+
 export const getCurrencyBySymbol = (symbol) => {
   return CURRENCIES.find(coin => coin.symbol.toLowerCase() === symbol.toLowerCase())
 }
 
 export const getFixed = (value, precision = null) => {
   let fixed = precision > DEFAULT_PRECISION ? DEFAULT_PRECISION : precision
-  return BigNumber(value).toFixed(fixed).toString()
+  return BigNumber(value || 0).toFixed(fixed).toString()
 }
 
 export const isStableCoin = (sym) => {
@@ -118,6 +133,25 @@ export const getFiatFixed = (value) => {
 
 export const getPointFixed = (value) => {
   return getFixed(value, 2)
+}
+
+export const expToFixed = (x) => {
+  let e
+  if (Math.abs(x) < 1.0) {
+    e = parseInt(x.toString().split('e-')[1])
+    if (e) {
+      x *= Math.pow(10, e - 1)
+      x = '0.' + (new Array(e)).join('0') + x.toString().substring(2)
+    }
+  } else {
+    e = parseInt(x.toString().split('+')[1])
+    if (e > 20) {
+      e -= 20
+      x /= Math.pow(10, e)
+      x += (new Array(e + 1)).join('0')
+    }
+  }
+  return x
 }
 
 export const getBalance = (accounts, symbol) => {

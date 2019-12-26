@@ -24,6 +24,7 @@ export const NOTIFICATION_TIMEOUT = 5 // seconds
 
 export const PRODUCTION_URL = 'https://crypto.365-exchange.com'
 export const HOST_URL = process.env.NODE_ENV === 'production' ? `${PRODUCTION_URL}:8443` : 'http://localhost:4000'
+export const SOCKET_URL = process.env.NODE_ENV === 'production' ? 'wss://crypto.365-exchange.com:2096' : 'ws://localhost:8080'
 export const EX_URL = process.env.NODE_ENV === 'production' ? PRODUCTION_URL : 'http://localhost:3000'
 export const ADMIN_URL = `${HOST_URL}/admin`
 export const API_DOC_URL = `${HOST_URL}/api`
@@ -37,6 +38,8 @@ export const G_AUTH_IOS_APP_URL = 'https://itunes.apple.com/us/app/google-authen
 export const G_AUTH_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2'
 
 export const TICKER_INTERVAL = 1000
+export const TICKER_GRAPH_INTERVAL = 3000
+export const USER_TRADE_HISTORY_INTERVAL = 10000
 
 export const BANNERS = [
   {
@@ -68,6 +71,9 @@ export const BASE_PRICE_SYMBOL = '$'
 export const DEFAULT_PRECISION = 8
 
 export const ALMOST_ZERO = 0.0000001
+
+export const ORDER_BUY = 'buy'
+export const ORDER_SELL = 'sell'
 
 export const HISTORY_TYPE_DEPOSIT = 'deposit'
 export const HISTORY_TYPE_WITHDRAWAL = 'withdraw'
