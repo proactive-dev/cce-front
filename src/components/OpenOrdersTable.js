@@ -112,18 +112,18 @@ class OpenOrdersTable extends React.Component {
   }
 
   render() {
-    const {dataList, intl, pagination} = this.props
+    const {dataList, intl, marketMode, pagination} = this.props
 
     return (
       <div>
-        <Table className="gx-table-responsive gx-mt-4 gx-mb-4"
+        <Table className={marketMode ? 'gx-table-responsive' : 'gx-table-responsive gx-mt-4 gx-mb-4'}
                columns={this.getColumns()}
                dataSource={dataList}
                pagination={pagination}
                locale={getTableLocaleData(intl)}
                onChange={this.handleTableChange}
                rowKey={'id'}
-               size='middle'/>
+               size={marketMode ? 'small' : 'middle'}/>
       </div>
     )
   }

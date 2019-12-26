@@ -132,17 +132,20 @@ class MarketOpenOrders extends React.Component {
           }
           orderData.push(order)
         }
+        if (this.props.onDataLoaded)
+          this.props.onDataLoaded(orderData.length)
         this.setState({orders: orderData})
       })
   }
 
   render() {
-    const {loader, orders} = this.state
+    const {orders} = this.state
 
     return (
       <div>
         <OpenOrdersTable
           dataList={orders}
+          pagination={false}
           marketMode={true}
           onCancelType={this.handleCancelType}
           onCancelOrder={this.handleCancel}

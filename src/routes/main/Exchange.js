@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import ReconnectingWebSocket from 'reconnecting-websocket'
 import { FormattedMessage, injectIntl } from 'react-intl'
-import { Card, Col, Input, Radio, Row, Spin } from 'antd'
+import { Card, Col, Input, Radio, Row, Spin, Tabs } from 'antd'
 import _ from 'lodash'
 import { getAuthStatus } from '../../appRedux/actions/User'
 import { MARKETS } from '../../constants/Markets'
@@ -13,12 +13,14 @@ import TradeChart from '../../components/TradeChart'
 import TradeDepth from '../../components/TradeDepth'
 import OrderEntry from '../../components/OrderEntry'
 import MarketOpenOrders from '../../components/MarketOpenOrders'
+import MarketOrderHistory from '../../components/MarketOrderHistory'
 import { SOCKET_URL, STABLE_SYMBOL } from '../../constants/AppConfigs'
 import { getQuoteUnits, isStableCoin } from '../../util/helpers'
 import SimpleTradeHistory from '../../components/SimpleTradeHistory'
 import { EXCHANGE } from '../../constants/Paths'
 
 const Search = Input.Search
+const TabPane = Tabs.TabPane
 
 class Exchange extends React.Component {
   constructor(props) {
@@ -39,6 +41,8 @@ class Exchange extends React.Component {
       term: '',
       chartMode: true,
       yoursMode: false,
+      myOrdersTabKey: 'open.order',
+      myOpenOrderCount: 0,
       authStatus: false
     }
     // Get Quote Units
@@ -126,6 +130,14 @@ class Exchange extends React.Component {
 
   handleChartMode = e => {
     this.setState({chartMode: e.target.value})
+  }
+
+  onChangeKind = activeKey => {
+    this.setState({myOrdersTabKey: activeKey})
+  }
+
+  onOpenOrdersLoaded = count => {
+    this.setState({myOpenOrderCount: count})
   }
 
   render() {
@@ -278,9 +290,26 @@ class Exchange extends React.Component {
           </Col>
         </Row>
         <div>
-          <MarketOpenOrders
-            marketId={this.state.marketId}>
-          </MarketOpenOrders>
+          <Tabs
+            size='small'
+            onChange={this.onChangeKind}
+            activeKey={this.state.myOrdersTabKey}>
+            <TabPane
+              key={'open.order'}
+              tab={intl.formatMessage({id: 'open.orders'}) + ` (${this.state.myOpenOrderCount})`}>
+              <MarketOpenOrders
+                onDataLoaded={this.onOpenOrdersLoaded}
+                marketId={this.state.marketId}>
+              </MarketOpenOrders>
+            </TabPane>
+            <TabPane
+              key={'24h.order'}
+              tab={intl.formatMessage({id: '24h.orders'})}>
+              <MarketOrderHistory
+                marketId={this.state.marketId}>
+              </MarketOrderHistory>
+            </TabPane>
+          </Tabs>
         </div>
       </Spin>
     )
