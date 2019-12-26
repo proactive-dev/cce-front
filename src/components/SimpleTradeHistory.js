@@ -103,12 +103,10 @@ class SimpleTradeHistory extends React.Component {
     }
 
     return (
-      <div>
-        <SimpleTradeHistoryTable
-          data={data}
-          market={market}
-        />
-      </div>
+      <SimpleTradeHistoryTable
+        data={data}
+        market={market}
+      />
     )
   }
 }

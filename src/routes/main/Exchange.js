@@ -14,7 +14,7 @@ import TradeDepth from '../../components/TradeDepth'
 import OrderEntry from '../../components/OrderEntry'
 import MarketOpenOrders from '../../components/MarketOpenOrders'
 import MarketOrderHistory from '../../components/MarketOrderHistory'
-import { SOCKET_URL, STABLE_SYMBOL } from '../../constants/AppConfigs'
+import { ORDER_BUY, ORDER_SELL, SOCKET_URL, STABLE_SYMBOL } from '../../constants/AppConfigs'
 import { getQuoteUnits, isStableCoin } from '../../util/helpers'
 import SimpleTradeHistory from '../../components/SimpleTradeHistory'
 import { EXCHANGE } from '../../constants/Paths'
@@ -141,8 +141,8 @@ class Exchange extends React.Component {
   }
 
   render() {
-    const {intl, markets} = this.props
-    const {loader, tickers, market, marketId, asks, bids, trades, filter, term, chartMode, yoursMode} = this.state
+    const {intl} = this.props
+    const {loader, authStatus, tickers, market, marketId, asks, bids, trades, filter, term, chartMode, yoursMode} = this.state
 
     let ticker = {}
     if (!_.isEmpty(tickers) && market) {
@@ -215,7 +215,8 @@ class Exchange extends React.Component {
                   <Col span={12}>
                     <Card size='small'>
                       <OrderEntry
-                        kind="buy"
+                        kind={ORDER_BUY}
+                        authStatus={authStatus}
                         market={market}
                         lastPrice={_.isEmpty(ticker) ? 0 : ticker.last}
                       />
@@ -224,7 +225,8 @@ class Exchange extends React.Component {
                   <Col span={12}>
                     <Card size='small'>
                       <OrderEntry
-                        kind="sell"
+                        kind={ORDER_SELL}
+                        authStatus={authStatus}
                         market={market}
                         lastPrice={_.isEmpty(ticker) ? 0 : ticker.last}
                       />
@@ -241,7 +243,7 @@ class Exchange extends React.Component {
                   {
                     this.quoteUnits.map(quoteUnit => {
                       return (
-                        <Radio.Button value={quoteUnit}>
+                        <Radio.Button key={quoteUnit} value={quoteUnit}>
                           {_.isEmpty(quoteUnit) ? intl.formatMessage({id: 'all'}) : quoteUnit.toUpperCase()}
                         </Radio.Button>
                       )
@@ -266,10 +268,15 @@ class Exchange extends React.Component {
                 <FormattedMessage id='latest.trades'/>
                 <Radio.Group
                   className="gx-float-right"
-                  size='small' value={yoursMode} onChange={this.handleYoursMode}>
-                  <Radio.Button value={false}><FormattedMessage id='market'/></Radio.Button>
-                  <Radio.Button value={true} disabled={!this.state.authStatus}><FormattedMessage
-                    id='yours'/></Radio.Button>
+                  size='small'
+                  value={yoursMode}
+                  onChange={this.handleYoursMode}>
+                  <Radio.Button value={false}>
+                    <FormattedMessage id='market'/>
+                  </Radio.Button>
+                  <Radio.Button value={true} disabled={!this.state.authStatus}>
+                    <FormattedMessage id='yours'/>
+                  </Radio.Button>
                 </Radio.Group>
               </div>
               {!yoursMode &&
@@ -289,28 +296,27 @@ class Exchange extends React.Component {
             </Card>
           </Col>
         </Row>
-        <div>
-          <Tabs
-            size='small'
-            onChange={this.onChangeKind}
-            activeKey={this.state.myOrdersTabKey}>
-            <TabPane
-              key={'open.order'}
-              tab={intl.formatMessage({id: 'open.orders'}) + ` (${this.state.myOpenOrderCount})`}>
-              <MarketOpenOrders
-                onDataLoaded={this.onOpenOrdersLoaded}
-                marketId={this.state.marketId}>
-              </MarketOpenOrders>
-            </TabPane>
-            <TabPane
-              key={'24h.order'}
-              tab={intl.formatMessage({id: '24h.orders'})}>
-              <MarketOrderHistory
-                marketId={this.state.marketId}>
-              </MarketOrderHistory>
-            </TabPane>
-          </Tabs>
-        </div>
+        <Tabs
+          className="gx-mt-2 gx-mb-4"
+          size='small'
+          onChange={this.onChangeKind}
+          activeKey={this.state.myOrdersTabKey}>
+          <TabPane
+            key={'open.order'}
+            tab={intl.formatMessage({id: 'open.orders'}) + ` (${this.state.myOpenOrderCount})`}>
+            <MarketOpenOrders
+              onDataLoaded={this.onOpenOrdersLoaded}
+              marketId={this.state.marketId}>
+            </MarketOpenOrders>
+          </TabPane>
+          <TabPane
+            key={'24h.order'}
+            tab={intl.formatMessage({id: '24h.orders'})}>
+            <MarketOrderHistory
+              marketId={this.state.marketId}>
+            </MarketOrderHistory>
+          </TabPane>
+        </Tabs>
       </Spin>
     )
   }

@@ -71,6 +71,9 @@ export const DEFAULT_PRECISION = 8
 
 export const ALMOST_ZERO = 0.0000001
 
+export const ORDER_BUY = 'buy'
+export const ORDER_SELL = 'sell'
+
 export const HISTORY_TYPE_DEPOSIT = 'deposit'
 export const HISTORY_TYPE_WITHDRAWAL = 'withdraw'
 
