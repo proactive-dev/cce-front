@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { injectIntl } from 'react-intl'
 import { Button, Card, Icon, Tabs } from 'antd'
-import { BALANCES, DEPOSIT, WITHDRAWAL } from '../constants/Paths'
-import { DEFAULT_PRECISION, ESTIMATE_SYMBOL } from '../constants/AppConfigs'
+import { BALANCES, DEPOSIT, WITHDRAWAL } from '../../constants/Paths'
+import { DEFAULT_PRECISION, ESTIMATE_SYMBOL } from '../../constants/AppConfigs'
 
 const TabPane = Tabs.TabPane
 

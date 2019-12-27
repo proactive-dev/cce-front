@@ -2,7 +2,7 @@ import React from 'react'
 import { injectIntl } from 'react-intl'
 import { Table } from 'antd'
 import iplocation from 'iplocation'
-import { getTableLocaleData } from '../util/helpers'
+import { getTableLocaleData } from '../../util/helpers'
 
 class LoginHistoryTable extends React.Component {
 

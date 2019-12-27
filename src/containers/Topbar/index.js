@@ -5,7 +5,7 @@ import { Layout } from 'antd'
 import { toggleCollapsedSideNav } from '../../appRedux/actions/Setting'
 import Auxiliary from 'util/Auxiliary'
 import { NAV_STYLE_DRAWER, NAV_STYLE_FIXED, NAV_STYLE_MINI_SIDEBAR, TAB_SIZE } from '../../constants/ThemeSetting'
-import LanguageMenu from '../../components/LanguageMenu'
+import LanguageMenu from '../../components/common/LanguageMenu'
 
 const {Header} = Layout
 

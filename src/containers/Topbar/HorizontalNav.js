@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import { NAV_STYLE_INSIDE_HEADER_HORIZONTAL } from '../../constants/ThemeSetting'
 import { COIN_CASTING, EXCHANGE, MARKETS, PRIZE_CENTER } from '../../constants/Paths'
 import { ORDER_MENUS, PLD_MENUS, TSF_MENUS, WALLET_MENUS } from '../../constants/Menus'
-import PrizeCenterMenu from '../../components/PrizeCenterMenu'
+import PrizeCenterMenu from '../../components/menu/PrizeCenterMenu'
 
 const SubMenu = Menu.SubMenu
 

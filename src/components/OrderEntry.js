@@ -8,7 +8,7 @@ import { expToFixed, getFixed } from '../util/helpers'
 import { getAccounts } from '../appRedux/actions/Accounts'
 import { ERROR, ORDER_BUY, ORDER_SELL, SUCCESS } from '../constants/AppConfigs'
 import { LOGIN, REGISTER } from '../constants/Paths'
-import { IconNotification } from './IconNotification'
+import { IconNotification } from './common/IconNotification'
 import { newOrderAsk, newOrderBid } from '../api/axiosAPIs'
 
 const formItemLayout = {

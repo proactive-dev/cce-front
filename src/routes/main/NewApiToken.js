@@ -5,7 +5,7 @@ import { Button, Card, Form, Icon, Input, Modal, Spin } from 'antd'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { getAuthStatus } from '../../appRedux/actions/User'
 import { newApiToken } from '../../api/axiosAPIs'
-import { IconNotification } from '../../components/IconNotification'
+import { IconNotification } from '../../components/common/IconNotification'
 import { SUCCESS } from '../../constants/AppConfigs'
 import { API_TOKENS } from '../../constants/Paths'
 

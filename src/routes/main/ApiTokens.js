@@ -7,7 +7,7 @@ import { getTableLocaleData } from '../../util/helpers'
 import _ from 'lodash'
 import { deleteApiToken, getApiTokens } from '../../api/axiosAPIs'
 import { API_TOKEN_EDIT, API_TOKEN_NEW } from '../../constants/Paths'
-import { IconNotification } from '../../components/IconNotification'
+import { IconNotification } from '../../components/common/IconNotification'
 import { SUCCESS } from '../../constants/AppConfigs'
 
 class ApiTokens extends React.Component {

@@ -1,5 +1,5 @@
 import { notification } from 'antd'
-import { ERROR } from '../constants/AppConfigs'
+import { ERROR } from '../../constants/AppConfigs'
 
 export const IconNotification = (type, message) => {
 

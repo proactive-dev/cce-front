@@ -7,7 +7,7 @@ import { clearOrder, clearOrderAsks, clearOrderBids, clearOrders, getOrderHistor
 import { MARKETS } from '../../constants/Markets'
 import OpenOrdersTable from '../../components/OpenOrdersTable'
 import _ from 'lodash'
-import { IconNotification } from '../../components/IconNotification'
+import { IconNotification } from '../../components/common/IconNotification'
 import { SUCCESS } from '../../constants/AppConfigs'
 
 const {Text} = Typography

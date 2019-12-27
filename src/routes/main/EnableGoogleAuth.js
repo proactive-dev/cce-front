@@ -6,7 +6,7 @@ import QRCode from 'qrcode.react'
 import { Button, Col, Form, Icon, Input, Row, Spin, Steps } from 'antd'
 import { getAuthStatus } from '../../appRedux/actions/User'
 import { enableGoogleAuth, getGoogleAuth } from '../../api/axiosAPIs'
-import { IconNotification } from '../../components/IconNotification'
+import { IconNotification } from '../../components/common/IconNotification'
 import { G_AUTH_ANDROID_APP_URL, G_AUTH_IOS_APP_URL, OTPAUTH_URL, SUCCESS } from '../../constants/AppConfigs'
 import { USER } from '../../constants/Paths'
 

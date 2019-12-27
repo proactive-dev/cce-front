@@ -2,7 +2,7 @@ import React from 'react'
 import { injectIntl } from 'react-intl'
 import { Icon, Popconfirm, Table } from 'antd'
 import _ from 'lodash'
-import { getTableLocaleData } from '../util/helpers'
+import { getTableLocaleData } from '../../util/helpers'
 
 class AddressTable extends React.Component {
 

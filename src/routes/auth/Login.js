@@ -9,7 +9,7 @@ import { initAccounts } from '../../appRedux/actions/Accounts'
 import { EX_URL, SUCCESS } from '../../constants/AppConfigs'
 import { FORGOT_PWD, REGISTER, USER } from '../../constants/Paths'
 import { LOGGED_IN } from '../../constants/ResponseCode'
-import { IconNotification } from '../../components/IconNotification'
+import { IconNotification } from '../../components/common/IconNotification'
 
 const FormItem = Form.Item
 

@@ -5,8 +5,8 @@ import { Card, Icon, Spin } from 'antd'
 import _ from 'lodash'
 import { getRefData } from '../../api/axiosAPIs'
 import { gerRefLink } from '../../util/helpers'
-import ReferralTree from '../../components/ReferralTree'
-import ReferralLink from '../../components/ReferralLink'
+import ReferralTree from '../../components/user/ReferralTree'
+import ReferralLink from '../../components/user/ReferralLink'
 
 class Referral extends Component {
 

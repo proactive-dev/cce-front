@@ -1,6 +1,6 @@
 import React from 'react'
 import { Select } from 'antd'
-import { CURRENCIES } from '../constants/Currencies'
+import { CURRENCIES } from '../../constants/Currencies'
 
 const {Option} = Select
 

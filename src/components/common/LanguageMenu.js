@@ -1,8 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Popover } from 'antd'
-import { LANGUAGES } from '../constants/AppConfigs'
-import { switchLanguage } from '../appRedux/actions/Setting'
+import { LANGUAGES } from '../../constants/AppConfigs'
+import { switchLanguage } from '../../appRedux/actions/Setting'
 
 class LanguageMenu extends React.Component {
 

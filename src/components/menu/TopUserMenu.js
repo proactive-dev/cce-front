@@ -2,11 +2,11 @@ import React, { Component } from 'react'
 import { Avatar, Popover } from 'antd'
 import { withRouter } from 'react-router-dom'
 import { FormattedMessage, injectIntl } from 'react-intl'
-import { logout } from '../api/axiosAPIs'
-import { IconNotification } from './IconNotification'
-import { SUCCESS } from '../constants/AppConfigs'
-import { LOGIN, LOGOUT } from '../constants/Paths'
-import { USER_MENUS } from '../constants/Menus'
+import { logout } from '../../api/axiosAPIs'
+import { IconNotification } from '../common/IconNotification'
+import { SUCCESS } from '../../constants/AppConfigs'
+import { LOGIN, LOGOUT } from '../../constants/Paths'
+import { USER_MENUS } from '../../constants/Menus'
 
 class TopUserMenu extends Component {
 

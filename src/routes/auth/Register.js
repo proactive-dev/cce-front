@@ -9,7 +9,7 @@ import { setAuthStatus } from '../../appRedux/actions/User'
 import { REGISTERED } from '../../constants/ResponseCode'
 import { LOGIN, TERMS } from '../../constants/Paths'
 import { SUCCESS } from '../../constants/AppConfigs'
-import { IconNotification } from '../../components/IconNotification'
+import { IconNotification } from '../../components/common/IconNotification'
 
 const FormItem = Form.Item
 

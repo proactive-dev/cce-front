@@ -4,7 +4,7 @@ import { FormattedMessage, injectIntl } from 'react-intl'
 import { Alert, Button, Form, Icon, Input, Spin } from 'antd'
 import { getAuthStatus } from '../../appRedux/actions/User'
 import { disableGoogleAuth } from '../../api/axiosAPIs'
-import { IconNotification } from '../../components/IconNotification'
+import { IconNotification } from '../../components/common/IconNotification'
 import { SUCCESS } from '../../constants/AppConfigs'
 import { USER } from '../../constants/Paths'
 

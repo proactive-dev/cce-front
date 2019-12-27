@@ -6,9 +6,9 @@ import { FormattedMessage } from 'react-intl'
 import HorizontalNav from './HorizontalNav'
 import { toggleCollapsedSideNav } from '../../appRedux/actions/Setting'
 import { AUTH_MENUS } from '../../constants/Menus'
-import LanguageMenu from '../../components/LanguageMenu'
-import TopUserMenu from '../../components/TopUserMenu'
-import AdminMenu from '../../components/AdminMenu'
+import LanguageMenu from '../../components/common/LanguageMenu'
+import TopUserMenu from '../../components/menu/TopUserMenu'
+import AdminMenu from '../../components/menu/AdminMenu'
 
 const {Header} = Layout
 

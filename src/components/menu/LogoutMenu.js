@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import { FormattedMessage, injectIntl } from 'react-intl'
-import { logout } from '../api/axiosAPIs'
-import { LOGIN } from '../constants/Paths'
-import { SUCCESS } from '../constants/AppConfigs'
-import { IconNotification } from './IconNotification'
+import { logout } from '../../api/axiosAPIs'
+import { LOGIN } from '../../constants/Paths'
+import { SUCCESS } from '../../constants/AppConfigs'
+import { IconNotification } from '../common/IconNotification'
 
 class LogoutMenu extends Component {
 

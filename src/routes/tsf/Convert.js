@@ -7,7 +7,7 @@ import { getAuthStatus, getProfile } from '../../appRedux/actions/User'
 import { getAccounts } from '../../appRedux/actions/Accounts'
 import { getPointExchanges, newPointExchange } from '../../api/axiosAPIs'
 import { getTableLocaleData, getTimeForTable } from '../../util/helpers'
-import { IconNotification } from '../../components/IconNotification'
+import { IconNotification } from '../../components/common/IconNotification'
 import { SUCCESS, TSF_AMOUNT_MAX } from '../../constants/AppConfigs'
 
 const FormItem = Form.Item

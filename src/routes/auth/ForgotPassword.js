@@ -3,7 +3,7 @@ import { FormattedMessage, injectIntl } from 'react-intl'
 import { Alert, Button, Form, Icon, Input, Spin } from 'antd'
 import { connect } from 'react-redux'
 import { forgotPassword } from '../../api/axiosAPIs'
-import { IconNotification } from '../../components/IconNotification'
+import { IconNotification } from '../../components/common/IconNotification'
 import { SUCCESS } from '../../constants/AppConfigs'
 import { RESET_PWD_SUCCESS } from '../../constants/ResponseCode'
 

@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import { FormattedMessage, injectIntl } from 'react-intl'
-import { goPrizeCenter } from '../api/axiosAPIs'
-import { PRIZE_CENTER_LINK } from '../constants/AppConfigs'
+import { goPrizeCenter } from '../../api/axiosAPIs'
+import { PRIZE_CENTER_LINK } from '../../constants/AppConfigs'
 import { connect } from 'react-redux'
 
 class PrizeCenterMenu extends Component {

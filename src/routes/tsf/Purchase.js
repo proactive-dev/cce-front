@@ -7,7 +7,7 @@ import { getAccounts } from '../../appRedux/actions/Accounts'
 import { getPurchaseOptions, newPurchase, preparePurchase } from '../../api/axiosAPIs'
 import _ from 'lodash'
 import { USER } from '../../constants/Paths'
-import { IconNotification } from '../../components/IconNotification'
+import { IconNotification } from '../../components/common/IconNotification'
 import { ERROR, PURCHASE_TIME_LIMIT } from '../../constants/AppConfigs'
 import { getFiatFixed } from '../../util/helpers'
 

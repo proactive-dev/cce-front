@@ -1,6 +1,6 @@
 import React from 'react'
 import { Select } from 'antd'
-import countries from '../util/countryData'
+import countries from '../../util/countryData'
 
 const Option = Select.Option
 

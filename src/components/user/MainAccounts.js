@@ -3,8 +3,8 @@ import { withRouter } from 'react-router-dom'
 import { injectIntl } from 'react-intl'
 import { Popover, Table } from 'antd'
 import _ from 'lodash'
-import { getCoinFixed, getFixed, getTableLocaleData } from '../util/helpers'
-import { ESTIMATE_SYMBOL } from '../constants/AppConfigs'
+import { getCoinFixed, getFixed, getTableLocaleData } from '../../util/helpers'
+import { ESTIMATE_SYMBOL } from '../../constants/AppConfigs'
 
 class MainAccounts extends React.Component {
   getColumns() {

@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import { Button, Card, Form } from 'antd'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
-import { IconNotification } from './IconNotification'
-import { SUCCESS } from '../constants/AppConfigs'
+import { IconNotification } from '../common/IconNotification'
+import { SUCCESS } from '../../constants/AppConfigs'
 
 const FormItem = Form.Item
 

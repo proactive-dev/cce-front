@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import { Icon } from 'antd'
-import TfaModal from './TfaModal'
-import { ADMIN } from '../constants/Paths'
-import { postTfa } from '../api/axiosAPIs'
+import TfaModal from '../user/TfaModal'
+import { ADMIN } from '../../constants/Paths'
+import { postTfa } from '../../api/axiosAPIs'
 
 class AdminMenu extends Component {
   constructor(props) {

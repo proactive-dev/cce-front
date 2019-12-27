@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import { Link } from 'react-router-dom'
 import { Button, Card } from 'antd'
-import { API, API_TOKENS } from '../constants/Paths'
+import { API, API_TOKENS } from '../../constants/Paths'
 
 class ApiTokenCard extends Component {
 

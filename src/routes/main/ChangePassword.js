@@ -4,7 +4,7 @@ import { FormattedMessage, injectIntl } from 'react-intl'
 import { Alert, Button, Form, Icon, Input, Spin } from 'antd'
 import { changePassword } from '../../api/axiosAPIs'
 import { getAuthStatus } from '../../appRedux/actions/User'
-import { IconNotification } from '../../components/IconNotification'
+import { IconNotification } from '../../components/common/IconNotification'
 import { ERROR, SUCCESS } from '../../constants/AppConfigs'
 import { LOGIN } from '../../constants/Paths'
 

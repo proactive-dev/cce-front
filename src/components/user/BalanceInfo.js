@@ -2,7 +2,7 @@ import React from 'react'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import { Col, Row } from 'antd'
 import _ from 'lodash'
-import { getFixed } from '../util/helpers'
+import { getFixed } from '../../util/helpers'
 
 class BalanceInfo extends React.Component {
   render() {
