@@ -12,12 +12,13 @@ import OrderBook from '../../components/OrderBook/OrderBook'
 import TradeChart from '../../components/TradeChart'
 import TradeDepth from '../../components/TradeDepth'
 import OrderEntry from '../../components/OrderEntry'
-import MarketOpenOrders from '../../components/MarketOpenOrders'
-import MarketOrderHistory from '../../components/MarketOrderHistory'
-import { ORDER_BUY, ORDER_SELL, SOCKET_URL, STABLE_SYMBOL } from '../../constants/AppConfigs'
-import { getQuoteUnits, isStableCoin } from '../../util/helpers'
+import { convertToDate, getQuoteUnits, isStableCoin } from '../../util/helpers'
 import SimpleTradeHistory from '../../components/SimpleTradeHistory'
+import OpenOrdersTable from '../../components/OpenOrdersTable'
+import OrderHistoryTable from '../../components/OrderHistoryTable'
+import { ORDER_BUY, ORDER_SELL, SOCKET_URL, STABLE_SYMBOL } from '../../constants/AppConfigs'
 import { EXCHANGE } from '../../constants/Paths'
+import { getOrderHistory } from '../../api/axiosAPIs'
 
 const Search = Input.Search
 const TabPane = Tabs.TabPane
@@ -33,6 +34,8 @@ class Exchange extends React.Component {
       lastPrice: 0,
       asks: [],
       bids: [],
+      openOrders: [],
+      orders24h: [],
       marketId: null,
       market: null,
       tickers: {},
@@ -42,7 +45,6 @@ class Exchange extends React.Component {
       chartMode: true,
       yoursMode: false,
       myOrdersTabKey: 'open.order',
-      myOpenOrderCount: 0,
       authStatus: false
     }
     // Get Quote Units
@@ -51,7 +53,9 @@ class Exchange extends React.Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     const {loader, authStatus, tickers} = nextProps
-    if ((authStatus !== prevState.authStatus) || (loader !== prevState.loader) || (!_.isEmpty(tickers) && tickers !== prevState.tickers)) {
+    if ((authStatus !== prevState.authStatus)
+      || (loader !== prevState.loader)
+      || (!_.isEmpty(tickers) && tickers !== prevState.tickers)) {
       return {authStatus, loader, tickers}
     }
     return null
@@ -62,6 +66,8 @@ class Exchange extends React.Component {
     if (!_.isEmpty(marketId) && !_.isUndefined(marketId)) {
       this.initMarket(marketId)
     }
+    this.fetchOpenOrders()
+    this.fetch24hOrders()
   }
 
   initMarket = (marketId) => {
@@ -136,17 +142,53 @@ class Exchange extends React.Component {
     this.setState({myOrdersTabKey: activeKey})
   }
 
-  onOpenOrdersLoaded = count => {
-    this.setState({myOpenOrderCount: count})
+  fetchOrders = (search, isOpenOrders = true) => {
+    getOrderHistory({page: 1, perPage: 5, search})
+      .then(response => {
+        const {orders} = response.data
+        let orderData = []
+        for (let i = 0; i < orders.length; i++) {
+          let order = orders[i]
+          let market = MARKETS.find(item => item.id === order.market)
+          if (market) {
+            order.marketName = market.name
+            order.priceFixed = market.bid.fixed
+            order.amountFixed = market.ask.fixed
+          }
+          orderData.push(order)
+        }
+        if (isOpenOrders) {
+          this.setState({openOrders: orderData})
+        } else {
+          this.setState({orders24h: orderData})
+        }
+      })
+  }
+
+  fetchOpenOrders = () => {
+    let search = 'state=100'
+    this.fetchOrders(search)
+  }
+
+  fetch24hOrders = (market = null) => {
+    let to = new Date()
+    let from = new Date(to.getTime() - (24 * 60 * 60 * 1000))// 1 day ago
+    from = convertToDate(from)
+    to = convertToDate(to)
+
+    let search = `created_at >= "${from} 00:00:00" AND created_at <= "${to} 23:59:59"`
+    if (market) {
+      search = `${search} AND currency=${market}`
+    }
+    this.fetchOrders(search)
   }
 
   render() {
     const {intl} = this.props
-    const {loader, authStatus, tickers, market, marketId, asks, bids, trades, filter, term, chartMode, yoursMode} = this.state
+    const {loader, authStatus, tickers, market, marketId, asks, bids, trades, openOrders, orders24h, filter, term, chartMode, yoursMode} = this.state
 
     let ticker = {}
     if (!_.isEmpty(tickers) && market) {
-
       if (tickers.hasOwnProperty(market.id))
         ticker = tickers[market.id].ticker
     }
@@ -303,18 +345,21 @@ class Exchange extends React.Component {
           activeKey={this.state.myOrdersTabKey}>
           <TabPane
             key={'open.order'}
-            tab={intl.formatMessage({id: 'open.orders'}) + ` (${this.state.myOpenOrderCount})`}>
-            <MarketOpenOrders
-              onDataLoaded={this.onOpenOrdersLoaded}
-              marketId={this.state.marketId}>
-            </MarketOpenOrders>
+            tab={intl.formatMessage({id: 'open.orders'}) + ` (${openOrders.length})`}>
+            <OpenOrdersTable
+              dataSource={openOrders}
+              pagination={false}
+              marketId={marketId}
+            />
           </TabPane>
           <TabPane
             key={'24h.order'}
             tab={intl.formatMessage({id: '24h.orders'})}>
-            <MarketOrderHistory
-              marketId={this.state.marketId}>
-            </MarketOrderHistory>
+            <OrderHistoryTable
+              pagination={false}
+              dataSource={orders24h}
+              isSmall={true}
+            />
           </TabPane>
         </Tabs>
       </Spin>

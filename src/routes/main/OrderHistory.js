@@ -233,7 +233,7 @@ class OrderHistory extends React.Component {
           <OrderHistoryTable
             pagination={pagination}
             dataSource={orders}
-            marketMode={false}
+            isSmall={false}
             onChange={this.onChangeTable}
           />
         </Spin>
