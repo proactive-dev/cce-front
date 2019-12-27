@@ -11,57 +11,17 @@ import Error404 from '../../routes/common/Error404'
 import Error500 from '../../routes/common/Error500'
 import { ERROR } from '../../constants/AppConfigs'
 import {
-  API_TOKEN_FAIL,
-  G_AUTH_FAIL,
   HTTP_BAD_REQUEST,
   HTTP_INTERNAL_SERVER_ERROR,
   HTTP_NOT_FOUND,
   HTTP_UNAUTHORIZED,
-  ID_DOC_SUBMIT_FAIL,
-  LOGIN_FAIL,
   LOGIN_REQUIRED,
-  MEMBER_DISABLED,
-  REGISTER_FAIL,
-  RESET_PWD_FAIL,
-  TFA_FAIL,
+  MESSAGES,
   TFA_REQUIRED
 } from '../../constants/ResponseCode'
 import { E_404, E_500, LOGIN, LOGIN_AUTH } from '../../constants/Paths'
 
 class RootApp extends Component {
-
-  getMessageFromCode = (intl, code) => {
-    let msgId = null
-    switch (code) {
-      case LOGIN_FAIL:
-        msgId = 'wrong.id.or.password'
-        break
-      case REGISTER_FAIL:
-        msgId = 'wrong.id.or.password'
-        break
-      case MEMBER_DISABLED:
-        msgId = 'account.disabled'
-        break
-      case G_AUTH_FAIL:
-        msgId = 'google.auth.enabled'
-        break
-      case TFA_FAIL:
-        msgId = 'TFA_CODE_INCORRECT'
-        break
-      case RESET_PWD_FAIL:
-        msgId = 'INVALID_PARAMS'
-        break
-      case ID_DOC_SUBMIT_FAIL:
-        msgId = 'id.document.failed'
-        break
-      case API_TOKEN_FAIL:
-        msgId = 'update.token.failed'
-        break
-      default:
-        msgId = 'INVALID_PARAMS'
-    }
-    return intl.formatMessage({id: msgId})
-  }
 
   processError = (error) => {
     const {intl} = this.props
@@ -81,7 +41,7 @@ class RootApp extends Component {
                 this.props.history.push(`/${LOGIN_AUTH}`)
                 break
               default:
-                msg = this.getMessageFromCode(intl, data.code)
+                msg = intl.formatMessage({id: (MESSAGES[data.code] || MESSAGES['default'])})
             }
           } else {
             msg = statusText

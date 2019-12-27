@@ -31,3 +31,15 @@ export const G_AUTH_FAIL = 4020
 export const TFA_FAIL = 4021
 export const API_TOKEN_FAIL = 4023
 export const ID_DOC_SUBMIT_FAIL = 4024
+
+export const MESSAGES = {
+  LOGIN_FAIL: 'wrong.id.or.password',
+  REGISTER_FAIL: 'wrong.id.or.password',
+  MEMBER_DISABLED: 'account.disabled',
+  G_AUTH_FAIL: 'google.auth.enabled',
+  TFA_FAIL: 'TFA_CODE_INCORRECT',
+  RESET_PWD_FAIL: 'INVALID_PARAMS',
+  ID_DOC_SUBMIT_FAIL: 'id.document.failed',
+  API_TOKEN_FAIL: 'update.token.failed',
+  'default': 'INVALID_PARAMS'
+}

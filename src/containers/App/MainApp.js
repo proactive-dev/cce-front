@@ -8,6 +8,7 @@ import BannerBar from '../BannerBar'
 import FooterMenu from '../FooterMenu'
 import AppRoute from '../../routes/index'
 import {
+  CONTAINER_CLASSES,
   NAV_STYLE_DRAWER,
   NAV_STYLE_FIXED,
   NAV_STYLE_INSIDE_HEADER_HORIZONTAL,
@@ -20,14 +21,6 @@ const {Content, Footer} = Layout
 
 export class MainApp extends Component {
 
-  getContainerClass = (navStyle) => {
-    switch (navStyle) {
-      case NAV_STYLE_INSIDE_HEADER_HORIZONTAL:
-        return 'gx-container-wrap'
-      default:
-        return ''
-    }
-  }
   getNavStyles = (navStyle) => {
     switch (navStyle) {
       case NAV_STYLE_INSIDE_HEADER_HORIZONTAL :
@@ -67,7 +60,7 @@ export class MainApp extends Component {
         {this.getSidebar(navStyle, width)}
         <Layout>
           {this.getNavStyles(navStyle)}
-          <Content className={`gx-layout-content ${this.getContainerClass(navStyle)} `}>
+          <Content className={`gx-layout-content ${(CONTAINER_CLASSES[navStyle] || CONTAINER_CLASSES['default'])} `}>
             {
               // show only for home page
               '/'.localeCompare(pathname) === 0 &&

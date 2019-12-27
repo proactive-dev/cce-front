@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl'
 import { connect } from 'react-redux'
 import { Menu } from 'antd'
 import { Link } from 'react-router-dom'
-import { NAV_STYLE_INSIDE_HEADER_HORIZONTAL } from '../../constants/ThemeSetting'
+import { NAV_STYLES } from '../../constants/ThemeSetting'
 import { COIN_CASTING, EXCHANGE, MARKETS, PRIZE_CENTER } from '../../constants/Paths'
 import { ORDER_MENUS, PLD_MENUS, TSF_MENUS, WALLET_MENUS } from '../../constants/Menus'
 import PrizeCenterMenu from '../../components/menu/PrizeCenterMenu'
@@ -24,21 +24,12 @@ class HorizontalNav extends Component {
     return null
   }
 
-  getNavStyleSubMenuClass = (navStyle) => {
-    switch (navStyle) {
-      case NAV_STYLE_INSIDE_HEADER_HORIZONTAL:
-        return 'gx-menu-horizontal gx-submenu-popup-curve gx-inside-submenu-popup-curve'
-      default:
-        return 'gx-menu-horizontal'
-    }
-  }
-
   render() {
     const {pathname, navStyle} = this.props
     const {authStatus} = this.state
     const selectedKeys = pathname.substr(1)
     const defaultOpenKeys = selectedKeys.split('/')[1]
-    const navStyleClass = this.getNavStyleSubMenuClass(navStyle)
+    const navStyleClass = NAV_STYLES[navStyle] || NAV_STYLES['default']
 
     return (
       <Menu
