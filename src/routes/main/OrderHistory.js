@@ -232,7 +232,7 @@ class OrderHistory extends React.Component {
           </Row>
           <OrderHistoryTable
             pagination={pagination}
-            dataList={orders}
+            dataSource={orders}
             marketMode={false}
             onChange={this.onChangeTable}
           />

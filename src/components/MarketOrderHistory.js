@@ -67,7 +67,7 @@ class MarketOrderHistory extends React.Component {
       <div>
         <OrderHistoryTable
           pagination={false}
-          dataList={orders}
+          dataSource={orders}
           marketMode={true}
         />
       </div>

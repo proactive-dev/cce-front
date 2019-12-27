@@ -77,13 +77,13 @@ class OrderHistoryTable extends React.Component {
   }
 
   render() {
-    const {dataList, intl, pagination, marketMode} = this.props
+    const {dataSource, intl, pagination, marketMode} = this.props
 
     return (
       <div>
         <Table className={marketMode ? 'gx-table-responsive' : 'gx-table-responsive gx-mt-4 gx-mb-4'}
                columns={this.getColumns()}
-               dataSource={dataList}
+               dataSource={dataSource}
                pagination={pagination}
                locale={getTableLocaleData(intl)}
                onChange={this.handleTableChange}

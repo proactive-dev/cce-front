@@ -159,7 +159,7 @@ class OpenOrders extends React.Component {
         <Spin spinning={loader} size="large">
           <OpenOrdersTable
             pagination={pagination}
-            dataList={orders}
+            dataSource={orders}
             marketMode={false}
             onCancelType={this.handleCancelType}
             onCancelOrder={this.handleCancel}

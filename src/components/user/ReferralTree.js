@@ -10,14 +10,14 @@ const KEY = 'email'
 const KEY_TITLE = 'title'
 const KEY_CHILDREN = 'children'
 
-const dataList = []
+const dataSource = []
 const generateList = (tree) => {
   for (let i = 0; i < tree.length; i++) {
     const node = tree[i]
     const data = {}
     data[KEY] = node[KEY]
     data[KEY_TITLE] = node[KEY_TITLE]
-    dataList.push(data)
+    dataSource.push(data)
     if (node[KEY_CHILDREN]) {
       generateList(node[KEY_CHILDREN])
     }
@@ -62,7 +62,7 @@ class ReferralTree extends React.Component {
   }
 
   onSearch = (value) => {
-    const expandedKeys = dataList.map((item) => {
+    const expandedKeys = dataSource.map((item) => {
       if (item[KEY_TITLE].indexOf(value) > -1) {
         return getParentKey(item[KEY], this.props.treeData)
       }
@@ -116,7 +116,7 @@ class ReferralTree extends React.Component {
     const {intl, treeData} = this.props
     const {expandedKeys, autoExpandParent} = this.state
     let keyList = []
-    if (_.isEmpty(dataList) && !_.isEmpty(treeData)) {
+    if (_.isEmpty(dataSource) && !_.isEmpty(treeData)) {
       generateList(treeData)
     }
 

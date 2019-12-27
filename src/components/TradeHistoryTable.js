@@ -53,13 +53,13 @@ class TradeHistoryTable extends React.Component {
   }
 
   render() {
-    const {dataList, intl, pagination} = this.props
+    const {dataSource, intl, pagination} = this.props
 
     return (
       <div>
         <Table className="gx-table-responsive gx-mt-4 gx-mb-4"
                columns={this.getColumns()}
-               dataSource={dataList}
+               dataSource={dataSource}
                pagination={pagination}
                locale={getTableLocaleData(intl)}
                onChange={this.handleTableChange}

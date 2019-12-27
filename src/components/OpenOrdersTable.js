@@ -112,7 +112,7 @@ class OpenOrdersTable extends React.Component {
   }
 
   render() {
-    const {dataList, intl, marketMode, pagination} = this.props
+    const {dataSource, intl, marketMode, pagination} = this.props
 
     return (
       <div>

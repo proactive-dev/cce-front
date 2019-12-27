@@ -144,7 +144,7 @@ class MarketOpenOrders extends React.Component {
     return (
       <div>
         <OpenOrdersTable
-          dataList={orders}
+          dataSource={orders}
           pagination={false}
           marketMode={true}
           onCancelType={this.handleCancelType}

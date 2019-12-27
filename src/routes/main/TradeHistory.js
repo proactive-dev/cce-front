@@ -210,7 +210,7 @@ class TradeHistory extends React.Component {
           </Row>
           <TradeHistoryTable
             pagination={pagination}
-            dataList={trades}
+            dataSource={trades}
             onChange={this.onChangeTable}
           />
         </Spin>
