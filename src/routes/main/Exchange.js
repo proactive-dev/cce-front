@@ -6,16 +6,16 @@ import { Card, Col, Input, Radio, Row, Spin, Tabs } from 'antd'
 import _ from 'lodash'
 import { getAuthStatus } from '../../appRedux/actions/User'
 import { MARKETS } from '../../constants/Markets'
-import MarketBoard from '../../components/MarketBoard'
-import MarketOverview from '../../components/MarketOverview'
-import OrderBook from '../../components/OrderBook/OrderBook'
-import TradeChart from '../../components/TradeChart'
-import TradeDepth from '../../components/TradeDepth'
-import OrderEntry from '../../components/OrderEntry'
+import MarketBoard from '../../components/market/MarketBoard'
+import MarketOverview from '../../components/market/MarketOverview'
+import OrderBook from '../../components/market/OrderBook'
+import TradeChart from '../../components/market/TradeChart'
+import TradeDepth from '../../components/market/TradeDepth'
+import OrderEntry from '../../components/market/OrderEntry'
 import { convertToDate, getQuoteUnits, isStableCoin } from '../../util/helpers'
-import SimpleTradeHistory from '../../components/SimpleTradeHistory'
-import OpenOrdersTable from '../../components/OpenOrdersTable'
-import OrderHistoryTable from '../../components/OrderHistoryTable'
+import SimpleTradeHistory from '../../components/market/SimpleTradeHistory'
+import OpenOrdersTable from '../../components/market/OpenOrdersTable'
+import OrderHistoryTable from '../../components/market/OrderHistoryTable'
 import { ORDER_BUY, ORDER_SELL, SOCKET_URL, STABLE_SYMBOL } from '../../constants/AppConfigs'
 import { EXCHANGE } from '../../constants/Paths'
 import { getOrderHistory } from '../../api/axiosAPIs'
@@ -185,7 +185,7 @@ class Exchange extends React.Component {
 
   render() {
     const {intl} = this.props
-    const {loader, authStatus, tickers, market, marketId, asks, bids, trades, openOrders, orders24h, filter, term, chartMode, yoursMode} = this.state
+    const {loader, authStatus, tickers, market, marketId, asks, bids, trades, userTrades, openOrders, orders24h, filter, term, chartMode, yoursMode, myOrdersTabKey} = this.state
 
     let ticker = {}
     if (!_.isEmpty(tickers) && market) {
@@ -316,7 +316,7 @@ class Exchange extends React.Component {
                   <Radio.Button value={false}>
                     <FormattedMessage id='market'/>
                   </Radio.Button>
-                  <Radio.Button value={true} disabled={!this.state.authStatus}>
+                  <Radio.Button value={true} disabled={!authStatus}>
                     <FormattedMessage id='yours'/>
                   </Radio.Button>
                 </Radio.Group>
@@ -328,9 +328,9 @@ class Exchange extends React.Component {
                 yours={yoursMode}
               />
               }
-              {yoursMode && this.state.authStatus &&
+              {yoursMode && authStatus &&
               <SimpleTradeHistory
-                myTrades={this.state.userTrades}
+                myTrades={userTrades}
                 market={market}
                 yours={yoursMode}
               />
@@ -342,7 +342,7 @@ class Exchange extends React.Component {
           className="gx-mt-2 gx-mb-4"
           size='small'
           onChange={this.onChangeKind}
-          activeKey={this.state.myOrdersTabKey}>
+          activeKey={myOrdersTabKey}>
           <TabPane
             key={'open.order'}
             tab={intl.formatMessage({id: 'open.orders'}) + ` (${openOrders.length})`}>

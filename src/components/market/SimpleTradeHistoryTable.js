@@ -2,14 +2,11 @@ import React from 'react'
 import { injectIntl } from 'react-intl'
 import { Table } from 'antd'
 import _ from 'lodash'
-import { getFixed } from '../util/helpers'
-import { setPrice } from '../appRedux/actions/Markets'
 import { connect } from 'react-redux'
+import { getFixed } from '../../util/helpers'
+import { setPrice } from '../../appRedux/actions/Markets'
 
 class SimpleTradeHistoryTable extends React.Component {
-  constructor(props) {
-    super(props)
-  }
 
   getColumns() {
     const {intl, market} = this.props
@@ -53,7 +50,7 @@ class SimpleTradeHistoryTable extends React.Component {
   }
 
   render() {
-    const {data, market, intl} = this.props
+    const {data, market} = this.props
     if (_.isEmpty(market) || _.isEmpty(data))
       return ''
     return (

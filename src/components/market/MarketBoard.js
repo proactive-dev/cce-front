@@ -1,6 +1,6 @@
 import React from 'react'
 import { FormattedMessage, injectIntl } from 'react-intl'
-import { getFixed, getPointFixed, priceChange } from '../util/helpers'
+import { getFixed, getPointFixed, priceChange } from '../../util/helpers'
 import { Col, Row } from 'antd'
 
 class MarketBoard extends React.Component {

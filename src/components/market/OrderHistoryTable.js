@@ -1,7 +1,7 @@
 import React from 'react'
 import { Table } from 'antd'
 import { FormattedMessage, injectIntl } from 'react-intl'
-import { getFixed, getTableLocaleData, getTimeForTable } from '../util/helpers'
+import { getFixed, getTableLocaleData, getTimeForTable } from '../../util/helpers'
 
 class OrderHistoryTable extends React.Component {
 

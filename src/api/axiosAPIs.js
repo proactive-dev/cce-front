@@ -101,7 +101,7 @@ export const getTicker = (market, needLoader = false) => {
 }
 
 export const getOHLC = (market, period = 60, limit = 768, needLoader = false) => {
-  return axiosRequest('get', `${axiosConfig.OHLC_URL}?market=${market}&period=${period}&limit=${limit}`, null, needLoader)
+  return axiosRequest('get', `${axiosConfig.OHLC_URL}?market=${market}&period=${period}&limit=${limit}`, null, needLoader, false)
 }
 
 export const newOrderBid = (market, data) => {

@@ -2,7 +2,7 @@ import React from 'react'
 import { injectIntl } from 'react-intl'
 import { Table } from 'antd'
 import _ from 'lodash'
-import { getFixed, getPointFixed, getTableLocaleData, priceChange } from '../util/helpers'
+import { getFixed, getPointFixed, getTableLocaleData, priceChange } from '../../util/helpers'
 
 class MarketOverview extends React.Component {
   constructor(props) {

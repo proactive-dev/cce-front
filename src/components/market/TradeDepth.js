@@ -14,7 +14,7 @@ class TradeDepth extends React.Component {
     this.refreshDepth(this.props.asks, this.props.bids)
   }
 
-  componentWillReceiveProps(newProps) {
+  UNSAFE_componentWillReceiveProps(newProps) {
     this.refreshDepth(newProps.asks, newProps.bids)
   }
 
@@ -132,16 +132,14 @@ class TradeDepth extends React.Component {
 
 
     return (
-      <div>
-        <HighchartsReact
-          highcharts={Highcharts}
-          style={{
-            width: '100%',
-            height: 440
-          }}
-          options={options}
-        />
-      </div>
+      <HighchartsReact
+        highcharts={Highcharts}
+        style={{
+          width: '100%',
+          height: 440
+        }}
+        options={options}
+      />
     )
   }
 }

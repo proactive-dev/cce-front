@@ -4,7 +4,7 @@ import { FormattedMessage, injectIntl } from 'react-intl'
 import { Link } from 'react-router-dom'
 import { Card, Spin } from 'antd'
 import _ from 'lodash'
-import SimpleMarketInfo from '../../components/SimpleMarketInfo'
+import SimpleMarketInfo from '../../components/market/SimpleMarketInfo'
 import { MARKETS } from '../../constants/Paths'
 
 class Home extends React.Component {

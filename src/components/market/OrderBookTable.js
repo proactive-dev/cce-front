@@ -2,15 +2,12 @@ import React, { Component } from 'react'
 import { Table } from 'antd'
 import _ from 'lodash'
 import { injectIntl } from 'react-intl'
-import { setPrice } from '../../appRedux/actions/Markets'
 import { connect } from 'react-redux'
+import { setPrice } from '../../appRedux/actions/Markets'
 
 const MAX_FIXED = 8
 
 class OrderBookTable extends Component {
-  constructor(props) {
-    super(props)
-  }
 
   getColumns() {
     const {intl, market} = this.props
@@ -28,18 +25,12 @@ class OrderBookTable extends Component {
       {
         title: `${intl.formatMessage({id: 'volume'})}(${market.baseUnit})`,
         dataIndex: 'volume',
-        align: 'right',
-        render: (value) => {
-          return <span>{value}</span>
-        }
+        align: 'right'
       },
       {
         title: `${intl.formatMessage({id: 'total'})}(${market.quoteUnit})`,
         dataIndex: 'total',
-        align: 'right',
-        render: (value) => {
-          return <span>{value}</span>
-        }
+        align: 'right'
       }
     ]
   }
@@ -49,7 +40,7 @@ class OrderBookTable extends Component {
   }
 
   render() {
-    const {orders, market, limitCount, intl, isBuy, showHeader} = this.props
+    const {orders, market, limitCount, isBuy, showHeader} = this.props
 
     const bidFixed = market.bid.fixed || MAX_FIXED
     const askFixed = market.ask.fixed || MAX_FIXED
@@ -60,7 +51,7 @@ class OrderBookTable extends Component {
       return ''
     const subOrders = isBuy ? orders.slice(0, Math.min(limitCount, orders.length)) : orders.slice(orders.length - Math.min(limitCount, orders.length), orders.length)
     if (!_.isEmpty(subOrders)) {
-      subOrders.map(order => {
+      subOrders.forEach(order => {
         const price = parseFloat(order[0]).toFixed(bidFixed)
         const volume = parseFloat(order[1]).toFixed(askFixed)
         const total = (price * volume).toFixed(totalFixed)
@@ -75,20 +66,18 @@ class OrderBookTable extends Component {
     }
 
     return (
-      <div>
-        <Table
-          className={'gx-table-responsive gx-table-no-bordered gx-table-row-compact gx-pointer'}
-          columns={this.getColumns()}
-          dataSource={data}
-          pagination={false}
-          showHeader={showHeader}
-          size='small'
-          onRow={(record) => ({
-            onClick: () => {
-              this.handleClick(record.price)
-            }
-          })}/>
-      </div>
+      <Table
+        className={'gx-table-responsive gx-table-no-bordered gx-table-row-compact gx-pointer'}
+        columns={this.getColumns()}
+        dataSource={data}
+        pagination={false}
+        showHeader={showHeader}
+        size='small'
+        onRow={(record) => ({
+          onClick: () => {
+            this.handleClick(record.price)
+          }
+        })}/>
     )
   }
 }

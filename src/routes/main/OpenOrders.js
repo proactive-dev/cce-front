@@ -5,7 +5,7 @@ import { getAuthStatus } from '../../appRedux/actions/User'
 import { Spin } from 'antd'
 import { getOrderHistory } from '../../api/axiosAPIs'
 import { MARKETS } from '../../constants/Markets'
-import OpenOrdersTable from '../../components/OpenOrdersTable'
+import OpenOrdersTable from '../../components/market/OpenOrdersTable'
 
 class OpenOrders extends React.Component {
   constructor(props) {

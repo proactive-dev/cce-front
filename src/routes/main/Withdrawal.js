@@ -14,7 +14,7 @@ import { IconNotification } from '../../components/common/IconNotification'
 import { HISTORY_TYPE_WITHDRAWAL, SUCCESS } from '../../constants/AppConfigs'
 import { CURRENCIES } from '../../constants/Currencies'
 import { ADDR_MANAGEMENT, TRANSACTIONS } from '../../constants/Paths'
-import TransactionHistoryTable from '../../components/TransactionHistoryTable'
+import TransactionHistoryTable from '../../components/market/TransactionHistoryTable'
 
 const {Option} = Select
 

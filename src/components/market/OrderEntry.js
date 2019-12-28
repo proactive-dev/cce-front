@@ -4,12 +4,12 @@ import { FormattedMessage, injectIntl } from 'react-intl'
 import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
 import { Form, Input } from 'antd'
-import { expToFixed, getFixed } from '../util/helpers'
-import { getAccounts } from '../appRedux/actions/Accounts'
-import { ERROR, ORDER_BUY, ORDER_SELL, SUCCESS } from '../constants/AppConfigs'
-import { LOGIN, REGISTER } from '../constants/Paths'
-import { IconNotification } from './common/IconNotification'
-import { newOrderAsk, newOrderBid } from '../api/axiosAPIs'
+import { expToFixed, getFixed } from '../../util/helpers'
+import { getAccounts } from '../../appRedux/actions/Accounts'
+import { ERROR, ORDER_BUY, ORDER_SELL, SUCCESS } from '../../constants/AppConfigs'
+import { LOGIN, REGISTER } from '../../constants/Paths'
+import { IconNotification } from '../common/IconNotification'
+import { newOrderAsk, newOrderBid } from '../../api/axiosAPIs'
 
 const formItemLayout = {
   labelCol: {
@@ -290,4 +290,3 @@ export default withRouter(
     injectIntl(WrappedOrderEntryForm)
   )
 )
-

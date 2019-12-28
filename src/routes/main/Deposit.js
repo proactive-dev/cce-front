@@ -12,7 +12,7 @@ import { IconNotification } from '../../components/common/IconNotification'
 import { HISTORY_TYPE_DEPOSIT, SUCCESS } from '../../constants/AppConfigs'
 import { CURRENCIES } from '../../constants/Currencies'
 import { TRANSACTIONS } from '../../constants/Paths'
-import TransactionHistoryTable from '../../components/TransactionHistoryTable'
+import TransactionHistoryTable from '../../components/market/TransactionHistoryTable'
 import { getDeposits } from '../../api/axiosAPIs'
 
 class Deposit extends React.Component {

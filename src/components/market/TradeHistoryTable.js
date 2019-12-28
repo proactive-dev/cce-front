@@ -1,7 +1,7 @@
 import React from 'react'
 import { Table } from 'antd'
 import { FormattedMessage, injectIntl } from 'react-intl'
-import { getFixed, getTableLocaleData, getTimeForTable } from '../util/helpers'
+import { getFixed, getTableLocaleData, getTimeForTable } from '../../util/helpers'
 
 class TradeHistoryTable extends React.Component {
 
@@ -56,16 +56,14 @@ class TradeHistoryTable extends React.Component {
     const {dataSource, intl, pagination} = this.props
 
     return (
-      <div>
-        <Table className="gx-table-responsive gx-mt-4 gx-mb-4"
-               columns={this.getColumns()}
-               dataSource={dataSource}
-               pagination={pagination}
-               locale={getTableLocaleData(intl)}
-               onChange={this.handleTableChange}
-               rowKey={'id'}
-               size='middle'/>
-      </div>
+      <Table className="gx-table-responsive gx-mt-4 gx-mb-4"
+             columns={this.getColumns()}
+             dataSource={dataSource}
+             pagination={pagination}
+             locale={getTableLocaleData(intl)}
+             onChange={this.handleTableChange}
+             rowKey={'id'}
+             size='middle'/>
     )
   }
 }

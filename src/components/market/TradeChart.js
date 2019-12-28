@@ -6,8 +6,6 @@ import { getOHLC } from '../../api/axiosAPIs'
 import TradeRangeSwitch from './TradeRangeSwitch'
 import { TICKER_GRAPH_INTERVAL } from '../../constants/AppConfigs'
 
-import './ToolTip.css'
-
 const DATETIME_LABEL_FORMAT_FOR_TOOLTIP = {
   millisecond: '%m-%d %H:%M:%S.%L',
   second: '%m-%d %H:%M:%S',
@@ -58,7 +56,7 @@ class TradeChart extends React.Component {
     }, TICKER_GRAPH_INTERVAL)
   }
 
-  componentWillReceiveProps(newProps) {
+  UNSAFE_componentWillReceiveProps(newProps) {
     const {market} = this.state
     if (!_.isEmpty(market) && newProps.market.id === market.id) {
       return

@@ -1,10 +1,10 @@
 import React from 'react'
 import { Modal, Popconfirm, Select, Table } from 'antd'
 import { FormattedMessage, injectIntl } from 'react-intl'
-import { getFixed, getTableLocaleData, getTimeForTable } from '../util/helpers'
-import { clearOrder, clearOrderAsks, clearOrderBids, clearOrders } from '../api/axiosAPIs'
-import { IconNotification } from './common/IconNotification'
-import { SUCCESS } from '../constants/AppConfigs'
+import { getFixed, getTableLocaleData, getTimeForTable } from '../../util/helpers'
+import { clearOrder, clearOrderAsks, clearOrderBids, clearOrders } from '../../api/axiosAPIs'
+import { IconNotification } from '../common/IconNotification'
+import { SUCCESS } from '../../constants/AppConfigs'
 
 const Option = Select.Option
 

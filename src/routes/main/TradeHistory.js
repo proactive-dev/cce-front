@@ -9,7 +9,7 @@ import { convertToDate } from '../../util/helpers'
 import { getAllTradeHistory, getTradeHistory } from '../../api/axiosAPIs'
 import { getAuthStatus } from '../../appRedux/actions/User'
 import { MARKETS } from '../../constants/Markets'
-import TradeHistoryTable from '../../components/TradeHistoryTable'
+import TradeHistoryTable from '../../components/market/TradeHistoryTable'
 
 const {Option} = Select
 const {RangePicker} = DatePicker

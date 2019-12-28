@@ -1,11 +1,9 @@
-import React from 'react'
-import { FormattedMessage, injectIntl } from 'react-intl'
-import {withRouter} from 'react-router-dom'
+import React, { Fragment } from 'react'
+import { Radio } from 'antd'
+import _ from 'lodash'
 import OrderBookTable from './OrderBookTable'
 import OrderLast from './OrderLast'
-import _ from 'lodash'
 import { getFixed } from '../../util/helpers'
-import { Radio } from 'antd'
 
 const VIEW_BID = 1
 const VIEW_ASK = 2
@@ -26,26 +24,31 @@ class OrderBook extends React.Component {
   }
 
   render() {
-    const {market, asks, bids, ticker, intl} = this.props
+    const {market, asks, bids, ticker} = this.props
     const {viewMode} = this.state
 
-    if(!market || _.isEmpty(ticker))
+    if (!market || _.isEmpty(ticker))
       return ''
 
-
-    const last = !_.isEmpty(ticker) ?  getFixed(parseFloat(ticker.last), market.bid.fixed) : 0
+    const last = !_.isEmpty(ticker) ? getFixed(parseFloat(ticker.last), market.bid.fixed) : 0
     const lastTrend = this.prevData ? last - this.prevData : 0
     this.prevData = last
     return (
       <div>
         <Radio.Group size='small' value={viewMode} onChange={this.handleChangeViewMode}>
-          <Radio.Button value={VIEW_ALL}><img alt="loader" src={require(`assets/images/icon-bid-ask.svg`)}/></Radio.Button>
-          <Radio.Button value={VIEW_BID}><img alt="loader" src={require(`assets/images/icon-bid.svg`)}/></Radio.Button>
-          <Radio.Button value={VIEW_ASK}><img alt="loader" src={require(`assets/images/icon-ask.svg`)}/></Radio.Button>
+          <Radio.Button value={VIEW_ALL}>
+            <img alt="loader" src={require(`assets/images/icon-bid-ask.svg`)}/>
+          </Radio.Button>
+          <Radio.Button value={VIEW_BID}>
+            <img alt="loader" src={require(`assets/images/icon-bid.svg`)}/>
+          </Radio.Button>
+          <Radio.Button value={VIEW_ASK}>
+            <img alt="loader" src={require(`assets/images/icon-ask.svg`)}/>
+          </Radio.Button>
         </Radio.Group>
 
         {(viewMode === VIEW_BID) && (
-          <div>
+          <Fragment>
             <OrderLast
               trend={lastTrend}
               value={last}
@@ -57,10 +60,10 @@ class OrderBook extends React.Component {
               showHeader={true}
               limitCount={30}
             />
-          </div>
+          </Fragment>
         )}
         {(viewMode === VIEW_ASK) && (
-          <div>
+          <Fragment>
             <OrderBookTable
               orders={asks}
               market={market}
@@ -71,10 +74,10 @@ class OrderBook extends React.Component {
               trend={lastTrend}
               value={last}
             />
-          </div>
+          </Fragment>
         )}
         {(viewMode === VIEW_ALL) && (
-          <div>
+          <Fragment>
             <OrderBookTable
               orders={asks}
               market={market}
@@ -92,11 +95,11 @@ class OrderBook extends React.Component {
               limitCount={15}
               showHeader={false}
             />
-          </div>
+          </Fragment>
         )}
       </div>
     )
   }
 }
 
-export default injectIntl(OrderBook)
+export default OrderBook

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Table } from 'antd'
 import { injectIntl } from 'react-intl'
-import { getFixed, getTableLocaleData, strTrunc } from '../util/helpers'
+import { getFixed, getTableLocaleData, strTrunc } from '../../util/helpers'
 
 const REGX = /[TZ]/gi
 

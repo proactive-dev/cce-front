@@ -3,9 +3,9 @@ import { injectIntl } from 'react-intl'
 import { withRouter } from 'react-router-dom'
 import { Table } from 'antd'
 import _ from 'lodash'
-import { getCoinNameBySymbol, getFiatFixed, getTableLocaleData, priceChange } from '../util/helpers'
-import { EXCHANGE } from '../constants/Paths'
-import { BASE_PRICE_SYMBOL, HOME_SYMBOLS, QUOTE_SYMBOL } from '../constants/AppConfigs'
+import { getCoinNameBySymbol, getFiatFixed, getTableLocaleData, priceChange } from '../../util/helpers'
+import { EXCHANGE } from '../../constants/Paths'
+import { BASE_PRICE_SYMBOL, HOME_SYMBOLS, QUOTE_SYMBOL } from '../../constants/AppConfigs'
 
 class SimpleMarketInfo extends React.Component {
   constructor(props) {

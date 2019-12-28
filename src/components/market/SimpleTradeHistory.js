@@ -2,11 +2,11 @@ import React from 'react'
 import { injectIntl } from 'react-intl'
 import { connect } from 'react-redux'
 import _ from 'lodash'
-import { getAuthStatus } from '../appRedux/actions/User'
+import { getAuthStatus } from '../../appRedux/actions/User'
 import SimpleTradeHistoryTable from './SimpleTradeHistoryTable'
-import { getTradeHistory } from '../api/axiosAPIs'
-import { MARKETS } from '../constants/Markets'
-import { USER_TRADE_HISTORY_INTERVAL } from '../constants/AppConfigs'
+import { getTradeHistory } from '../../api/axiosAPIs'
+import { MARKETS } from '../../constants/Markets'
+import { USER_TRADE_HISTORY_INTERVAL } from '../../constants/AppConfigs'
 
 class SimpleTradeHistory extends React.Component {
   constructor(props) {
