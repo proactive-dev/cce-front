@@ -9,12 +9,12 @@ import { getAddresses, getWithdraws, newWithdraw } from '../../api/axiosAPIs'
 import { getAuthStatus } from '../../appRedux/actions/User'
 import { getAccounts } from '../../appRedux/actions/Accounts'
 import CurrencySelect from '../../components/common/CurrencySelect'
-import BalanceInfo from '../../components/user/BalanceInfo'
+import BalanceInfo from '../../components/funds/BalanceInfo'
 import { IconNotification } from '../../components/common/IconNotification'
 import { HISTORY_TYPE_WITHDRAWAL, SUCCESS } from '../../constants/AppConfigs'
 import { CURRENCIES } from '../../constants/Currencies'
 import { ADDR_MANAGEMENT, TRANSACTIONS } from '../../constants/Paths'
-import TransactionHistoryTable from '../../components/market/TransactionHistoryTable'
+import TransactionHistoryTable from '../../components/funds/TransactionHistoryTable'
 
 const {Option} = Select
 
