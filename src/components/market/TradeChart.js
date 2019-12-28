@@ -95,7 +95,7 @@ class TradeChart extends React.Component {
       return
     }
     if (this.lastUpdatedTime > 0) {
-      let now = new Date
+      let now = new Date()
       let utc_timestamp = now.getTime() - now.getTimezoneOffset()
       let delta = (utc_timestamp - this.lastUpdatedTime) / 1000 / 60 / minutes
       delta = Math.floor(delta)
@@ -351,12 +351,14 @@ class TradeChart extends React.Component {
       ]
     }
     return (
-      <div style={{position: 'relative'}}>
+      <div className={'gx-position-relative'}>
         <ReactHighcharts
           config={options}
           ref="chart"
         />
-        <TradeRangeSwitch setRange={this.setRange}/>
+        <div className={'gx-position-absolute gx-top-0 gx-left-0'}>
+          <TradeRangeSwitch setRange={this.setRange}/>
+        </div>
       </div>
     )
   }

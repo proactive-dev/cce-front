@@ -1,92 +1,46 @@
 import React from 'react'
-import classNames from 'classnames'
+import { Radio } from 'antd'
 
-// import './TradeRangeSwitch.css';
+const INTERVALS = [
+  {title: '1m', value: 1},
+  {title: '5m', value: 5},
+  {title: '15m', value: 15},
+  {title: '30m', value: 30},
+  {title: '1h', value: 60},
+  {title: '2h', value: 120},
+  {title: '4h', value: 240},
+  {title: '6h', value: 360},
+  {title: '12h', value: 720},
+  {title: '1d', value: 1440},
+  {title: '1w', value: 10080}
+]
 
 class TradeRangeSwitch extends React.Component {
   state = {
     unit: 60
   }
 
-  onChangeUnit = unit => {
+  onChangeUnit = e => {
+    let unit = e.target.value
     this.setState({unit})
     this.props.setRange(unit)
   }
 
   render() {
     const {unit} = this.state
+
     return (
-      <ul className="list-inline switch" data-x="60" id="range_switch">
-        <li className="text-center">
-          <div className={classNames('hand-point', 'chart-switch', {'active': unit === 1})} data-x="1" href="#"
-               onClick={() => this.onChangeUnit(1)}>1m
-          </div>
-        </li>
-        <li className="text-center">
-          <div className={classNames('hand-point', 'chart-switch', {'active': unit === 5})} href="#"
-               onClick={() => this.onChangeUnit(5)}>5m
-          </div>
-        </li>
-        <li className="text-center">
-          <div className={classNames('hand-point', 'chart-switch', {'active': unit === 15})} data-x="15" href="#"
-               onClick={() => this.onChangeUnit(15)}>15m
-          </div>
-        </li>
-        <li className="text-center">
-          <div className={classNames('hand-point', 'chart-switch', {'active': unit === 30})} data-x="30" href="#"
-               onClick={() => this.onChangeUnit(30)}>30m
-          </div>
-        </li>
-        <li className="text-center">
-          <span>|</span>
-        </li>
-        <li className="text-center">
-          <div className={classNames('hand-point', 'chart-switch', {'active': unit === 60})} data-x="60" href="#"
-               onClick={() => this.onChangeUnit(60)}>1h
-          </div>
-        </li>
-        <li className="text-center">
-          <div className={classNames('hand-point', 'chart-switch', {'active': unit === 120})} data-x="120" href="#"
-               onClick={() => this.onChangeUnit(120)}>2h
-          </div>
-        </li>
-        <li className="text-center">
-          <div className={classNames('hand-point', 'chart-switch', {'active': unit === 240})} data-x="240" href="#"
-               onClick={() => this.onChangeUnit(240)}>4h
-          </div>
-        </li>
-        <li className="text-center">
-          <div className={classNames('hand-point', 'chart-switch', {'active': unit === 360})} href="#"
-               onClick={() => this.onChangeUnit(360)}>6h
-          </div>
-        </li>
-        <li className="text-center">
-          <div className={classNames('hand-point', 'chart-switch', {'active': unit === 720})} data-x="720" href="#"
-               onClick={() => this.onChangeUnit(720)}>12h
-          </div>
-        </li>
-        <li className="text-center">
-          <span>|</span>
-        </li>
-        <li className="text-center">
-          <div className={classNames('hand-point', 'chart-switch', {'active': unit === 1440})} data-x="1440" href="#"
-               onClick={() => this.onChangeUnit(1440)}>1d
-          </div>
-        </li>
-        <li className="text-center">
-          <div className={classNames('hand-point', 'chart-switch', {'active': unit === 4320})} data-x="4320" href="#"
-               onClick={() => this.onChangeUnit(4320)}>3d
-          </div>
-        </li>
-        <li className="text-center">
-          <span>|</span>
-        </li>
-        <li className="text-center">
-          <div className={classNames('hand-point', 'chart-switch', {'active': unit === 10080})} data-x="10080"
-               href="#" onClick={() => this.onChangeUnit(10080)}>1w
-          </div>
-        </li>
-      </ul>
+      <Radio.Group size='small' value={unit} onChange={this.onChangeUnit}>
+        {
+          INTERVALS.map(interval => {
+            return (
+              <Radio.Button key={interval['value']} value={interval['value']}>
+                {interval['title']}
+              </Radio.Button>
+            )
+          })
+        }
+      </Radio.Group>
     )
   }
 }
