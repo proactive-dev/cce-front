@@ -187,8 +187,14 @@ class OrderEntry extends React.Component {
     return (
       <div>
         <div className='gx-mb-2'>
-          <span className={'h4'}>{intl.formatMessage({id: kind})}&nbsp;{market.baseUnit.toUpperCase()}</span>
-          <span className='gx-float-right gx-pointer' onClick={() => this.onClickWallet(kind, balance)}>
+          {
+            !this.props.small &&
+            <span className={'h4'}>
+              {intl.formatMessage({id: kind})}&nbsp;{market.baseUnit.toUpperCase()}
+            </span>
+          }
+          <span className={this.props.small ? 'gx-pointer' : 'gx-float-right gx-pointer'}
+                onClick={() => this.onClickWallet(kind, balance)}>
             <img className='gx-size-15' src={require('assets/images/wallet.svg')} alt="wallet"/>&nbsp;
             {authStatus ? getFixed(balance, fixed) : '-'}&nbsp;
             {compareName.toUpperCase()}
