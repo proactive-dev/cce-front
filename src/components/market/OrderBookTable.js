@@ -12,29 +12,25 @@ class OrderBookTable extends Component {
 
   getColumns() {
     const {intl, market} = this.props
-    let columns = []
-    columns.push({
+    let columns = [{
       title: `${intl.formatMessage({id: 'price'})}(${market.quoteUnit})`,
       dataIndex: 'price',
-      align: 'center',
+      align: 'left',
       render: (value, record) => {
         return (
           <span className={record.colorClass}>{value}</span>
         )
       }
-    })
-    columns.push({
+    }, {
       title: `${intl.formatMessage({id: 'volume'})}(${market.baseUnit})`,
       dataIndex: 'volume',
       align: 'right'
-    })
+    }]
     if (!isMobile) {
       columns.push({
         title: `${intl.formatMessage({id: 'total'})}(${market.quoteUnit})`,
         dataIndex: 'total',
-        align: 'right',
-        hidden: isMobile
-
+        align: 'right'
       })
     }
     return columns
@@ -76,6 +72,7 @@ class OrderBookTable extends Component {
         columns={this.getColumns()}
         dataSource={data}
         pagination={false}
+        scroll={false}
         showHeader={showHeader}
         size='small'
         onRow={(record) => ({

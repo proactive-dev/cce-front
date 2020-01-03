@@ -16,7 +16,7 @@ class MarketBoardMobile extends React.Component {
   }
 
   render() {
-    const {market, ticker} = this.props
+    const {intl, market, ticker} = this.props
     if (!market)
       return ''
 
@@ -42,36 +42,34 @@ class MarketBoardMobile extends React.Component {
     }
     return (
       <div>
-        <Row type="flex" gutter={10} className='gx-align-items-center'>
-          <Col>
+        <Row type="flex" className='gx-align-items-center'>
+          <Col className='gx-m-2'>
             <MarketSelector
-              value={market.id}
+              value={market}
               onChange={this.onSelectMarket}
             />
           </Col>
-          <Col>
-            <div className={`${lastClassName} gx-fs-xl gx-font-weight-bold`}>
-              {getFixed(last, market.bid.fixed)}
-            </div>
+          <Col className={`${lastClassName} gx-fs-lg`}>
+            {getFixed(last, market.bid.fixed)}
           </Col>
         </Row>
-        <Row type="flex" className='gx-mt-2 gx-align-items-center'>
+        <Row type="flex" className='gx-mt-2 gx-mb-3'>
           <Col span={12}>
-            <div className={`${changeClassName} gx-font-weight-bold`}>
+            <div className={`${changeClassName}`}>
               {getFixed(change, market.bid.fixed)}&nbsp;
               {change > 0 && '+'}
               {getPointFixed(changePercent)}%
             </div>
-            <div className='gx-font-weight-bold gx-text-black'>
-              Vol {getFixed(ticker.vol, market.bid.fixed)}&nbsp;
+            <div>
+              {intl.formatMessage({id: 'volume'})} {getFixed(ticker.vol, market.bid.fixed)}&nbsp;
             </div>
           </Col>
-          <Col span={12}>
-            <div className='gx-font-weight-bold gx-text-black gx-text-right'>
-              Low {getFixed(ticker.low, market.bid.fixed)}
+          <Col span={12} className='gx-text-right'>
+            <div>
+              {intl.formatMessage({id: 'low'})} {getFixed(ticker.low, market.bid.fixed)}
             </div>
-            <div className='gx-font-weight-bold gx-text-black gx-text-right'>
-              High {getFixed(ticker.high, market.bid.fixed)}
+            <div>
+              {intl.formatMessage({id: 'high'})} {getFixed(ticker.high, market.bid.fixed)}
             </div>
           </Col>
         </Row>

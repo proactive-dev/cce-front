@@ -1,7 +1,7 @@
 import React from 'react'
+import { isMobile } from 'react-device-detect'
 import ExchangeDesktop from '../../components/market/ExchangeDesktop'
 import ExchangeMobile from '../../components/market/ExchangeMobile'
-import { isMobile } from 'react-device-detect'
 import { EXCHANGE } from '../../constants/Paths'
 
 class Exchange extends React.Component {
@@ -23,15 +23,16 @@ class Exchange extends React.Component {
   }
 
   render() {
-    if (isMobile) {
-      return (
-        <ExchangeMobile marketId={this.state.marketId} onSelectMarket={this.onSelectMarket}/>
-      )
-    } else {
-      return (
-        <ExchangeDesktop marketId={this.state.marketId} onSelectMarket={this.onSelectMarket}/>
-      )
-    }
+    return isMobile ?
+      <ExchangeMobile
+        marketId={this.state.marketId}
+        onSelectMarket={this.onSelectMarket}
+      />
+      :
+      <ExchangeDesktop
+        marketId={this.state.marketId}
+        onSelectMarket={this.onSelectMarket}
+      />
   }
 }
 

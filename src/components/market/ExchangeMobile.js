@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import ReconnectingWebSocket from 'reconnecting-websocket'
 import { FormattedMessage, injectIntl } from 'react-intl'
-import { Col, Input, Radio, Row, Spin, Tabs } from 'antd'
+import { Col, Radio, Row, Spin, Tabs } from 'antd'
 import _ from 'lodash'
 import { getAuthStatus } from '../../appRedux/actions/User'
 import { MARKETS } from '../../constants/Markets'
@@ -10,14 +10,13 @@ import MarketBoardMobile from '../../components/market/MarketBoardMobile'
 import TradeChart from '../../components/market/TradeChart'
 import TradeDepth from '../../components/market/TradeDepth'
 import OrderEntry from '../../components/market/OrderEntry'
-import { convertToDate, getQuoteUnits, isStableCoin } from '../../util/helpers'
+import { convertToDate, isStableCoin } from '../../util/helpers'
 import { ORDER_BUY, ORDER_SELL, SOCKET_URL, STABLE_SYMBOL } from '../../constants/AppConfigs'
 import { getOrderHistory } from '../../api/axiosAPIs'
 import OrderBook from './OrderBook'
 import SimpleTradeHistory from './SimpleTradeHistory'
 import OpenOrdersTable from './OpenOrdersTable'
 
-const Search = Input.Search
 const TabPane = Tabs.TabPane
 
 class ExchangeMobile extends React.Component {
@@ -46,8 +45,6 @@ class ExchangeMobile extends React.Component {
       mobileTab: 'charts',
       orderMode: 'buy'
     }
-    // Get Quote Units
-    this.quoteUnits = getQuoteUnits(true)
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -265,7 +262,7 @@ class ExchangeMobile extends React.Component {
                     kind={ORDER_BUY}
                     authStatus={authStatus}
                     market={market}
-                    small={true}
+                    isSmall={true}
                     lastPrice={_.isEmpty(ticker) ? 0 : ticker.last}
                   />
                   :
@@ -273,7 +270,7 @@ class ExchangeMobile extends React.Component {
                     kind={ORDER_SELL}
                     authStatus={authStatus}
                     market={market}
-                    small={true}
+                    isSmall={true}
                     lastPrice={_.isEmpty(ticker) ? 0 : ticker.last}
                   />
                 }
@@ -284,7 +281,7 @@ class ExchangeMobile extends React.Component {
                   bids={bids}
                   ticker={ticker}
                   market={market}
-                  small={true}
+                  isSmall={true}
                 />
               </Col>
             </Row>

@@ -41,7 +41,11 @@ class TradeRangeSwitch extends React.Component {
     const {unit} = this.state
 
     return (
-      <Radio.Group size='small' value={unit} onChange={this.onChangeUnit}>
+      <Radio.Group
+        className={'gx-m-1'}
+        size='small'
+        value={unit}
+        onChange={this.onChangeUnit}>
         {
           INTERVALS.map(interval => {
             return (

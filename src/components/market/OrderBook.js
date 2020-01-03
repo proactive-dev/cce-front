@@ -24,10 +24,10 @@ class OrderBook extends React.Component {
   }
 
   render() {
-    const {market, asks, bids, ticker, small} = this.props
+    const {market, asks, bids, ticker, isSmall} = this.props
     const {viewMode} = this.state
 
-    let cnt = small ? 8 : 15
+    let cnt = isSmall ? 8 : 15
     if (!market || _.isEmpty(ticker))
       return ''
 
@@ -36,7 +36,7 @@ class OrderBook extends React.Component {
     this.prevData = last
     return (
       <div>
-        {!small &&
+        {!isSmall &&
         <Radio.Group size='small' value={viewMode} onChange={this.handleChangeViewMode}>
           <Radio.Button value={VIEW_ALL}>
             <img alt="loader" src={require(`assets/images/icon-bid-ask.svg`)}/>
@@ -86,7 +86,7 @@ class OrderBook extends React.Component {
               limitCount={cnt}
               showHeader={true}
             />
-            {!small &&
+            {!isSmall &&
             <OrderLast
               trend={lastTrend}
               value={last}
