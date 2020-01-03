@@ -1,27 +1,17 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import ReconnectingWebSocket from 'reconnecting-websocket'
-import { FormattedMessage, injectIntl } from 'react-intl'
-import { Card, Col, Input, Radio, Row, Spin, Tabs } from 'antd'
+import { injectIntl } from 'react-intl'
 import _ from 'lodash'
-import { getAuthStatus } from '../../appRedux/actions/User'
-import { MARKETS } from '../../constants/Markets'
-import MarketBoard from '../../components/market/MarketBoard'
-import MarketOverview from '../../components/market/MarketOverview'
-import OrderBook from '../../components/market/OrderBook'
-import TradeChart from '../../components/market/TradeChart'
-import TradeDepth from '../../components/market/TradeDepth'
-import OrderEntry from '../../components/market/OrderEntry'
-import { convertToDate, getQuoteUnits, isStableCoin } from '../../util/helpers'
-import SimpleTradeHistory from '../../components/market/SimpleTradeHistory'
-import OpenOrdersTable from '../../components/market/OpenOrdersTable'
-import OrderHistoryTable from '../../components/market/OrderHistoryTable'
-import { ORDER_BUY, ORDER_SELL, SOCKET_URL, STABLE_SYMBOL } from '../../constants/AppConfigs'
+import { isMobile } from 'react-device-detect'
+import { convertToDate } from '../../util/helpers'
+import { SOCKET_URL } from '../../constants/AppConfigs'
 import { EXCHANGE } from '../../constants/Paths'
+import { MARKETS } from '../../constants/Markets'
 import { getOrderHistory } from '../../api/axiosAPIs'
-
-const Search = Input.Search
-const TabPane = Tabs.TabPane
+import { getAuthStatus } from '../../appRedux/actions/User'
+import ExchangeDesktop from '../../components/market/ExchangeDesktop'
+import ExchangeMobile from '../../components/market/ExchangeMobile'
 
 class Exchange extends React.Component {
   constructor(props) {
@@ -29,6 +19,7 @@ class Exchange extends React.Component {
 
     this.state = {
       loader: false,
+      authStatus: false,
       trades: [],
       lastTrade: 0,
       lastPrice: 0,
@@ -36,19 +27,10 @@ class Exchange extends React.Component {
       bids: [],
       openOrders: [],
       orders24h: [],
-      marketId: null,
       market: null,
       tickers: {},
-      filter: '',
-      yours: false,
-      term: '',
-      chartMode: true,
-      yoursMode: false,
-      myOrdersTabKey: 'open.order',
-      authStatus: false
+      yours: false
     }
-    // Get Quote Units
-    this.quoteUnits = getQuoteUnits(true)
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -66,13 +48,12 @@ class Exchange extends React.Component {
     if (!_.isEmpty(marketId) && !_.isUndefined(marketId)) {
       this.initMarket(marketId)
     }
-    this.fetchOpenOrders()
-    this.fetch24hOrders()
+    this.refreshOrders()
   }
 
   initMarket = (marketId) => {
     let market = MARKETS.find(market => market.id === marketId)
-    this.setState({market, marketId, asks: [], bids: [], trades: [], lastTrade: 0, lastPrice: 0})
+    this.setState({market, asks: [], bids: [], trades: [], lastTrade: 0, lastPrice: 0})
     const wsClient = new ReconnectingWebSocket(`${SOCKET_URL}/${marketId}`)
     wsClient.onmessage = event => {
       this.handleSocketEvent(event)
@@ -90,7 +71,7 @@ class Exchange extends React.Component {
     }
 
     const message = JSON.parse(event.data)
-    if (message.market.toLowerCase() !== this.state.marketId.toLowerCase()) {
+    if (message.market.toLowerCase() !== this.state.market.id.toLowerCase()) {
       return
     }
 
@@ -120,26 +101,6 @@ class Exchange extends React.Component {
       this.setState({bids: message.bids})
     } else {
     }
-  }
-
-  handleFilterMarket = e => {
-    this.setState({filter: e.target.value})
-  }
-
-  handleYoursMode = e => {
-    this.setState({yoursMode: e.target.value})
-  }
-
-  handleMarketSearch = value => {
-    this.setState({term: value})
-  }
-
-  handleChartMode = e => {
-    this.setState({chartMode: e.target.value})
-  }
-
-  onChangeKind = activeKey => {
-    this.setState({myOrdersTabKey: activeKey})
   }
 
   fetchOrders = (search, isOpenOrders = true) => {
@@ -183,9 +144,13 @@ class Exchange extends React.Component {
     this.fetchOrders(search)
   }
 
+  refreshOrders = () => {
+    this.fetchOpenOrders()
+    this.fetch24hOrders()
+  }
+
   render() {
-    const {intl} = this.props
-    const {loader, authStatus, tickers, market, marketId, asks, bids, trades, userTrades, openOrders, orders24h, filter, term, chartMode, yoursMode, myOrdersTabKey} = this.state
+    const {loader, authStatus, tickers, market, asks, bids, trades, openOrders, orders24h} = this.state
 
     let ticker = {}
     if (!_.isEmpty(tickers) && market) {
@@ -193,177 +158,38 @@ class Exchange extends React.Component {
         ticker = tickers[market.id].ticker
     }
 
-    let filteredMarkets = MARKETS
-    if (!_.isEmpty(filter)) {
-      filteredMarkets = filteredMarkets.filter(market => {
-        const quoteUnit = market.quoteUnit
-        if (filter.includes(STABLE_SYMBOL)) {
-          return isStableCoin(quoteUnit)
-        } else {
-          return quoteUnit.toLowerCase().includes(filter.toLowerCase())
-        }
-      })
-    }
-
-    if (term !== undefined && term.length) {
-      filteredMarkets = filteredMarkets.filter(market => {
-        return market.name.toLowerCase().includes(term.toLowerCase())
-      })
-    }
-
-    const curMarket = MARKETS.find(market => market.id === marketId)
-    if (_.isEmpty(curMarket)) {
+    if (_.isEmpty(market)) {
       return ''
     }
 
-    return (
-      <Spin spinning={loader} size="large">
-        <Row type='flex' gutter={3}>
-          <Col span={18}>
-            <MarketBoard
-              market={market}
-              ticker={ticker}
-            />
-            <Row type='flex' gutter={3} className='gx-mt-3'>
-              <Col span={8}>
-                <Card size="small" className="gx-h-100">
-                  <OrderBook
-                    asks={asks}
-                    bids={bids}
-                    ticker={ticker}
-                    market={market}
-                  />
-                </Card>
-              </Col>
-              <Col span={16}>
-                <Card size='small'>
-                  <Radio.Group size='small' value={chartMode} onChange={this.handleChartMode}>
-                    <Radio.Button value={true}>Original</Radio.Button>
-                    <Radio.Button value={false}>Depth</Radio.Button>
-                  </Radio.Group>
-                  {chartMode ?
-                    <TradeChart
-                      market={market}
-                    />
-                    :
-                    <TradeDepth
-                      market={market}
-                      asks={asks}
-                      bids={bids}
-                    />
-                  }
-                </Card>
-                <Row type='flex' gutter={3}>
-                  <Col span={12}>
-                    <Card size='small'>
-                      <OrderEntry
-                        kind={ORDER_BUY}
-                        authStatus={authStatus}
-                        market={market}
-                        lastPrice={_.isEmpty(ticker) ? 0 : ticker.last}
-                      />
-                    </Card>
-                  </Col>
-                  <Col span={12}>
-                    <Card size='small'>
-                      <OrderEntry
-                        kind={ORDER_SELL}
-                        authStatus={authStatus}
-                        market={market}
-                        lastPrice={_.isEmpty(ticker) ? 0 : ticker.last}
-                      />
-                    </Card>
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
-          </Col>
-          <Col span={6} style={{display: 'flex', flexDirection: 'column'}}>
-            <Card size="small">
-              <div>
-                <Radio.Group size='small' value={filter} onChange={this.handleFilterMarket}>
-                  {
-                    this.quoteUnits.map(quoteUnit => {
-                      return (
-                        <Radio.Button key={quoteUnit} value={quoteUnit}>
-                          {_.isEmpty(quoteUnit) ? intl.formatMessage({id: 'all'}) : quoteUnit.toUpperCase()}
-                        </Radio.Button>
-                      )
-                    })
-                  }
-                </Radio.Group>
-                <Search
-                  size='small'
-                  className="gx-float-right"
-                  placeholder={intl.formatMessage({id: 'search'})}
-                  onSearch={this.handleMarketSearch}
-                  style={{maxWidth: 120}}/>
-              </div>
-              <MarketOverview
-                tickers={tickers}
-                markets={filteredMarkets}
-                onCellClick={this.onSelectMarket}
-                simple={true}/>
-            </Card>
-            <Card size="small" style={{flex: '1 1 auto'}}>
-              <div>
-                <FormattedMessage id='latest.trades'/>
-                <Radio.Group
-                  className="gx-float-right"
-                  size='small'
-                  value={yoursMode}
-                  onChange={this.handleYoursMode}>
-                  <Radio.Button value={false}>
-                    <FormattedMessage id='market'/>
-                  </Radio.Button>
-                  <Radio.Button value={true} disabled={!authStatus}>
-                    <FormattedMessage id='yours'/>
-                  </Radio.Button>
-                </Radio.Group>
-              </div>
-              {!yoursMode &&
-              <SimpleTradeHistory
-                trades={trades}
-                market={market}
-                yours={yoursMode}
-              />
-              }
-              {yoursMode && authStatus &&
-              <SimpleTradeHistory
-                myTrades={userTrades}
-                market={market}
-                yours={yoursMode}
-              />
-              }
-            </Card>
-          </Col>
-        </Row>
-        <Tabs
-          className="gx-mt-2 gx-mb-4"
-          size='small'
-          onChange={this.onChangeKind}
-          activeKey={myOrdersTabKey}>
-          <TabPane
-            key={'open.order'}
-            tab={intl.formatMessage({id: 'open.orders'}) + ` (${openOrders.length})`}>
-            <OpenOrdersTable
-              dataSource={openOrders}
-              pagination={false}
-              marketId={marketId}
-            />
-          </TabPane>
-          <TabPane
-            key={'24h.order'}
-            tab={intl.formatMessage({id: '24h.orders'})}>
-            <OrderHistoryTable
-              pagination={false}
-              dataSource={orders24h}
-              isSmall={true}
-            />
-          </TabPane>
-        </Tabs>
-      </Spin>
-    )
+    return isMobile ?
+      <ExchangeMobile
+        market={market}
+        loader={loader}
+        authStatus={authStatus}
+        ticker={ticker}
+        asks={asks}
+        bids={bids}
+        trades={trades}
+        openOrders={openOrders}
+        onSelectMarket={this.onSelectMarket}
+        onRefresh={this.refreshOrders}
+      />
+      :
+      <ExchangeDesktop
+        market={market}
+        loader={loader}
+        authStatus={authStatus}
+        tickers={tickers}
+        ticker={ticker}
+        asks={asks}
+        bids={bids}
+        trades={trades}
+        openOrders={openOrders}
+        orders24h={orders24h}
+        onSelectMarket={this.onSelectMarket}
+        onRefresh={this.refreshOrders}
+      />
   }
 }
 

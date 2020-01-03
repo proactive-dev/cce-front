@@ -24,9 +24,10 @@ class OrderBook extends React.Component {
   }
 
   render() {
-    const {market, asks, bids, ticker} = this.props
+    const {market, asks, bids, ticker, isSmall} = this.props
     const {viewMode} = this.state
 
+    let cnt = isSmall ? 8 : 15
     if (!market || _.isEmpty(ticker))
       return ''
 
@@ -35,6 +36,7 @@ class OrderBook extends React.Component {
     this.prevData = last
     return (
       <div>
+        {!isSmall &&
         <Radio.Group size='small' value={viewMode} onChange={this.handleChangeViewMode}>
           <Radio.Button value={VIEW_ALL}>
             <img alt="loader" src={require(`assets/images/icon-bid-ask.svg`)}/>
@@ -46,7 +48,7 @@ class OrderBook extends React.Component {
             <img alt="loader" src={require(`assets/images/icon-ask.svg`)}/>
           </Radio.Button>
         </Radio.Group>
-
+        }
         {(viewMode === VIEW_BID) && (
           <Fragment>
             <OrderLast
@@ -58,7 +60,7 @@ class OrderBook extends React.Component {
               market={market}
               isBuy={true}
               showHeader={true}
-              limitCount={30}
+              limitCount={cnt * 2}
             />
           </Fragment>
         )}
@@ -68,7 +70,7 @@ class OrderBook extends React.Component {
               orders={asks}
               market={market}
               showHeader={true}
-              limitCount={30}
+              limitCount={cnt * 2}
             />
             <OrderLast
               trend={lastTrend}
@@ -81,18 +83,19 @@ class OrderBook extends React.Component {
             <OrderBookTable
               orders={asks}
               market={market}
-              limitCount={15}
+              limitCount={cnt}
               showHeader={true}
             />
+            {!isSmall &&
             <OrderLast
               trend={lastTrend}
               value={last}
-            />
+            />}
             <OrderBookTable
               orders={bids}
               market={market}
               isBuy={true}
-              limitCount={15}
+              limitCount={cnt}
               showHeader={false}
             />
           </Fragment>

@@ -142,6 +142,7 @@ class OrderEntry extends React.Component {
       newOrderBid(marketId, formData)
         .then(response => {
           this.props.form.resetFields()
+          this.props.onRefresh()
           IconNotification(SUCCESS, intl.formatMessage({id: 'success'}))
         })
     } else {
@@ -152,6 +153,7 @@ class OrderEntry extends React.Component {
       newOrderAsk(marketId, formData)
         .then(response => {
           this.props.form.resetFields()
+          this.props.onRefresh()
           IconNotification(SUCCESS, intl.formatMessage({id: 'success'}))
         })
     }
@@ -159,7 +161,7 @@ class OrderEntry extends React.Component {
 
   render() {
     const {getFieldDecorator} = this.props.form
-    const {intl, authStatus, market, kind, accounts} = this.props
+    const {intl, authStatus, market, kind, isSmall, accounts} = this.props
     const {priceInvalid, amountInvalid, totalInvalid, price} = this.state
     const isBid = kind === ORDER_BUY
     const fixed = isBid ? this.bidFixed : this.askFixed
@@ -186,9 +188,15 @@ class OrderEntry extends React.Component {
 
     return (
       <div>
-        <div className='gx-mb-2'>
-          <span className={'h4'}>{intl.formatMessage({id: kind})}&nbsp;{market.baseUnit.toUpperCase()}</span>
-          <span className='gx-float-right gx-pointer' onClick={() => this.onClickWallet(kind, balance)}>
+        <div className={isSmall ? 'gx-mt-3 gx-mb-3' : 'gx-mb-2'}>
+          {
+            !isSmall &&
+            <span className={'h4'}>
+              {intl.formatMessage({id: kind})}&nbsp;{market.baseUnit.toUpperCase()}
+            </span>
+          }
+          <span className={isSmall ? 'gx-pointer' : 'gx-float-right gx-pointer'}
+                onClick={() => this.onClickWallet(kind, balance)}>
             <img className='gx-size-15' src={require('assets/images/wallet.svg')} alt="wallet"/>&nbsp;
             {authStatus ? getFixed(balance, fixed) : '-'}&nbsp;
             {compareName.toUpperCase()}

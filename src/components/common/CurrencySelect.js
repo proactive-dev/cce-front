@@ -15,14 +15,13 @@ class CurrencySelect extends React.Component {
         onChange={this.props.onChange}>
         {
           CURRENCIES.map((currency) => {
-            if (currency.visible)
-              return (
-                <Option value={currency.symbol} key={currency.symbol}>
-                  <img src={require(`assets/images/coins/${currency.symbol.toLowerCase()}.png`)}
-                       style={{maxWidth: 16}} alt={currency.symbol}/>
-                  &nbsp;<strong>{currency.symbol.toUpperCase()}</strong>&nbsp;-&nbsp;{currency.name}
-                </Option>
-              )
+            return currency.visible ?
+              <Option value={currency.symbol} key={currency.symbol}>
+                <img src={require(`assets/images/coins/${currency.symbol.toLowerCase()}.png`)}
+                     style={{maxWidth: 16}} alt={currency.symbol}/>
+                &nbsp;<strong>{currency.symbol.toUpperCase()}</strong>&nbsp;-&nbsp;{currency.name}
+              </Option>
+              : null
           })
         }
       </Select>

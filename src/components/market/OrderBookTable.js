@@ -4,6 +4,7 @@ import _ from 'lodash'
 import { injectIntl } from 'react-intl'
 import { connect } from 'react-redux'
 import { setPrice } from '../../appRedux/actions/Markets'
+import { isMobile } from 'react-device-detect'
 
 const MAX_FIXED = 8
 
@@ -11,28 +12,28 @@ class OrderBookTable extends Component {
 
   getColumns() {
     const {intl, market} = this.props
-    return [
-      {
-        title: `${intl.formatMessage({id: 'price'})}(${market.quoteUnit})`,
-        dataIndex: 'price',
-        align: 'center',
-        render: (value, record) => {
-          return (
-            <span className={record.colorClass}>{value}</span>
-          )
-        }
-      },
-      {
-        title: `${intl.formatMessage({id: 'volume'})}(${market.baseUnit})`,
-        dataIndex: 'volume',
-        align: 'right'
-      },
-      {
+    let columns = [{
+      title: `${intl.formatMessage({id: 'price'})}(${market.quoteUnit})`,
+      dataIndex: 'price',
+      align: 'left',
+      render: (value, record) => {
+        return (
+          <span className={record.colorClass}>{value}</span>
+        )
+      }
+    }, {
+      title: `${intl.formatMessage({id: 'volume'})}(${market.baseUnit})`,
+      dataIndex: 'volume',
+      align: 'right'
+    }]
+    if (!isMobile) {
+      columns.push({
         title: `${intl.formatMessage({id: 'total'})}(${market.quoteUnit})`,
         dataIndex: 'total',
         align: 'right'
-      }
-    ]
+      })
+    }
+    return columns
   }
 
   handleClick = (price) => {
@@ -71,6 +72,7 @@ class OrderBookTable extends Component {
         columns={this.getColumns()}
         dataSource={data}
         pagination={false}
+        scroll={false}
         showHeader={showHeader}
         size='small'
         onRow={(record) => ({
