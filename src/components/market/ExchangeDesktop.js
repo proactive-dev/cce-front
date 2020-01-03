@@ -1,23 +1,19 @@
 import React from 'react'
-import { connect } from 'react-redux'
-import ReconnectingWebSocket from 'reconnecting-websocket'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import { Card, Col, Input, Radio, Row, Spin, Tabs } from 'antd'
 import _ from 'lodash'
-import { getAuthStatus } from '../../appRedux/actions/User'
+import { ORDER_BUY, ORDER_SELL, STABLE_SYMBOL } from '../../constants/AppConfigs'
 import { MARKETS } from '../../constants/Markets'
+import { getQuoteUnits, isStableCoin } from '../../util/helpers'
 import MarketBoard from '../../components/market/MarketBoard'
 import MarketOverview from '../../components/market/MarketOverview'
 import OrderBook from '../../components/market/OrderBook'
 import TradeChart from '../../components/market/TradeChart'
 import TradeDepth from '../../components/market/TradeDepth'
 import OrderEntry from '../../components/market/OrderEntry'
-import { convertToDate, getQuoteUnits, isStableCoin } from '../../util/helpers'
 import SimpleTradeHistory from '../../components/market/SimpleTradeHistory'
 import OpenOrdersTable from '../../components/market/OpenOrdersTable'
 import OrderHistoryTable from '../../components/market/OrderHistoryTable'
-import { ORDER_BUY, ORDER_SELL, SOCKET_URL, STABLE_SYMBOL } from '../../constants/AppConfigs'
-import { getOrderHistory } from '../../api/axiosAPIs'
 
 const Search = Input.Search
 const TabPane = Tabs.TabPane
@@ -27,110 +23,26 @@ class ExchangeDesktop extends React.Component {
     super(props)
 
     this.state = {
-      loader: false,
-      trades: [],
-      lastTrade: 0,
-      lastPrice: 0,
-      asks: [],
-      bids: [],
-      openOrders: [],
-      orders24h: [],
-      marketId: null,
-      market: null,
-      tickers: {},
       filter: '',
-      yours: false,
       term: '',
       chartMode: true,
       yoursMode: false,
-      myOrdersTabKey: 'open.order',
-      authStatus: false
+      myOrdersTabKey: 'open.order'
     }
     // Get Quote Units
     this.quoteUnits = getQuoteUnits(true)
-  }
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const {loader, authStatus, tickers} = nextProps
-    if ((authStatus !== prevState.authStatus)
-      || (loader !== prevState.loader)
-      || (!_.isEmpty(tickers) && tickers !== prevState.tickers)) {
-      return {authStatus, loader, tickers}
-    }
-    return null
-  }
-
-  componentDidMount() {
-    let marketId = this.props.marketId
-    if (!_.isEmpty(marketId) && !_.isUndefined(marketId)) {
-      this.initMarket(marketId)
-    }
-    this.fetchOpenOrders()
-    this.fetch24hOrders()
-  }
-
-  initMarket = (marketId) => {
-    let market = MARKETS.find(market => market.id === marketId)
-    this.setState({market, marketId, asks: [], bids: [], trades: [], lastTrade: 0, lastPrice: 0})
-    const wsClient = new ReconnectingWebSocket(`${SOCKET_URL}/${marketId}`)
-    wsClient.onmessage = event => {
-      this.handleSocketEvent(event)
-    }
-  }
-
-  onSelectMarket = (market) => {
-    this.initMarket(market)
-    this.props.onSelectMarket(market)
-  }
-
-  handleSocketEvent(event) {
-    if (_.isEmpty(event) || _.isEmpty(event.data)) {
-      return
-    }
-
-    const message = JSON.parse(event.data)
-    if (message.market.toLowerCase() !== this.state.marketId.toLowerCase()) {
-      return
-    }
-
-    if ('trade' in message) {
-      // Process trade
-      const record = message.trade
-      const {trades, lastTrade} = this.state
-      if (record.tid <= lastTrade) {
-        return
-      }
-      trades.unshift(record)
-      if (trades.length >= 50) {
-        trades.pop()
-      }
-      this.setState({trades: trades, lastPrice: record.price, lastTrade: record.tid})
-    } else if ('trades' in message) {
-      // process trades
-      const trades = message.trades
-      if (!_.isEmpty(trades)) {
-        this.setState({trades: trades, lastPrice: trades[0].price, lastTrade: trades[0].tid})
-      }
-    } else if ('asks' in message) {
-      // process asks
-      this.setState({asks: message.asks})
-    } else if ('bids' in message) {
-      // process bids
-      this.setState({bids: message.bids})
-    } else {
-    }
   }
 
   handleFilterMarket = e => {
     this.setState({filter: e.target.value})
   }
 
-  handleYoursMode = e => {
-    this.setState({yoursMode: e.target.value})
-  }
-
   handleMarketSearch = value => {
     this.setState({term: value})
+  }
+
+  handleYoursMode = e => {
+    this.setState({yoursMode: e.target.value})
   }
 
   handleChartMode = e => {
@@ -141,56 +53,9 @@ class ExchangeDesktop extends React.Component {
     this.setState({myOrdersTabKey: activeKey})
   }
 
-  fetchOrders = (search, isOpenOrders = true) => {
-    getOrderHistory({page: 1, perPage: 5, search})
-      .then(response => {
-        const {orders} = response.data
-        let orderData = []
-        for (let i = 0; i < orders.length; i++) {
-          let order = orders[i]
-          let market = MARKETS.find(item => item.id === order.market)
-          if (market) {
-            order.marketName = market.name
-            order.priceFixed = market.bid.fixed
-            order.amountFixed = market.ask.fixed
-          }
-          orderData.push(order)
-        }
-        if (isOpenOrders) {
-          this.setState({openOrders: orderData})
-        } else {
-          this.setState({orders24h: orderData})
-        }
-      })
-  }
-
-  fetchOpenOrders = () => {
-    let search = 'state=100'
-    this.fetchOrders(search)
-  }
-
-  fetch24hOrders = (market = null) => {
-    let to = new Date()
-    let from = new Date(to.getTime() - (24 * 60 * 60 * 1000))// 1 day ago
-    from = convertToDate(from)
-    to = convertToDate(to)
-
-    let search = `created_at >= "${from} 00:00:00" AND created_at <= "${to} 23:59:59"`
-    if (market) {
-      search = `${search} AND currency=${market}`
-    }
-    this.fetchOrders(search)
-  }
-
   render() {
-    const {intl} = this.props
-    const {loader, authStatus, tickers, market, marketId, asks, bids, trades, userTrades, openOrders, orders24h, filter, term, chartMode, yoursMode, myOrdersTabKey} = this.state
-
-    let ticker = {}
-    if (!_.isEmpty(tickers) && market) {
-      if (tickers.hasOwnProperty(market.id))
-        ticker = tickers[market.id].ticker
-    }
+    const {intl, loader, authStatus, market, tickers, ticker, asks, bids, trades, openOrders, orders24h} = this.props
+    const {filter, term, chartMode, yoursMode, myOrdersTabKey} = this.state
 
     let filteredMarkets = MARKETS
     if (!_.isEmpty(filter)) {
@@ -208,11 +73,6 @@ class ExchangeDesktop extends React.Component {
       filteredMarkets = filteredMarkets.filter(market => {
         return market.name.toLowerCase().includes(term.toLowerCase())
       })
-    }
-
-    const curMarket = MARKETS.find(market => market.id === marketId)
-    if (_.isEmpty(curMarket)) {
-      return ''
     }
 
     return (
@@ -237,8 +97,8 @@ class ExchangeDesktop extends React.Component {
               <Col span={16}>
                 <Card size='small'>
                   <Radio.Group size='small' value={chartMode} onChange={this.handleChartMode}>
-                    <Radio.Button value={true}>Original</Radio.Button>
-                    <Radio.Button value={false}>Depth</Radio.Button>
+                    <Radio.Button value={true}>{intl.formatMessage({id: 'original'})}</Radio.Button>
+                    <Radio.Button value={false}>{intl.formatMessage({id: 'depth'})}</Radio.Button>
                   </Radio.Group>
                   {chartMode ?
                     <TradeChart
@@ -260,6 +120,7 @@ class ExchangeDesktop extends React.Component {
                         authStatus={authStatus}
                         market={market}
                         lastPrice={_.isEmpty(ticker) ? 0 : ticker.last}
+                        onRefresh={this.props.onRefresh}
                       />
                     </Card>
                   </Col>
@@ -270,6 +131,7 @@ class ExchangeDesktop extends React.Component {
                         authStatus={authStatus}
                         market={market}
                         lastPrice={_.isEmpty(ticker) ? 0 : ticker.last}
+                        onRefresh={this.props.onRefresh}
                       />
                     </Card>
                   </Col>
@@ -301,7 +163,7 @@ class ExchangeDesktop extends React.Component {
               <MarketOverview
                 tickers={tickers}
                 markets={filteredMarkets}
-                onCellClick={this.onSelectMarket}
+                onCellClick={this.props.onSelectMarket}
                 simple={true}/>
             </Card>
             <Card size="small" style={{flex: '1 1 auto'}}>
@@ -329,7 +191,6 @@ class ExchangeDesktop extends React.Component {
               }
               {yoursMode && authStatus &&
               <SimpleTradeHistory
-                myTrades={userTrades}
                 market={market}
                 yours={yoursMode}
               />
@@ -348,7 +209,8 @@ class ExchangeDesktop extends React.Component {
             <OpenOrdersTable
               dataSource={openOrders}
               pagination={false}
-              marketId={marketId}
+              marketId={market.id}
+              onRefresh={this.props.onRefresh}
             />
           </TabPane>
           <TabPane
@@ -366,16 +228,4 @@ class ExchangeDesktop extends React.Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  getAuthStatus
-})
-
-const mapStateToProps = ({progress, user, markets}) => {
-  return {
-    loader: progress.loader,
-    authStatus: user.authStatus,
-    tickers: markets.tickers
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(ExchangeDesktop))
+export default injectIntl(ExchangeDesktop)

@@ -142,6 +142,7 @@ class OrderEntry extends React.Component {
       newOrderBid(marketId, formData)
         .then(response => {
           this.props.form.resetFields()
+          this.props.onRefresh()
           IconNotification(SUCCESS, intl.formatMessage({id: 'success'}))
         })
     } else {
@@ -152,6 +153,7 @@ class OrderEntry extends React.Component {
       newOrderAsk(marketId, formData)
         .then(response => {
           this.props.form.resetFields()
+          this.props.onRefresh()
           IconNotification(SUCCESS, intl.formatMessage({id: 'success'}))
         })
     }

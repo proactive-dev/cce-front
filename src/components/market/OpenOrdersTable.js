@@ -33,6 +33,7 @@ class OpenOrdersTable extends React.Component {
   cancelOrder = order => {
     clearOrder(order.market, order.id)
       .then(response => {
+        this.props.onRefresh()
         IconNotification(SUCCESS, this.props.intl.formatMessage({id: 'success'}))
       })
   }
@@ -40,6 +41,7 @@ class OpenOrdersTable extends React.Component {
   cancelAll = () => {
     clearOrders(this.props.marketId)
       .then(response => {
+        this.props.onRefresh()
         IconNotification(SUCCESS, this.props.intl.formatMessage({id: 'success'}))
       })
   }
@@ -47,6 +49,7 @@ class OpenOrdersTable extends React.Component {
   cancelBids = () => {
     clearOrderBids(this.props.marketId)
       .then(response => {
+        this.props.onRefresh()
         IconNotification(SUCCESS, this.props.intl.formatMessage({id: 'success'}))
       })
   }
@@ -54,6 +57,7 @@ class OpenOrdersTable extends React.Component {
   cancelAsks = () => {
     clearOrderAsks(this.props.marketId)
       .then(response => {
+        this.props.onRefresh()
         IconNotification(SUCCESS, this.props.intl.formatMessage({id: 'success'}))
       })
   }
