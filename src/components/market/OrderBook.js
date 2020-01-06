@@ -27,7 +27,7 @@ class OrderBook extends React.Component {
     const {market, asks, bids, ticker, isSmall} = this.props
     const {viewMode} = this.state
 
-    let cnt = isSmall ? 8 : 15
+    let cnt = isSmall ? 9 : 18
     if (!market || _.isEmpty(ticker))
       return ''
 

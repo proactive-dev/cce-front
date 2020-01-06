@@ -132,6 +132,7 @@ class ExchangeMobile extends React.Component {
               trades={trades}
               market={market}
               yours={false}
+              showHeader={true}
             />
           </TabPane>
         </Tabs>

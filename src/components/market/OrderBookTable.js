@@ -13,7 +13,7 @@ class OrderBookTable extends Component {
   getColumns() {
     const {intl, market} = this.props
     let columns = [{
-      title: `${intl.formatMessage({id: 'price'})}(${market.quoteUnit})`,
+      title: intl.formatMessage({id: 'price'}),
       dataIndex: 'price',
       align: 'left',
       render: (value, record) => {
@@ -22,9 +22,10 @@ class OrderBookTable extends Component {
         )
       }
     }, {
-      title: `${intl.formatMessage({id: 'volume'})}(${market.baseUnit})`,
+      title: intl.formatMessage({id: 'amount'}),
       dataIndex: 'volume',
-      align: 'right'
+      align: 'right',
+      width: 100
     }]
     if (!isMobile) {
       columns.push({

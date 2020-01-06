@@ -36,24 +36,19 @@ class TradeChart extends React.Component {
     last_ts: 0,
     next_ts: 0,
     points: [],
-    updatedAt: 0
+    updatedAt: 0,
+    timerId: -1
   }
 
   lastUpdatedTime = 0
-
-  componentWillMount() {
-    this.setRange(60)
-  }
 
   componentDidMount() {
     const {market} = this.props
     if (this.props.market) {
       this.generateData(market, this.state.minutes)
     }
-    let that = this
-    setInterval(function () {
-      that.updateLatestData(that.state.market, that.state.minutes)
-    }, TICKER_GRAPH_INTERVAL)
+    let timerId = setInterval(this.timer, TICKER_GRAPH_INTERVAL)
+    this.setState({timerId})
   }
 
   UNSAFE_componentWillReceiveProps(newProps) {
@@ -71,10 +66,16 @@ class TradeChart extends React.Component {
     }
     if (this.props.market.id === nextProps.market.id)
       return false
-    if (this.state.market.id === nextState.market.id)
-      return false
+    return this.state.market.id !== nextState.market.id
+  }
 
-    return true
+  componentWillUnmount() {
+    clearInterval(this.state.timerId)
+  }
+
+  timer = () => {
+    const {market, minutes} = this.state
+    this.updateLatestData(market, minutes)
   }
 
   generateData = (market, minutes) => {

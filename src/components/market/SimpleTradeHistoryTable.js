@@ -50,7 +50,7 @@ class SimpleTradeHistoryTable extends React.Component {
   }
 
   render() {
-    const {data, market} = this.props
+    const {data, market, showHeader} = this.props
     if (_.isEmpty(market) || _.isEmpty(data))
       return ''
     return (
@@ -59,10 +59,10 @@ class SimpleTradeHistoryTable extends React.Component {
         columns={this.getColumns()}
         dataSource={data}
         pagination={false}
-        scroll={{y: 410}}
+        scroll={{y: 400}}
         rowKey="id"
         size='small'
-        showHeader={false}
+        showHeader={!!showHeader}
         onRow={(record) => ({
           onClick: () => {
             this.handleClick(record.price)

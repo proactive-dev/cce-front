@@ -63,7 +63,7 @@ class SimpleTradeHistory extends React.Component {
   }
 
   render() {
-    const {trades, yours, market} = this.props
+    const {trades, yours, market, showHeader} = this.props
     const {userTrades} = this.state
     let prevTrade = {}
     let data = []
@@ -106,6 +106,7 @@ class SimpleTradeHistory extends React.Component {
       <SimpleTradeHistoryTable
         data={data}
         market={market}
+        showHeader={!!showHeader}
       />
     )
   }
