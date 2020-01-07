@@ -5,6 +5,7 @@ import { injectIntl } from 'react-intl'
 import axios from 'axios'
 import _ from 'lodash'
 import { hideLoader, showLoader } from '../../appRedux/actions/Progress'
+import { setAuthStatus } from '../../appRedux/actions/User'
 import { IconNotification } from '../../components/common/IconNotification'
 import MainApp from './MainApp'
 import Error404 from '../../routes/common/Error404'
@@ -19,12 +20,12 @@ import {
   MESSAGES,
   TFA_REQUIRED
 } from '../../constants/ResponseCode'
-import { E_404, E_500, LOGIN, LOGIN_AUTH } from '../../constants/Paths'
+import { E_404, E_500, EXCHANGE, LOGIN, LOGIN_AUTH } from '../../constants/Paths'
 
 class RootApp extends Component {
 
   processError = (error) => {
-    const {intl} = this.props
+    const {intl, pathname} = this.props
 
     let msg = null
     if (error.response) {
@@ -35,6 +36,10 @@ class RootApp extends Component {
           if (!!data && !!data.code) {
             switch (data.code) {
               case LOGIN_REQUIRED:
+                if (!!pathname && (pathname.indexOf(EXCHANGE) !== -1)) {
+                  this.props.setAuthStatus(false)
+                  return
+                }
                 this.props.history.push(`/${LOGIN}`)
                 break
               case TFA_REQUIRED:
@@ -110,7 +115,7 @@ class RootApp extends Component {
 }
 
 const mapDispatchToProps = {
-  hideLoader, showLoader
+  hideLoader, showLoader, setAuthStatus
 }
 
 const mapStateToProps = ({settings}) => {
