@@ -187,6 +187,7 @@ class ExchangeDesktop extends React.Component {
                 trades={trades}
                 market={market}
                 yours={yoursMode}
+                timestamp={Date.now()}
               />
               }
               {yoursMode && authStatus &&

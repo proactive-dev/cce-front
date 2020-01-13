@@ -133,6 +133,7 @@ class ExchangeMobile extends React.Component {
               market={market}
               yours={false}
               showHeader={true}
+              timestamp={Date.now()}
             />
           </TabPane>
         </Tabs>
