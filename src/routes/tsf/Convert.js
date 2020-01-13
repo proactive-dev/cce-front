@@ -46,7 +46,9 @@ class Convert extends React.Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     const {loader, accounts, profile} = nextProps
-    if ((loader !== prevState.loader) || (!_.isEmpty(accounts) && accounts !== prevState.accounts) || (profile !== prevState.profile)) {
+    if ((loader !== prevState.loader)
+      || (!_.isEmpty(accounts) && (accounts !== prevState.accounts))
+      || (profile !== prevState.profile)) {
       return {loader, accounts, profile}
     }
     return null

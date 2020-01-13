@@ -37,7 +37,7 @@ class Exchange extends React.Component {
     const {loader, authStatus, tickers} = nextProps
     if ((authStatus !== prevState.authStatus)
       || (loader !== prevState.loader)
-      || (!_.isEmpty(tickers) && tickers !== prevState.tickers)) {
+      || (!_.isEmpty(tickers) && (tickers !== prevState.tickers))) {
       return {authStatus, loader, tickers}
     }
     return null

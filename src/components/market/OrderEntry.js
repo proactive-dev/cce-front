@@ -44,7 +44,7 @@ class OrderEntry extends React.Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     const {accounts, price} = nextProps
-    if ((!_.isEmpty(accounts) && accounts !== prevState.accounts)
+    if ((!_.isEmpty(accounts) && (accounts !== prevState.accounts))
       || (price !== prevState.price)) {
       return {accounts, price}
     }

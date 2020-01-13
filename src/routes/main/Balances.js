@@ -31,7 +31,8 @@ class Balances extends React.Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     const {loader, accounts} = nextProps
-    if ((loader !== prevState.loader) || (!_.isEmpty(accounts) && accounts !== prevState.accounts)) {
+    if ((loader !== prevState.loader)
+      || (!_.isEmpty(accounts) && (accounts !== prevState.accounts))) {
       return {loader, accounts}
     }
     return null

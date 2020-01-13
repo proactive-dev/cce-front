@@ -2,7 +2,6 @@ import React from 'react'
 import { injectIntl } from 'react-intl'
 import { connect } from 'react-redux'
 import _ from 'lodash'
-import { getAuthStatus } from '../../appRedux/actions/User'
 import SimpleTradeHistoryTable from './SimpleTradeHistoryTable'
 import { getTradeHistory } from '../../api/axiosAPIs'
 import { MARKETS } from '../../constants/Markets'
@@ -112,14 +111,10 @@ class SimpleTradeHistory extends React.Component {
   }
 }
 
-const mapDispatchToProps = {
-  getAuthStatus
-}
-
 const mapStateToProps = ({user}) => {
   return {
     authStatus: user.authStatus
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(SimpleTradeHistory))
+export default connect(mapStateToProps, null)(injectIntl(SimpleTradeHistory))
