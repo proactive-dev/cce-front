@@ -1,53 +1,53 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { FormattedMessage, injectIntl } from 'react-intl'
-import { getAuthStatus } from '../../appRedux/actions/User'
-import { Spin } from 'antd'
+import { Link } from 'react-router-dom'
+import { Card, Spin } from 'antd'
+import _ from 'lodash'
+import SimpleMarketInfo from '../../components/market/SimpleMarketInfo'
+import { MARKETS } from '../../constants/Paths'
 
 class Home extends React.Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      loader: false
+      loader: false,
+      tickers: {}
     }
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const {loader} = nextProps
-    if (loader !== prevState.loader) {
-      return {loader}
+    const {loader, tickers} = nextProps
+    if ((loader !== prevState.loader)
+      || (!_.isEmpty(tickers) && (tickers !== prevState.tickers))) {
+      return {loader, tickers}
     }
     return null
   }
 
-  componentDidMount() {
-    this.props.getAuthStatus()
-  }
-
   render() {
-    const {intl} = this.props
-    const {loader} = this.state
-
+    const {loader, tickers} = this.state
     return (
-      <div>
-        <h2 className="title gx-mb-4"><FormattedMessage id="home"/></h2>
-        <Spin spinning={loader} size="large">
-          {/* Components */}
-        </Spin>
-      </div>
+      <Spin spinning={loader} size="large">
+        <Card
+          className="gx-card-full gx-card-widget gx-m-1"
+          bordered={false}>
+          <SimpleMarketInfo tickers={tickers}/>
+          <div className={'gx-m-4 gx-text-center'}>
+            <Link to={`/${MARKETS}`}><FormattedMessage id='view.all'/></Link>
+          </div>
+        </Card>
+      </Spin>
     )
   }
 }
 
-const mapDispatchToProps = {
-  getAuthStatus
-}
-
-const mapStateToProps = ({progress}) => {
+const mapStateToProps = ({progress, markets}) => {
   return {
-    loader: progress.loader
+    loader: progress.loader,
+    tickers: markets.tickers
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(Home))
+export default connect(mapStateToProps, null)(injectIntl(Home))

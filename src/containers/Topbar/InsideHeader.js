@@ -2,16 +2,35 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Layout } from 'antd'
+import { FormattedMessage } from 'react-intl'
 import HorizontalNav from './HorizontalNav'
 import { toggleCollapsedSideNav } from '../../appRedux/actions/Setting'
-import LanguageMenu from '../../components/LanguageMenu'
+import { AUTH_MENUS } from '../../constants/Menus'
+import LanguageMenu from '../../components/common/LanguageMenu'
+import TopUserMenu from '../../components/menu/TopUserMenu'
+import AdminMenu from '../../components/menu/AdminMenu'
 
 const {Header} = Layout
 
 class InsideHeader extends Component {
 
+  state = {
+    authStatus: false,
+    profile: {}
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const {authStatus, profile} = nextProps
+    if ((authStatus !== prevState.authStatus) || (profile !== prevState.profile)) {
+      return {authStatus, profile}
+    }
+    return null
+  }
+
   render() {
     const {navCollapsed} = this.props
+    const {authStatus, profile} = this.state
+    const {isAdmin} = profile || {}
 
     return (
       <div className="gx-header-horizontal gx-header-horizontal-dark gx-inside-header-horizontal">
@@ -37,9 +56,31 @@ class InsideHeader extends Component {
                 <HorizontalNav/>
               </div>
               <ul className="gx-header-notifications gx-ml-auto">
+                {
+                  !authStatus &&
+                  AUTH_MENUS.map(({path, title}) =>
+                    <li className="gx-d-none gx-d-lg-block gx-language" key={path}>
+                      <Link to={`/${path}`}>
+                        <FormattedMessage id={title}/>
+                      </Link>
+                    </li>
+                  )
+                }
+                {
+                  authStatus && isAdmin &&
+                  <li className="gx-language gx-d-none gx-d-lg-block">
+                    <AdminMenu noIcon={true}/>
+                  </li>
+                }
                 <li className="gx-language">
                   <LanguageMenu/>
                 </li>
+                {
+                  authStatus &&
+                  <li className="gx-language gx-d-none gx-d-lg-block">
+                    <TopUserMenu/>
+                  </li>
+                }
               </ul>
             </div>
           </div>
@@ -49,8 +90,9 @@ class InsideHeader extends Component {
   }
 }
 
-const mapStateToProps = ({settings}) => {
+const mapStateToProps = ({settings, user}) => {
   const {navCollapsed} = settings
-  return {navCollapsed}
+  const {authStatus, profile} = user
+  return {navCollapsed, authStatus, profile}
 }
 export default connect(mapStateToProps, {toggleCollapsedSideNav})(InsideHeader)

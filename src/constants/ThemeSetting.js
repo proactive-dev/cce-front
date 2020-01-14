@@ -76,3 +76,14 @@ export const LIGHT_PURPLE_2_DARK_TEXT_COLOR = '#5782BB'
 
 
 export const TAB_SIZE = 992
+
+export const DEFAULT_NAV_STYLE = 'gx-menu-horizontal'
+export const NAV_STYLES = {
+  NAV_STYLE_INSIDE_HEADER_HORIZONTAL: `${DEFAULT_NAV_STYLE} gx-submenu-popup-curve gx-inside-submenu-popup-curve`,
+  'default': DEFAULT_NAV_STYLE
+}
+
+export const CONTAINER_CLASSES = {
+  NAV_STYLE_INSIDE_HEADER_HORIZONTAL: 'gx-container-wrap',
+  'default': ''
+}

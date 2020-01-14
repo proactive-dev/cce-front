@@ -4,9 +4,9 @@ import URLSearchParams from 'url-search-params'
 import { ConfigProvider } from 'antd'
 import { IntlProvider } from 'react-intl'
 import _ from 'lodash'
+import queryString from 'query-string'
 import AppLocale from 'lngProvider'
 import { onNavStyleChange, setThemeType } from 'appRedux/actions/Setting'
-
 import { NAV_STYLE_INSIDE_HEADER_HORIZONTAL, THEME_TYPE_DARK } from './constants/ThemeSetting'
 import RootApp from './containers/App/RootApp'
 
@@ -28,7 +28,7 @@ class App extends Component {
     }
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     const {location} = this.props
     const params = new URLSearchParams(location.search)
 
@@ -37,6 +37,14 @@ class App extends Component {
     }
     if (params.has('nav-style')) {
       onNavStyleChange(params.get('nav-style'))
+    }
+  }
+
+  componentDidMount() {
+    // referral function
+    const values = queryString.parse(this.props.location.search)
+    if (values && !_.isEmpty(values) && !_.isEmpty(values.ref || '')) {
+      sessionStorage.setItem('refId', values.ref)
     }
   }
 

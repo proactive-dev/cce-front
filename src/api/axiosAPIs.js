@@ -1,5 +1,6 @@
 import axios from 'axios'
 import * as axiosConfig from './axiosConfig'
+import { HOST_URL, PRIZE_CENTER_LINK } from '../constants/AppConfigs'
 
 const getHeaders = {
   // 'Access-Control-Allow-Origin': '*',
@@ -16,12 +17,12 @@ const jsonHeaders = {
   'Content-Type': 'application/json'
 }
 
-export const axiosRequest = (method, url, reqData = null, needLoader = true) => {
+export const axiosRequest = (method, url, reqData = null, needLoader = true, withCredentials = true) => {
   let reqConfig = {
     url: url,
     method: method,
-    baseURL: axiosConfig.HOST_URL,
-    withCredentials: true,
+    baseURL: HOST_URL,
+    withCredentials: withCredentials,
     needLoader: needLoader, // custom config for show loader
     headers: getHeaders // default: get
   }
@@ -64,7 +65,7 @@ export const resetPassword = (token, data) => {
 }
 
 export const changePassword = (data) => {
-  return axiosRequest('post', axiosConfig.CHANGE_PWD_URL, data)
+  return axiosRequest('put', axiosConfig.CHANGE_PWD_URL, data)
 }
 
 export const getAuthStatus = (needLoader = false) => {
@@ -91,12 +92,16 @@ export const getMarkets = (needLoader = false) => {
   return axiosRequest('get', axiosConfig.MARKETS_URL, null, needLoader)
 }
 
+export const getTickers = (needLoader = false) => {
+  return axiosRequest('get', axiosConfig.TICKERS_URL, null, needLoader, false)
+}
+
 export const getTicker = (market, needLoader = false) => {
   return axiosRequest('get', `${axiosConfig.TICKERS_URL}/${market}`, null, needLoader)
 }
 
 export const getOHLC = (market, period = 60, limit = 768, needLoader = false) => {
-  return axiosRequest('get', `${axiosConfig.OHLC_URL}?market=${market}&period=${period}&limit=${limit}`, null, needLoader)
+  return axiosRequest('get', `${axiosConfig.OHLC_URL}?market=${market}&period=${period}&limit=${limit}`, null, needLoader, false)
 }
 
 export const newOrderBid = (market, data) => {
@@ -123,24 +128,24 @@ export const clearOrder = (market, order) => {
   return axiosRequest('delete', `${axiosConfig.MARKETS_URL}/${market}/orders/${order}`)
 }
 
-export const getAllAccounts = (needLoader = false) => {
-  return axiosRequest('get', axiosConfig.ALL_ACCOUNTS_URL, null, needLoader)
+export const getAllAccounts = () => {
+  return axiosRequest('get', axiosConfig.ALL_ACCOUNTS_URL)
 }
 
-export const getAccounts = (needLoader = false) => {
-  return axiosRequest('get', axiosConfig.ACCOUNTS_URL, null, needLoader)
+export const getAccounts = () => {
+  return axiosRequest('get', axiosConfig.ACCOUNTS_URL)
 }
 
-export const getMainAccounts = (needLoader = false) => {
-  return axiosRequest('get', axiosConfig.MAIN_ACCOUNTS_URL, null, needLoader)
+export const getMainAccounts = () => {
+  return axiosRequest('get', axiosConfig.MAIN_ACCOUNTS_URL)
 }
 
-export const getMember = (needLoader = false) => {
-  return axiosRequest('get', axiosConfig.MEMBER_URL, null, needLoader)
+export const getMember = () => {
+  return axiosRequest('get', axiosConfig.MEMBER_URL)
 }
 
 export const updateMember = (data) => {
-  return axiosRequest('post', axiosConfig.MEMBER_URL, data)
+  return axiosRequest('put', axiosConfig.MEMBER_URL, data)
 }
 
 export const getAllOrderHistory = () => {
@@ -151,12 +156,12 @@ export const getAllTradeHistory = () => {
   return axiosRequest('get', axiosConfig.HISTORY_TRADE_URL)
 }
 
-export const getOrderHistory = (params) => {
-  return axiosRequest('get', `${axiosConfig.HISTORY_ORDER_URL}?page=${params.page}&perPage=${params.perPage}&search=${params.search}`)
+export const getOrderHistory = ({page, perPage, search}) => {
+  return axiosRequest('get', `${axiosConfig.HISTORY_ORDER_URL}?page=${page}&perPage=${perPage}&search=${search}`)
 }
 
-export const getTradeHistory = (params) => {
-  return axiosRequest('get', `${axiosConfig.HISTORY_TRADE_URL}?page=${params.page}&perPage=${params.perPage}&search=${params.search}`)
+export const getTradeHistory = ({page, perPage, search}, needLoader = true) => {
+  return axiosRequest('get', `${axiosConfig.HISTORY_TRADE_URL}?page=${page}&perPage=${perPage}&search=${search}`)
 }
 
 export const getAddresses = () => {
@@ -195,8 +200,8 @@ export const cancelWithdraw = (currency, id) => {
   return axiosRequest('delete', `${axiosConfig.WITHDRAW_URL}/${currency}/${id}`)
 }
 
-export const getTickets = (params) => {
-  return axiosRequest('get', `${axiosConfig.TICKETS_URL}?page=${params.page}&perPage=${params.perPage}`)
+export const getTickets = ({page, perPage}) => {
+  return axiosRequest('get', `${axiosConfig.TICKETS_URL}?page=${page}&perPage=${perPage}`)
 }
 
 export const newTicket = (data) => {
@@ -257,4 +262,52 @@ export const moveFunds = (data) => {
 
 export const getRefData = (data = null, needLoader = false) => {
   return axiosRequest('get', axiosConfig.REF_DATA_URL, data, needLoader)
+}
+
+export const goPrizeCenter = (data) => {
+  return axiosRequest('post', PRIZE_CENTER_LINK, data)
+}
+
+export const getPurchases = ({currency, page, perPage}) => {
+  return axiosRequest('get', `${axiosConfig.PURCHASES_URL}?currency=${currency}&page=${page}&perPage=${perPage}`)
+}
+
+export const getPurchaseOptions = (data) => {
+  return axiosRequest('post', axiosConfig.PURCHASE_OPTIONS_URL, data)
+}
+
+export const preparePurchase = (data) => {
+  return axiosRequest('post', axiosConfig.PURCHASE_PREPARE_URL, data)
+}
+
+export const newPurchase = (data) => {
+  return axiosRequest('post', axiosConfig.PURCHASES_URL, data)
+}
+
+export const getPurchaseProfits = ({currency, page, perPage}) => {
+  return axiosRequest('get', `${axiosConfig.PURCHASE_PROFITS_URL}?currency=${currency}&page=${page}&perPage=${perPage}`)
+}
+
+export const getPurchaseAffiliates = ({currency, page, perPage}) => {
+  return axiosRequest('get', `${axiosConfig.PURCHASE_AFFILIATES_URL}?currency=${currency}&page=${page}&perPage=${perPage}`)
+}
+
+export const getPurchaseConfigs = (needLoader = false) => {
+  return axiosRequest('get', axiosConfig.PURCHASE_CONFIG_URL, null, needLoader)
+}
+
+export const getInvests = () => {
+  return axiosRequest('get', axiosConfig.INVESTS_URL)
+}
+
+export const newInvest = (data) => {
+  return axiosRequest('post', axiosConfig.INVESTS_URL, data)
+}
+
+export const getPointExchanges = () => {
+  return axiosRequest('get', axiosConfig.POINT_EXCHANGES_URL)
+}
+
+export const newPointExchange = (data) => {
+  return axiosRequest('post', axiosConfig.POINT_EXCHANGES_URL, data)
 }

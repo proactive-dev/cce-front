@@ -1,10 +1,8 @@
-import { PRODUCTION_URL } from '../constants/AppConfigs'
+import { HOST_URL } from '../constants/AppConfigs'
 
 /**
  * Axios related configurations here
  */
-
-export const HOST_URL = process.env.NODE_ENV === 'production' ? `${PRODUCTION_URL}:8443` : 'http://localhost:4000'
 
 export const HOST_API_URL = `${HOST_URL}/api/v2`
 export const REGISTER_URL = `${HOST_URL}/auth/identity/register`
@@ -25,7 +23,7 @@ export const TICKERS_URL = `${HOST_API_URL}/tickers`
 export const OHLC_URL = `${HOST_API_URL}/k`
 export const REF_DATA_URL = `${HOST_URL}/referrals?simple=true`
 export const ALL_ACCOUNTS_URL = `${HOST_URL}/accounts`
-export const ACCOUNTS_URL = `${HOST_URL}/accounts/main?simple=true`
+export const ACCOUNTS_URL = `${HOST_URL}/accounts/main`
 export const MAIN_ACCOUNTS_URL = `${HOST_URL}/accounts/main`
 export const CURRENCIES_URL = `${HOST_URL}/configs/currencies`
 export const LEVELS_URL = `${HOST_URL}/configs/levels`
@@ -38,3 +36,11 @@ export const DEPOSITS_URL = `${HOST_URL}/funds/deposits`
 export const WITHDRAW_URL = `${HOST_URL}/withdraws`
 export const MOVE_FUNDS_URL = `${HOST_URL}/move_funds`
 export const TICKETS_URL = `${HOST_URL}/tickets`
+export const PURCHASES_URL = `${HOST_URL}/purchases`
+export const PURCHASE_CONFIG_URL = `${HOST_URL}/configs/purchase`
+export const PURCHASE_PREPARE_URL = `${PURCHASES_URL}/prepare`
+export const PURCHASE_OPTIONS_URL = `${PURCHASES_URL}/options`
+export const PURCHASE_PROFITS_URL = `${PURCHASES_URL}/profits`
+export const PURCHASE_AFFILIATES_URL = `${HOST_URL}/referrals/purchase`
+export const INVESTS_URL = `${HOST_URL}/invests`
+export const POINT_EXCHANGES_URL = `${HOST_URL}/point_exchanges`

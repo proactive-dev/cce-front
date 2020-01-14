@@ -10,7 +10,7 @@ import rootSaga from './sagas'
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['accounts', 'user']
+  whitelist: ['accounts', 'user', 'markets']
 }
 
 export const history = createBrowserHistory()

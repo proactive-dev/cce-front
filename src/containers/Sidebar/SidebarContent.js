@@ -3,17 +3,37 @@ import { FormattedMessage } from 'react-intl'
 import { connect } from 'react-redux'
 import { Menu } from 'antd'
 import { Link } from 'react-router-dom'
-import CustomScrollbars from '../../components/CustomScrollbars'
+import CustomScrollbars from '../../components/common/CustomScrollbars'
 import SidebarLogo from './SidebarLogo'
 import Auxiliary from 'util/Auxiliary'
 import { THEME_TYPE_LITE } from '../../constants/ThemeSetting'
+import { ADMIN, COIN_CASTING, EXCHANGE, LOGOUT, MARKETS, PRIZE_CENTER } from '../../constants/Paths'
+import { AUTH_MENUS, ORDER_MENUS, PLD_MENUS, TSF_MENUS, USER_MENUS, WALLET_MENUS } from '../../constants/Menus'
+import LogoutMenu from '../../components/menu/LogoutMenu'
+import PrizeCenterMenu from '../../components/menu/PrizeCenterMenu'
+import AdminMenu from '../../components/menu/AdminMenu'
 
 const SubMenu = Menu.SubMenu
 
 class SidebarContent extends Component {
 
+  state = {
+    authStatus: false,
+    profile: {}
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const {authStatus, profile} = nextProps
+    if ((authStatus !== prevState.authStatus) || (profile !== prevState.profile)) {
+      return {authStatus, profile}
+    }
+    return null
+  }
+
   render() {
     const {themeType, pathname} = this.props
+    const {authStatus, profile} = this.state
+    const {isAdmin} = profile || {}
     const selectedKeys = pathname.substr(1)
     const defaultOpenKeys = selectedKeys.split('/')[1]
     return (
@@ -26,68 +46,138 @@ class SidebarContent extends Component {
               selectedKeys={[selectedKeys]}
               theme={themeType === THEME_TYPE_LITE ? 'lite' : 'dark'}
               mode="inline">
-              <Menu.Item key="markets">
-                <Link to="/markets">
+              {
+                authStatus && isAdmin &&
+                <Menu.Item key={ADMIN}>
+                  <AdminMenu noIcon={true}/>
+                </Menu.Item>
+              }
+              <Menu.Item key={MARKETS}>
+                <Link to={`/${MARKETS}`}>
                   <FormattedMessage id="markets"/>
                 </Link>
               </Menu.Item>
-              <Menu.Item key="exchange">
-                <Link to="/exchange">
+              <Menu.Item key={EXCHANGE}>
+                <Link to={`/${EXCHANGE}`}>
                   <FormattedMessage id="exchange"/>
                 </Link>
               </Menu.Item>
-              <SubMenu
-                key="wallet"
-                title={
-                  <FormattedMessage id="wallet"/>
-                }>
-                <Menu.Item key="wallet/balances">
-                  <Link to="/wallet/balances">
-                    <FormattedMessage id="balances"/>
+              {
+                authStatus &&
+                <SubMenu
+                  key="wallet"
+                  title={
+                    <FormattedMessage id="wallet"/>
+                  }>
+                  {
+                    WALLET_MENUS.map(({path, title}) =>
+                      <Menu.Item key={path}>
+                        <Link to={`/${path}`}>
+                          <FormattedMessage id={title}/>
+                        </Link>
+                      </Menu.Item>
+                    )
+                  }
+                </SubMenu>
+              }
+              {
+                authStatus &&
+                <SubMenu
+                  key="history"
+                  title={
+                    <FormattedMessage id="orders"/>
+                  }>
+                  {
+                    ORDER_MENUS.map(({path, title}) =>
+                      <Menu.Item key={path}>
+                        <Link to={`/${path}`}>
+                          <FormattedMessage id={title}/>
+                        </Link>
+                      </Menu.Item>
+                    )
+                  }
+                </SubMenu>
+              }
+              {
+                authStatus &&
+                <SubMenu
+                  key="tsf"
+                  title={'TSF'}>
+                  {
+                    TSF_MENUS.map(({path, title}) =>
+                      <Menu.Item key={path}>
+                        <Link to={`/${path}`}>
+                          <FormattedMessage id={title}/>
+                        </Link>
+                      </Menu.Item>
+                    )
+                  }
+                </SubMenu>
+              }
+              {
+                authStatus &&
+                <SubMenu
+                  key="pld"
+                  title={'PLD'}>
+                  {
+                    PLD_MENUS.map(({path, title}) =>
+                      <Menu.Item key={path}>
+                        <Link to={`/${path}`}>
+                          <FormattedMessage id={title}/>
+                        </Link>
+                      </Menu.Item>
+                    )
+                  }
+                </SubMenu>
+              }
+              {
+                authStatus &&
+                <Menu.Item key={COIN_CASTING}>
+                  <Link to={`/${COIN_CASTING}`}>
+                    <FormattedMessage id="coin.casting"/>
                   </Link>
                 </Menu.Item>
-                <Menu.Item key="wallet/deposit">
-                  <Link to="/wallet/deposit">
-                    <FormattedMessage id="deposit"/>
-                  </Link>
+              }
+              {
+                authStatus &&
+                <Menu.Item key={PRIZE_CENTER}>
+                  <PrizeCenterMenu/>
                 </Menu.Item>
-                <Menu.Item key="wallet/withdrawal">
-                  <Link to="/wallet/withdrawal">
-                    <FormattedMessage id="withdrawal"/>
-                  </Link>
+              }
+              {
+                authStatus &&
+                <SubMenu
+                  key="user"
+                  title={
+                    <FormattedMessage id="user"/>
+                  }>
+                  {
+                    USER_MENUS.map(({path, title}) =>
+                      <Menu.Item key={path}>
+                        <Link to={`/${path}`}>
+                          <FormattedMessage id={title}/>
+                        </Link>
+                      </Menu.Item>
+                    )
+                  }
+                </SubMenu>
+              }
+              {
+                !authStatus &&
+                AUTH_MENUS.map(({path, title}) =>
+                  <Menu.Item key={path}>
+                    <Link to={`/${path}`}>
+                      <FormattedMessage id={title}/>
+                    </Link>
+                  </Menu.Item>
+                )
+              }
+              {
+                authStatus &&
+                <Menu.Item key={LOGOUT}>
+                  <LogoutMenu noIcon={true}/>
                 </Menu.Item>
-                <Menu.Item key="wallet/transactions">
-                  <Link to="/wallet/transactions">
-                    <FormattedMessage id="transactions"/>
-                  </Link>
-                </Menu.Item>
-              </SubMenu>
-              <SubMenu
-                key="history"
-                title={
-                  <FormattedMessage id="orders"/>
-                }>
-                <Menu.Item key="history/open-order">
-                  <Link to="/history/open-order">
-                    <FormattedMessage id="open.orders"/>
-                  </Link>
-                </Menu.Item>
-                <Menu.Item key="history/order">
-                  <Link to="/history/order">
-                    <FormattedMessage id="order.history"/>
-                  </Link>
-                </Menu.Item>
-                <Menu.Item key="history/trade">
-                  <Link to="/history/trade">
-                    <FormattedMessage id="trade.history"/>
-                  </Link>
-                </Menu.Item>
-              </SubMenu>
-              <Menu.Item key="referral">
-                <Link to="/referral">
-                  <FormattedMessage id="referral"/>
-                </Link>
-              </Menu.Item>
+              }
             </Menu>
           </CustomScrollbars>
         </div>
@@ -97,8 +187,11 @@ class SidebarContent extends Component {
 }
 
 SidebarContent.propTypes = {}
-const mapStateToProps = ({settings}) => {
-  return settings
+
+const mapStateToProps = ({settings, user}) => {
+  const {pathname, navStyle} = settings
+  const {authStatus, profile} = user
+  return {pathname, navStyle, authStatus, profile}
 }
 
 export default connect(mapStateToProps)(SidebarContent)

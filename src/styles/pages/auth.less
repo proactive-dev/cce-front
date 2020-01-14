@@ -1,0 +1,66 @@
+/*Login Styles*/
+
+.@{class-prefix}-auth-container {
+  position: relative;
+  height: 100%;
+  padding-bottom: @size-30;
+  .flex-only(1);
+
+  .flex-display(flex, row, wrap);
+  .align-items(center);
+  .justify-content(center);
+}
+
+.@{class-prefix}-auth-content {
+  max-width: 420px;
+  width: 94%;
+  margin: auto;
+  padding: 35px 35px 20px;
+  background-color: @white-color;
+  .border-radius(@border-radius-lg);
+  .box-shadow(@gx-card-shadow);
+  font-size: 14px;
+
+  & .ant-input {
+    background-color: @grey-3;
+    height: auto;
+    padding: 6px 12px;
+
+    &:focus {
+      box-shadow: none;
+      border-color: @primary-color;
+    }
+  }
+
+  & .ant-form-item-control-wrapper {
+    width: 100%;
+  }
+
+  & .ant-form-item-children {
+    display: block;
+  }
+
+  @media screen and (max-width: @screen-xs-max) {
+    padding: 20px 20px 10px;
+  }
+}
+
+.@{class-prefix}-auth-header {
+  margin-bottom: 30px;
+
+  @media screen and (max-width: @screen-xs-max) {
+    margin-bottom: 15px;
+  }
+}
+
+.auth-form-button {
+  width: 100%;
+}
+
+.auth-form-left {
+  float: left;
+}
+
+.auth-form-right {
+  float: right;
+}

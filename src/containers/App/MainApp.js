@@ -4,29 +4,23 @@ import { Divider, Layout } from 'antd'
 import Sidebar from '../Sidebar/index'
 import Topbar from '../Topbar/index'
 import InsideHeader from '../Topbar/InsideHeader'
+import BannerBar from '../BannerBar'
 import FooterMenu from '../FooterMenu'
 import AppRoute from '../../routes/index'
 import {
+  CONTAINER_CLASSES,
   NAV_STYLE_DRAWER,
   NAV_STYLE_FIXED,
   NAV_STYLE_INSIDE_HEADER_HORIZONTAL,
   NAV_STYLE_MINI_SIDEBAR,
   TAB_SIZE
 } from '../../constants/ThemeSetting'
-import { COPYRIGHT_COMPANY } from '../../constants/AppConfigs'
+import { BANNERS, COPYRIGHT_COMPANY } from '../../constants/AppConfigs'
 
 const {Content, Footer} = Layout
 
 export class MainApp extends Component {
 
-  getContainerClass = (navStyle) => {
-    switch (navStyle) {
-      case NAV_STYLE_INSIDE_HEADER_HORIZONTAL:
-        return 'gx-container-wrap'
-      default:
-        return ''
-    }
-  }
   getNavStyles = (navStyle) => {
     switch (navStyle) {
       case NAV_STYLE_INSIDE_HEADER_HORIZONTAL :
@@ -59,16 +53,19 @@ export class MainApp extends Component {
   }
 
   render() {
-    const {match, width, navStyle} = this.props
+    const {match, pathname, width, navStyle} = this.props
 
-    console.log(match)
     return (
       <Layout className="gx-app-layout">
         {this.getSidebar(navStyle, width)}
         <Layout>
           {this.getNavStyles(navStyle)}
-          <Content className={`gx-layout-content ${this.getContainerClass(navStyle)} `}>
-            {/*<BannerBar/>*/}
+          <Content className={`gx-layout-content ${(CONTAINER_CLASSES[navStyle] || CONTAINER_CLASSES['default'])} `}>
+            {
+              // show only for home page
+              '/'.localeCompare(pathname) === 0 &&
+              <BannerBar banners={BANNERS}/>
+            }
             <AppRoute match={match}/>
             <Footer>
               <div className="gx-layout-footer-content gx-text-center">
@@ -85,8 +82,8 @@ export class MainApp extends Component {
 }
 
 const mapStateToProps = ({settings}) => {
-  const {width, navStyle} = settings
-  return {width, navStyle}
+  const {width, navStyle, pathname} = settings
+  return {width, navStyle, pathname}
 }
 export default connect(mapStateToProps)(MainApp)
 

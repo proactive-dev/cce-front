@@ -3,104 +3,146 @@ import { FormattedMessage } from 'react-intl'
 import { connect } from 'react-redux'
 import { Menu } from 'antd'
 import { Link } from 'react-router-dom'
-import { NAV_STYLE_INSIDE_HEADER_HORIZONTAL } from '../../constants/ThemeSetting'
+import { NAV_STYLES } from '../../constants/ThemeSetting'
+import { COIN_CASTING, EXCHANGE, MARKETS, PRIZE_CENTER } from '../../constants/Paths'
+import { ORDER_MENUS, PLD_MENUS, TSF_MENUS, WALLET_MENUS } from '../../constants/Menus'
+import PrizeCenterMenu from '../../components/menu/PrizeCenterMenu'
 
 const SubMenu = Menu.SubMenu
 
 class HorizontalNav extends Component {
 
-  getNavStyleSubMenuClass = (navStyle) => {
-    switch (navStyle) {
-      case NAV_STYLE_INSIDE_HEADER_HORIZONTAL:
-        return 'gx-menu-horizontal gx-submenu-popup-curve gx-inside-submenu-popup-curve'
-      default:
-        return 'gx-menu-horizontal'
+  state = {
+    authStatus: false
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const {authStatus} = nextProps
+    if (authStatus !== prevState.authStatus) {
+      return {authStatus}
     }
+    return null
   }
 
   render() {
     const {pathname, navStyle} = this.props
+    const {authStatus} = this.state
     const selectedKeys = pathname.substr(1)
     const defaultOpenKeys = selectedKeys.split('/')[1]
-    const navStyleClass = this.getNavStyleSubMenuClass(navStyle)
+    const navStyleClass = NAV_STYLES[navStyle] || NAV_STYLES['default']
 
     return (
       <Menu
         defaultOpenKeys={[defaultOpenKeys]}
         selectedKeys={[selectedKeys]}
         mode="horizontal">
-        <Menu.Item key="markets">
-          <Link to="/markets">
+        <Menu.Item key={MARKETS}>
+          <Link to={`/${MARKETS}`}>
             <FormattedMessage id="markets"/>
           </Link>
         </Menu.Item>
-        <Menu.Item key="exchange">
-          <Link to="/exchange">
+        <Menu.Item key={EXCHANGE}>
+          <Link to={`/${EXCHANGE}`}>
             <FormattedMessage id="exchange"/>
           </Link>
         </Menu.Item>
-        <SubMenu
-          className={navStyleClass}
-          key="wallet"
-          title={
-            <FormattedMessage id="wallet"/>
-          }>
-          <Menu.Item key="wallet/balances">
-            <Link to="/wallet/balances">
-              <FormattedMessage id="balances"/>
+        {
+          authStatus &&
+          <SubMenu
+            className={navStyleClass}
+            key="wallet"
+            title={
+              <FormattedMessage id="wallet"/>
+            }>
+            {
+              WALLET_MENUS.map(({path, title}) =>
+                <Menu.Item key={path}>
+                  <Link to={`/${path}`}>
+                    <FormattedMessage id={title}/>
+                  </Link>
+                </Menu.Item>
+              )
+            }
+          </SubMenu>
+        }
+        {
+          authStatus &&
+          <SubMenu
+            className={navStyleClass}
+            key="history"
+            title={
+              <FormattedMessage id="orders"/>
+            }>
+            {
+              ORDER_MENUS.map(({path, title}) =>
+                <Menu.Item key={path}>
+                  <Link to={`/${path}`}>
+                    <FormattedMessage id={title}/>
+                  </Link>
+                </Menu.Item>
+              )
+            }
+          </SubMenu>
+        }
+        {
+          authStatus &&
+          <SubMenu
+            className={navStyleClass}
+            key="tsf"
+            title={'TSF'}>
+            {
+              TSF_MENUS.map(({path, title}) =>
+                <Menu.Item key={path}>
+                  <Link to={`/${path}`}>
+                    <FormattedMessage id={title}/>
+                  </Link>
+                </Menu.Item>
+              )
+            }
+          </SubMenu>
+        }
+        {
+          authStatus &&
+          <SubMenu
+            className={navStyleClass}
+            key="pld"
+            title={'PLD'}>
+            {
+              PLD_MENUS.map(({path, title}) =>
+                <Menu.Item key={path}>
+                  <Link to={`/${path}`}>
+                    <FormattedMessage id={title}/>
+                  </Link>
+                </Menu.Item>
+              )
+            }
+          </SubMenu>
+        }
+        {
+          authStatus &&
+          <Menu.Item key={COIN_CASTING}>
+            <Link to={`/${COIN_CASTING}`}>
+              <FormattedMessage id="coin.casting"/>
             </Link>
           </Menu.Item>
-          <Menu.Item key="wallet/deposit">
-            <Link to="/wallet/deposit">
-              <FormattedMessage id="deposit"/>
-            </Link>
+        }
+        {
+          authStatus &&
+          <Menu.Item key={PRIZE_CENTER}>
+            <PrizeCenterMenu/>
           </Menu.Item>
-          <Menu.Item key="wallet/withdrawal">
-            <Link to="/wallet/withdrawal">
-              <FormattedMessage id="withdrawal"/>
-            </Link>
-          </Menu.Item>
-          <Menu.Item key="wallet/transactions">
-            <Link to="/wallet/transactions">
-              <FormattedMessage id="transaction.history"/>
-            </Link>
-          </Menu.Item>
-        </SubMenu>
-        <SubMenu
-          className={navStyleClass}
-          key="history"
-          title={
-            <FormattedMessage id="orders"/>
-          }>
-          <Menu.Item key="history/open-order">
-            <Link to="/history/open-order">
-              <FormattedMessage id="open.orders"/>
-            </Link>
-          </Menu.Item>
-          <Menu.Item key="history/order">
-            <Link to="/history/order">
-              <FormattedMessage id="order.history"/>
-            </Link>
-          </Menu.Item>
-          <Menu.Item key="history/trade">
-            <Link to="/history/trade">
-              <FormattedMessage id="trade.history"/>
-            </Link>
-          </Menu.Item>
-        </SubMenu>
-        <Menu.Item key="referral">
-          <Link to="/referral">
-            <FormattedMessage id="referral"/>
-          </Link>
-        </Menu.Item>
+        }
       </Menu>
     )
   }
 }
 
 HorizontalNav.propTypes = {}
-const mapStateToProps = ({settings}) => {
-  return settings
+
+const mapStateToProps = ({settings, user}) => {
+  const {pathname, navStyle} = settings
+  const {authStatus} = user
+  return {pathname, navStyle, authStatus}
 }
 
 export default connect(mapStateToProps)(HorizontalNav)

@@ -5,26 +5,30 @@ import { injectIntl } from 'react-intl'
 import axios from 'axios'
 import _ from 'lodash'
 import { hideLoader, showLoader } from '../../appRedux/actions/Progress'
-import { IconNotification } from '../../components/IconNotification'
+import { setAuthStatus } from '../../appRedux/actions/User'
+import { IconNotification } from '../../components/common/IconNotification'
 import MainApp from './MainApp'
 import Error404 from '../../routes/common/Error404'
 import Error500 from '../../routes/common/Error500'
+import Error503 from '../../routes/common/Error503'
 import { ERROR } from '../../constants/AppConfigs'
 import {
   HTTP_BAD_REQUEST,
   HTTP_INTERNAL_SERVER_ERROR,
   HTTP_NOT_FOUND,
   HTTP_UNAUTHORIZED,
+  HTTP_UNAVAILABLE,
   LOGIN_REQUIRED,
+  MESSAGES,
   TFA_REQUIRED
 } from '../../constants/ResponseCode'
-import Login from '../../routes/common/Login'
-import Register from '../../routes/common/Register'
-import TFAuthentication from '../../routes/common/TFAuthentication'
+import { E_404, E_500, E_503, EXCHANGE, LOGIN, LOGIN_AUTH } from '../../constants/Paths'
 
 class RootApp extends Component {
 
   processError = (error) => {
+    const {intl, pathname} = this.props
+
     let msg = null
     if (error.response) {
       const {status, statusText, data} = error.response
@@ -34,34 +38,41 @@ class RootApp extends Component {
           if (!!data && !!data.code) {
             switch (data.code) {
               case LOGIN_REQUIRED:
-                this.props.history.push('/login')
+                if (!!pathname && (pathname.indexOf(EXCHANGE) !== -1)) {
+                  this.props.setAuthStatus(false)
+                  return
+                }
+                this.props.history.push(`/${LOGIN}`)
                 break
               case TFA_REQUIRED:
-                this.props.history.push('/authenticate')
+                this.props.history.push(`/${LOGIN_AUTH}`)
                 break
               default:
-                msg = data.code
+                msg = intl.formatMessage({id: (MESSAGES[data.code] || MESSAGES['default'])})
             }
           } else {
             msg = statusText
           }
           break
         case HTTP_NOT_FOUND:
-          this.props.history.push('/404')
+          this.props.history.push(`/${E_404}`)
           break
         case HTTP_INTERNAL_SERVER_ERROR:
-          this.props.history.push('/500')
+          this.props.history.push(`/${E_500}`)
+          break
+        case HTTP_UNAVAILABLE:
+          this.props.history.push(`/${E_503}`)
           break
         default:
           msg = statusText
       }
     }
     if (!_.isEmpty(msg)) {
-      IconNotification(ERROR, msg)
+      IconNotification(ERROR, intl.formatMessage({id: msg}))
     }
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     // Add a request interceptor
     if (axios.interceptors.request.handlers.length < 1) {
       axios.interceptors.request.use(config => {
@@ -100,11 +111,9 @@ class RootApp extends Component {
 
     return (
       <Switch>
-        <Route exact path='/404' component={Error404}/>
-        <Route exact path='/500' component={Error500}/>
-        <Route exact path='/login' component={Login}/>
-        <Route exact path='/register' component={Register}/>
-        <Route exact path='/authenticate' component={TFAuthentication}/>
+        <Route exact path={`/${E_404}`} component={Error404}/>
+        <Route exact path={`/${E_500}`} component={Error500}/>
+        <Route exact path={`/${E_503}`} component={Error503}/>
         <Route path={match.url} component={MainApp}/>
       </Switch>
     )
@@ -112,7 +121,7 @@ class RootApp extends Component {
 }
 
 const mapDispatchToProps = {
-  hideLoader, showLoader
+  hideLoader, showLoader, setAuthStatus
 }
 
 const mapStateToProps = ({settings}) => {

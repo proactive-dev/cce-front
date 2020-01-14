@@ -7,6 +7,10 @@ export const SWITCH_LANGUAGE = 'SWITCH-LANGUAGE'
 export const SHOW_LOADER = 'SHOW_LOADER'
 export const HIDE_LOADER = 'HIDE_LOADER'
 
+// Markets const
+export const GET_TICKERS = 'GET_TICKERS'
+export const GET_PRICE = 'GET_PRICE'
+export const SET_PRICE = 'SET_PRICE'
 
 // Accounts const
 export const GET_ACCOUNTS = 'GET_ACCOUNTS'
@@ -14,6 +18,7 @@ export const INIT_ACCOUNTS = 'INIT_ACCOUNTS'
 
 // User const
 export const GET_AUTH_STATUS = 'GET_AUTH_STATUS'
+export const SET_AUTH_STATUS = 'SET_AUTH_STATUS'
 export const GET_SETTINGS = 'GET_SETTINGS'
 export const SET_SETTINGS = 'SET_SETTINGS'
 export const INIT_SETTINGS = 'INIT_SETTINGS'

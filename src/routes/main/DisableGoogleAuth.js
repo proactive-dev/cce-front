@@ -1,8 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { FormattedMessage, injectIntl } from 'react-intl'
+import { Alert, Button, Form, Icon, Input, Spin } from 'antd'
 import { getAuthStatus } from '../../appRedux/actions/User'
-import { Spin } from 'antd'
+import { disableGoogleAuth } from '../../api/axiosAPIs'
+import { IconNotification } from '../../components/common/IconNotification'
+import { SUCCESS } from '../../constants/AppConfigs'
+import { USER } from '../../constants/Paths'
+
+const FormItem = Form.Item
 
 class DisableGoogleAuth extends React.Component {
   constructor(props) {
@@ -21,6 +27,29 @@ class DisableGoogleAuth extends React.Component {
     return null
   }
 
+  handleSubmit = (e) => {
+    e.preventDefault()
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        this.reqDisableGoogleAuth(values)
+      }
+    })
+  }
+
+  reqDisableGoogleAuth = (data) => {
+    let formData = new FormData()
+    formData.append('_method', 'delete')
+    formData.append('two_factor[type]', 'app')
+    formData.append('two_factor[otp]', data.authCode)
+    formData.append('commit', 'Disable')
+
+    disableGoogleAuth(formData)
+      .then(response => {
+        IconNotification(SUCCESS, this.props.intl.formatMessage({id: '2fa.disable.success'}))
+        this.props.history.push(`/${USER}`)
+      })
+  }
+
   componentDidMount() {
     this.props.getAuthStatus()
   }
@@ -28,18 +57,45 @@ class DisableGoogleAuth extends React.Component {
   render() {
     const {intl} = this.props
     const {loader} = this.state
+    const {getFieldDecorator} = this.props.form
 
     return (
-      <div>
-        <h2 className="title gx-mb-4"><FormattedMessage id="disable.google.auth"/></h2>
-        <Spin spinning={loader} size="large">
-          {/* Components */}
+      <div className="gx-text-center gx-mb-4">
+        <h1 className="gx-mt-4 gx-mb-4"><FormattedMessage id="disable.google.auth"/></h1>
+        <Spin className="gx-auth-container" spinning={loader} size="large">
+          <Form
+            className="gx-auth-content gx-text-left"
+            layout="vertical"
+            onSubmit={this.handleSubmit}>
+            <Alert
+              className='gx-mt-2 gx-mb-4'
+              type="warning"
+              showIcon
+              message={intl.formatMessage({id: 'auth.forgotPassword.desc'})}/>
+            <FormItem
+              label={intl.formatMessage({id: 'google.auth.code'})}>
+              {getFieldDecorator('authCode', {
+                rules: [{
+                  required: true, message: intl.formatMessage({id: 'alert.fieldRequired'})
+                }]
+              })(
+                <Input prefix={<Icon type="google" style={{color: 'rgba(0,0,0,.25)'}}/>}
+                       placeholder={intl.formatMessage({id: 'google.auth.code'})}/>
+              )}
+            </FormItem>
+            <FormItem>
+              <Button type="primary" className="auth-form-button" htmlType="submit">
+                <FormattedMessage id="send"/>
+              </Button>
+            </FormItem>
+          </Form>
         </Spin>
       </div>
     )
   }
 }
 
+const WrappedDisableGoogleAuthForm = Form.create()(DisableGoogleAuth)
 const mapDispatchToProps = {
   getAuthStatus
 }
@@ -50,4 +106,4 @@ const mapStateToProps = ({progress}) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(DisableGoogleAuth))
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(WrappedDisableGoogleAuthForm))
