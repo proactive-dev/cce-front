@@ -10,17 +10,19 @@ import { IconNotification } from '../../components/common/IconNotification'
 import MainApp from './MainApp'
 import Error404 from '../../routes/common/Error404'
 import Error500 from '../../routes/common/Error500'
+import Error503 from '../../routes/common/Error503'
 import { ERROR } from '../../constants/AppConfigs'
 import {
   HTTP_BAD_REQUEST,
   HTTP_INTERNAL_SERVER_ERROR,
   HTTP_NOT_FOUND,
   HTTP_UNAUTHORIZED,
+  HTTP_UNAVAILABLE,
   LOGIN_REQUIRED,
   MESSAGES,
   TFA_REQUIRED
 } from '../../constants/ResponseCode'
-import { E_404, E_500, EXCHANGE, LOGIN, LOGIN_AUTH } from '../../constants/Paths'
+import { E_404, E_500, E_503, EXCHANGE, LOGIN, LOGIN_AUTH } from '../../constants/Paths'
 
 class RootApp extends Component {
 
@@ -57,6 +59,9 @@ class RootApp extends Component {
           break
         case HTTP_INTERNAL_SERVER_ERROR:
           this.props.history.push(`/${E_500}`)
+          break
+        case HTTP_UNAVAILABLE:
+          this.props.history.push(`/${E_503}`)
           break
         default:
           msg = statusText
@@ -108,6 +113,7 @@ class RootApp extends Component {
       <Switch>
         <Route exact path={`/${E_404}`} component={Error404}/>
         <Route exact path={`/${E_500}`} component={Error500}/>
+        <Route exact path={`/${E_503}`} component={Error503}/>
         <Route path={match.url} component={MainApp}/>
       </Switch>
     )

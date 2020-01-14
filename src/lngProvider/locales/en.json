@@ -95,6 +95,7 @@
   "enable": "Enable",
   "error.404": "Oops, an error has occurred. Page not found!",
   "error.500": "Sorry, server goes wrong.",
+  "error.503": "Site is under maintenance right now. We'll back soon.",
   "exp": "EXP",
   "fee": "Fee",
   "fee.with.symbol": "Fee ({symbol})",

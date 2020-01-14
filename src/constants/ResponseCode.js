@@ -11,6 +11,7 @@ export const HTTP_REQUEST_TIMEOUT = 408
 export const HTTP_CONFLICT = 409
 export const HTTP_GONE = 410
 export const HTTP_INTERNAL_SERVER_ERROR = 500
+export const HTTP_UNAVAILABLE = 503
 
 // Response Codes
 export const LOGGED_IN = 2000
