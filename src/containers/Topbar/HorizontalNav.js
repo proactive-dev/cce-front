@@ -4,9 +4,8 @@ import { connect } from 'react-redux'
 import { Menu } from 'antd'
 import { Link } from 'react-router-dom'
 import { NAV_STYLES } from '../../constants/ThemeSetting'
-import { COIN_CASTING, EXCHANGE, MARKETS, PRIZE_CENTER } from '../../constants/Paths'
-import { ORDER_MENUS, PLD_MENUS, TSF_MENUS, WALLET_MENUS } from '../../constants/Menus'
-import PrizeCenterMenu from '../../components/menu/PrizeCenterMenu'
+import { EXCHANGE, MARKETS } from '../../constants/Paths'
+import { ORDER_MENUS, WALLET_MENUS } from '../../constants/Menus'
 
 const SubMenu = Menu.SubMenu
 
@@ -83,54 +82,6 @@ class HorizontalNav extends Component {
               )
             }
           </SubMenu>
-        }
-        {
-          authStatus &&
-          <SubMenu
-            className={navStyleClass}
-            key="tsf"
-            title={'TSF'}>
-            {
-              TSF_MENUS.map(({path, title}) =>
-                <Menu.Item key={path}>
-                  <Link to={`/${path}`}>
-                    <FormattedMessage id={title}/>
-                  </Link>
-                </Menu.Item>
-              )
-            }
-          </SubMenu>
-        }
-        {
-          authStatus &&
-          <SubMenu
-            className={navStyleClass}
-            key="pld"
-            title={'PLD'}>
-            {
-              PLD_MENUS.map(({path, title}) =>
-                <Menu.Item key={path}>
-                  <Link to={`/${path}`}>
-                    <FormattedMessage id={title}/>
-                  </Link>
-                </Menu.Item>
-              )
-            }
-          </SubMenu>
-        }
-        {
-          authStatus &&
-          <Menu.Item key={COIN_CASTING}>
-            <Link to={`/${COIN_CASTING}`}>
-              <FormattedMessage id="coin.casting"/>
-            </Link>
-          </Menu.Item>
-        }
-        {
-          authStatus &&
-          <Menu.Item key={PRIZE_CENTER}>
-            <PrizeCenterMenu/>
-          </Menu.Item>
         }
       </Menu>
     )

@@ -120,30 +120,6 @@
     }
   },
   {
-    id: 7,
-    name: 'Binance Coin',
-    symbol: 'bnb',
-    feeSymbol: 'eth',
-    type: 'coin',
-    precision: 8,
-    baseFactor: 1000000000000000000,
-    minConfirm: 1,
-    maxConfirm: 3,
-    infoLink: 'https://coinmarketcap.com/currencies/binance-coin',
-    txLink: 'https://etherscan.io/tx/#{txid}',
-    addressLink: 'https://etherscan.io/token/0xB8c77482e45F1F44dE1745F52C74426C631bDD52?a={address}',
-    caseSensitive: false,
-    visible: false,
-    deposit: {
-      fee: 0,
-      minAmount: 0
-    },
-    withdraw: {
-      fee: 0.001,
-      minAmount: 0.1
-    }
-  },
-  {
     id: 8,
     name: 'Cardano',
     symbol: 'ada',
@@ -724,40 +700,6 @@
   },
   {
     id: 32,
-    name: 'M365 Coin',
-    symbol: 'tsf',
-    feeSymbol: 'eth',
-    type: 'coin',
-    precision: 8,
-    baseFactor: 100000000,
-    minConfirm: 1,
-    maxConfirm: 3,
-    infoLink: 'https://etherscan.io/token/0x5fc05c6089102f94b77df8d57e65dd122d08311a',
-    txLink: 'https://etherscan.io/tx/#{txid}',
-    addressLink: 'https://etherscan.io/token/0x5fc05c6089102f94b77df8d57e65dd122d08311a?a={address}',
-    caseSensitive: false,
-    visible: true,
-    deposit: {
-      fee: 0,
-      minAmount: 0
-    },
-    withdraw: {
-      fee: 0,
-      minAmount: 0
-    }
-  },
-  {
-    id: 33,
-    name: 'TSF Point',
-    symbol: 'tsfp',
-    feeSymbol: 'tsfp',
-    type: 'point',
-    precision: 8,
-    baseFactor: 100000000,
-    visible: true
-  },
-  {
-    id: 34,
     name: 'Palladium',
     symbol: 'pld',
     feeSymbol: 'eth',
@@ -766,9 +708,9 @@
     baseFactor: 100000000,
     minConfirm: 1,
     maxConfirm: 3,
-    infoLink: 'https://etherscan.io/token/',
+    infoLink: 'https://etherscan.io/token/0x16757aa2e4c9ee118fb2549cd58a1d1c6722f8fb',
     txLink: 'https://etherscan.io/tx/#{txid}',
-    addressLink: 'https://etherscan.io/token/0x4c383bdcae52a6e1cb810c76c70d6f31a249ec9b?a={address}',
+    addressLink: 'https://etherscan.io/token/0x16757aa2e4c9ee118fb2549cd58a1d1c6722f8fb?a={address}',
     caseSensitive: false,
     visible: true,
     deposit: {
@@ -779,15 +721,5 @@
       fee: 0,
       minAmount: 0
     }
-  },
-  {
-    id: 35,
-    name: 'PLD Point',
-    symbol: 'pldp',
-    feeSymbol: 'pldp',
-    type: 'point',
-    precision: 8,
-    baseFactor: 100000000,
-    visible: true
   }
 ]

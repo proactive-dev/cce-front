@@ -1,6 +1,6 @@
 import axios from 'axios'
 import * as axiosConfig from './axiosConfig'
-import { HOST_URL, PRIZE_CENTER_LINK } from '../constants/AppConfigs'
+import { HOST_URL } from '../constants/AppConfigs'
 
 const getHeaders = {
   // 'Access-Control-Allow-Origin': '*',
@@ -262,52 +262,4 @@ export const moveFunds = (data) => {
 
 export const getRefData = (data = null, needLoader = false) => {
   return axiosRequest('get', axiosConfig.REF_DATA_URL, data, needLoader)
-}
-
-export const goPrizeCenter = (data) => {
-  return axiosRequest('post', PRIZE_CENTER_LINK, data)
-}
-
-export const getPurchases = ({currency, page, perPage}) => {
-  return axiosRequest('get', `${axiosConfig.PURCHASES_URL}?currency=${currency}&page=${page}&perPage=${perPage}`)
-}
-
-export const getPurchaseOptions = (data) => {
-  return axiosRequest('post', axiosConfig.PURCHASE_OPTIONS_URL, data)
-}
-
-export const preparePurchase = (data) => {
-  return axiosRequest('post', axiosConfig.PURCHASE_PREPARE_URL, data)
-}
-
-export const newPurchase = (data) => {
-  return axiosRequest('post', axiosConfig.PURCHASES_URL, data)
-}
-
-export const getPurchaseProfits = ({currency, page, perPage}) => {
-  return axiosRequest('get', `${axiosConfig.PURCHASE_PROFITS_URL}?currency=${currency}&page=${page}&perPage=${perPage}`)
-}
-
-export const getPurchaseAffiliates = ({currency, page, perPage}) => {
-  return axiosRequest('get', `${axiosConfig.PURCHASE_AFFILIATES_URL}?currency=${currency}&page=${page}&perPage=${perPage}`)
-}
-
-export const getPurchaseConfigs = (needLoader = false) => {
-  return axiosRequest('get', axiosConfig.PURCHASE_CONFIG_URL, null, needLoader)
-}
-
-export const getInvests = () => {
-  return axiosRequest('get', axiosConfig.INVESTS_URL)
-}
-
-export const newInvest = (data) => {
-  return axiosRequest('post', axiosConfig.INVESTS_URL, data)
-}
-
-export const getPointExchanges = () => {
-  return axiosRequest('get', axiosConfig.POINT_EXCHANGES_URL)
-}
-
-export const newPointExchange = (data) => {
-  return axiosRequest('post', axiosConfig.POINT_EXCHANGES_URL, data)
 }
