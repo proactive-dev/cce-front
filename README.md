@@ -1,1 +1,1 @@
-# UI project for 365 exchange
+# UI project for NGO exchange

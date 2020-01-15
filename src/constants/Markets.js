@@ -84,27 +84,6 @@ export const MARKETS = [
     visible: true
   },
   {
-    id: 'bnbbtc',
-    code: 5,
-    name: 'BNB/BTC',
-    baseUnit: 'bnb',
-    quoteUnit: 'btc',
-    bid: {
-      fee: 0.001,
-      currency: 'btc',
-      fixed: 7,
-      min: 0.0001
-    },
-    ask: {
-      fee: 0.001,
-      currency: 'bnb',
-      fixed: 2,
-      min: 0.01
-    },
-    margin: false,
-    visible: false
-  },
-  {
     id: 'adabtc',
     code: 6,
     name: 'ADA/BTC',
@@ -588,10 +567,10 @@ export const MARKETS = [
     visible: true
   },
   {
-    id: 'tsfbtc',
+    id: 'ngobtc',
     code: 29,
-    name: 'TSF/BTC',
-    baseUnit: 'tsf',
+    name: 'NGO/BTC',
+    baseUnit: 'ngo',
     quoteUnit: 'btc',
     bid: {
       fee: 0,
@@ -601,12 +580,12 @@ export const MARKETS = [
     },
     ask: {
       fee: 0,
-      currency: 'tsf',
+      currency: 'ngo',
       fixed: 2,
       min: 0
     },
     margin: false,
-    visible: true
+    visible: false
   },
   {
     id: 'btcusdt',
@@ -712,27 +691,6 @@ export const MARKETS = [
     },
     margin: false,
     visible: true
-  },
-  {
-    id: 'bnbusdt',
-    code: 35,
-    name: 'BNB/USDT',
-    baseUnit: 'bnb',
-    quoteUnit: 'usdt',
-    bid: {
-      fee: 0.001,
-      currency: 'usdt',
-      fixed: 4,
-      min: 10
-    },
-    ask: {
-      fee: 0.001,
-      currency: 'bnb',
-      fixed: 2,
-      min: 0.01
-    },
-    margin: false,
-    visible: false
   },
   {
     id: 'adausdt',
@@ -1006,26 +964,5 @@ export const MARKETS = [
     },
     margin: false,
     visible: true
-  },
-  {
-    id: 'tsfusdt',
-    code: 59,
-    name: 'TSF/USDT',
-    baseUnit: 'tsf',
-    quoteUnit: 'usdt',
-    bid: {
-      fee: 0,
-      currency: 'usdt',
-      fixed: 4,
-      min: 0
-    },
-    ask: {
-      fee: 0,
-      currency: 'tsf',
-      fixed: 2,
-      min: 0
-    },
-    margin: false,
-    visible: false
   }
 ]

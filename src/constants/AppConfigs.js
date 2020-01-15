@@ -1,5 +1,5 @@
-export const SITE_NAME = '365 Exchange'
-export const COMPANY_NAME = 'NuROGIX, Inc.'
+export const SITE_NAME = 'NGO Settlement Exchange'
+export const COMPANY_NAME = 'NGO Settlement LIMITED.'
 export const COPYRIGHT_COMPANY = `${COMPANY_NAME} All Rights Reserved.`
 
 export const LANGUAGES = [
@@ -22,16 +22,14 @@ export const SUCCESS = 'success'
 export const ERROR = 'error'
 export const NOTIFICATION_TIMEOUT = 5 // seconds
 
-export const PRODUCTION_URL = 'https://crypto.365-exchange.com'
+export const PRODUCTION_URL = 'https://tr.ngo-settlement.com/'
 export const HOST_URL = process.env.NODE_ENV === 'production' ? `${PRODUCTION_URL}:8443` : 'http://localhost:4000'
-export const SOCKET_URL = process.env.NODE_ENV === 'production' ? 'wss://crypto.365-exchange.com:2096' : 'ws://localhost:8080'
+export const SOCKET_URL = process.env.NODE_ENV === 'production' ? 'wss://https://tr.ngo-settlement.com:2096' : 'ws://localhost:8080'
 export const EX_URL = process.env.NODE_ENV === 'production' ? PRODUCTION_URL : 'http://localhost:3000'
 export const ADMIN_URL = `${HOST_URL}/admin`
 export const API_DOC_URL = `${HOST_URL}/api`
-export const CC_LINK = process.env.NODE_ENV === 'production' ? 'https://cc.365-exchange.com' : 'http://localhost:3002'
-export const PRIZE_CENTER_LINK = 'https://lend.365-exchange.com/orderlist/index.php'
 
-export const SITE_CONTACT = 'support@365-exchange.com'
+export const SITE_CONTACT = 'support@ngo-settlement.com'
 
 export const OTPAUTH_URL = 'otpauth://totp/'
 export const G_AUTH_IOS_APP_URL = 'https://itunes.apple.com/us/app/google-authenticator/id388497605?mt=8'
@@ -43,19 +41,19 @@ export const USER_TRADE_HISTORY_INTERVAL = 10000
 
 export const BANNERS = [
   {
-    img: 'intro.png',
+    img: 'ad_wanted.jpg',
     url: '/'
   },
   {
-    img: 'tsf.jpg',
+    img: 'ad_wanted.jpg',
     url: '/'
   },
   {
-    img: 'casting.jpg',
+    img: 'ad_wanted.jpg',
     url: '/'
   },
   {
-    img: 'prize_center.jpg',
+    img: 'ad_wanted.jpg',
     url: '/'
   }
 ]
@@ -63,7 +61,7 @@ export const BANNERS = [
 export const QUOTE_SYMBOL = 'USDT'
 export const ESTIMATE_SYMBOL = 'BTC'
 export const KEY_COIN_SYMBOL = 'BTC'
-export const EX_COIN_SYMBOL = 'TSF'
+export const EX_COIN_SYMBOL = 'NGO'
 export const HOME_SYMBOLS = ['BTC', 'ETH', 'XRP', 'LTC', 'BCH']
 export const STABLE_SYMBOL = 'Ⓢ'
 export const BASE_PRICE_SYMBOL = '$'
@@ -77,7 +75,3 @@ export const ORDER_SELL = 'sell'
 
 export const HISTORY_TYPE_DEPOSIT = 'deposit'
 export const HISTORY_TYPE_WITHDRAWAL = 'withdraw'
-
-export const PURCHASE_TIME_LIMIT = 10 * 60 * 1000 // 10 minutes
-export const TSF_AMOUNT_MAX = 1000000000
-
