@@ -1,1 +1,1 @@
-# UI project for NGO exchange
+# UI project for cryptocurrency exchange
