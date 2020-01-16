@@ -1,5 +1,5 @@
-export const SITE_NAME = 'NGO Settlement Exchange'
-export const COMPANY_NAME = 'NGO Settlement LIMITED.'
+export const SITE_NAME = 'Whitelabel Coin Exchange'
+export const COMPANY_NAME = 'Apollo IT.'
 export const COPYRIGHT_COMPANY = `${COMPANY_NAME} All Rights Reserved.`
 
 export const LANGUAGES = [
@@ -12,8 +12,8 @@ export const LANGUAGES = [
     name: '简体中文'
   },
   {
-    code: 'ko',
-    name: '한국어'
+    code: 'ja',
+    name: '日本語'
   }
 ]
 
@@ -22,14 +22,14 @@ export const SUCCESS = 'success'
 export const ERROR = 'error'
 export const NOTIFICATION_TIMEOUT = 5 // seconds
 
-export const PRODUCTION_URL = 'https://tr.ngo-settlement.com/'
+export const PRODUCTION_URL = 'https://cce.apolloit.biz/'
 export const HOST_URL = process.env.NODE_ENV === 'production' ? `${PRODUCTION_URL}:8443` : 'http://localhost:4000'
-export const SOCKET_URL = process.env.NODE_ENV === 'production' ? 'wss://https://tr.ngo-settlement.com:2096' : 'ws://localhost:8080'
+export const SOCKET_URL = process.env.NODE_ENV === 'production' ? 'wss://cce.apolloit.biz:2096' : 'ws://localhost:8080'
 export const EX_URL = process.env.NODE_ENV === 'production' ? PRODUCTION_URL : 'http://localhost:3000'
 export const ADMIN_URL = `${HOST_URL}/admin`
 export const API_DOC_URL = `${HOST_URL}/api`
 
-export const SITE_CONTACT = 'support@ngo-settlement.com'
+export const SITE_CONTACT = 'support@apolloit.biz'
 
 export const OTPAUTH_URL = 'otpauth://totp/'
 export const G_AUTH_IOS_APP_URL = 'https://itunes.apple.com/us/app/google-authenticator/id388497605?mt=8'
@@ -61,8 +61,8 @@ export const BANNERS = [
 export const QUOTE_SYMBOL = 'USDT'
 export const ESTIMATE_SYMBOL = 'BTC'
 export const KEY_COIN_SYMBOL = 'BTC'
-export const EX_COIN_SYMBOL = 'NGO'
-export const HOME_SYMBOLS = ['BTC', 'ETH', 'XRP', 'LTC', 'BCH']
+export const EX_COIN_SYMBOL = 'BNB'
+export const HOME_SYMBOLS = ['BTC', 'ETH', 'LTC', 'BCH']
 export const STABLE_SYMBOL = 'Ⓢ'
 export const BASE_PRICE_SYMBOL = '$'
 

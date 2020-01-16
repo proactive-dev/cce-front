@@ -61,7 +61,7 @@
     txLink: 'https://bithomp.com/explorer/#{txid}',
     addressLink: 'https://bithomp.com/explorer/#{address}',
     caseSensitive: true,
-    visible: true,
+    visible: false,
     deposit: {
       fee: 0,
       minAmount: 0
@@ -133,7 +133,7 @@
     txLink: 'https://cardanoexplorer.com/tx/#{txid}',
     addressLink: 'https://cardanoexplorer.com/address/#{address}',
     caseSensitive: true,
-    visible: true,
+    visible: false,
     deposit: {
       fee: 0,
       minAmount: 0
@@ -182,7 +182,7 @@
     txLink: 'https://etherscan.io/tx/#{txid}',
     addressLink: 'https://etherscan.io/token/0x8e870d67f660d95d5be530380d0ec0bd388289e1?a={address}',
     caseSensitive: false,
-    visible: true,
+    visible: false,
     deposit: {
       fee: 0,
       minAmount: 0
@@ -206,7 +206,7 @@
     txLink: 'https://explorer.dash.org/tx/#{txid}',
     addressLink: 'https://explorer.dash.org/address/#{address}',
     caseSensitive: true,
-    visible: true,
+    visible: false,
     deposit: {
       fee: 0,
       minAmount: 0
@@ -230,7 +230,7 @@
     txLink: 'https://moneroblocks.info/tx/#{txid}',
     addressLink: 'https://moneroblocks.info/#{address}',
     caseSensitive: true,
-    visible: true,
+    visible: false,
     deposit: {
       fee: 0,
       minAmount: 0
@@ -255,7 +255,7 @@
     txLink: 'https://neoscan.io/transaction/#{txid}',
     addressLink: 'https://neoscan.io/address/#{address}',
     caseSensitive: true,
-    visible: true,
+    visible: false,
     deposit: {
       fee: 0,
       minAmount: 0
@@ -279,7 +279,7 @@
     txLink: 'http://etherhub.io/tx/#{txid}',
     addressLink: 'http://etherhub.io/addr/#{address}',
     caseSensitive: false,
-    visible: true,
+    visible: false,
     deposit: {
       fee: 0,
       minAmount: 0
@@ -303,7 +303,7 @@
     txLink: 'http://chain.nem.ninja/#/transfer/#{txid}',
     addressLink: 'http://chain.nem.ninja/#/account/#{address}',
     caseSensitive: true,
-    visible: true,
+    visible: false,
     deposit: {
       fee: 0,
       minAmount: 0
@@ -328,7 +328,7 @@
     txLink: 'https://neoscan.io/transaction/#{txid}',
     addressLink: 'https://neoscan.io/address/#{address}',
     caseSensitive: true,
-    visible: true,
+    visible: false,
     deposit: {
       fee: 0,
       minAmount: 0
@@ -352,7 +352,7 @@
     txLink: 'https://etherscan.io/tx/#{txid}',
     addressLink: 'https://etherscan.io/token/0x0d8775f648430679a709e98d2b0cb6250d2887ef?a={address}',
     caseSensitive: false,
-    visible: true,
+    visible: false,
     deposit: {
       fee: 0,
       minAmount: 0
@@ -376,7 +376,7 @@
     txLink: 'https://etherscan.io/tx/#{txid}',
     addressLink: 'https://etherscan.io/token/0xd26114cd6EE289AccF82350c8d8487fedB8A0C07?a={address}',
     caseSensitive: false,
-    visible: true,
+    visible: false,
     deposit: {
       fee: 0,
       minAmount: 0
@@ -400,7 +400,7 @@
     txLink: 'https://explorer.bitcoingold.org/insight/tx/#{txid}',
     addressLink: 'https://explorer.bitcoingold.org/insight/address/#{address}',
     caseSensitive: true,
-    visible: true,
+    visible: false,
     deposit: {
       fee: 0,
       minAmount: 0
@@ -424,7 +424,7 @@
     txLink: 'https://etherscan.io/tx/#{txid}',
     addressLink: 'https://etherscan.io/token/0x1985365e9f78359a9B6AD760e32412f4a445E862?a={address}',
     caseSensitive: false,
-    visible: true,
+    visible: false,
     deposit: {
       fee: 0,
       minAmount: 0
@@ -448,7 +448,7 @@
     txLink: 'https://etherscan.io/tx/#{txid}',
     addressLink: 'https://etherscan.io/token/0x0000000000085d4780B73119b644AE5ecd22b376?a={address}',
     caseSensitive: false,
-    visible: true,
+    visible: false,
     deposit: {
       fee: 0,
       minAmount: 0
@@ -472,7 +472,7 @@
     txLink: 'https://etherscan.io/tx/#{txid}',
     addressLink: 'https://etherscan.io/token/0x514910771af9ca656af840dff83e8264ecf986ca?a={address}',
     caseSensitive: false,
-    visible: true,
+    visible: false,
     deposit: {
       fee: 0,
       minAmount: 0
@@ -496,7 +496,7 @@
     txLink: 'https://etherscan.io/tx/#{txid}',
     addressLink: 'https://etherscan.io/token/0xe41d2489571d322189246dafa5ebde1f4699f498?a={address}',
     caseSensitive: false,
-    visible: true,
+    visible: false,
     deposit: {
       fee: 0,
       minAmount: 0
@@ -520,7 +520,7 @@
     txLink: 'http://explorer.btcd.io/#/TX?TX=#{txid}',
     addressLink: 'http://explorer.btcd.io/#/address?address=#{address}',
     caseSensitive: true,
-    visible: true,
+    visible: false,
     deposit: {
       fee: 0,
       minAmount: 0
@@ -544,7 +544,7 @@
     txLink: 'https://etherscan.io/tx/#{txid}',
     addressLink: 'https://etherscan.io/token/0x3597bfd533a99c9aa083587b074434e61eb0a258?a={address}',
     caseSensitive: false,
-    visible: true,
+    visible: false,
     deposit: {
       fee: 0,
       minAmount: 0
@@ -568,7 +568,7 @@
     txLink: 'https://etherscan.io/tx/#{txid}',
     addressLink: 'https://etherscan.io/token/0xb63b606ac810a52cca15e44bb630fd42d8d1d83d?a={address}',
     caseSensitive: false,
-    visible: true,
+    visible: false,
     deposit: {
       fee: 0,
       minAmount: 0
@@ -592,7 +592,7 @@
     txLink: 'https://etherscan.io/tx/#{txid}',
     addressLink: 'https://etherscan.io/token/0x744d70fdbe2ba4cf95131626614a1763df805b9e?a={address}',
     caseSensitive: false,
-    visible: true,
+    visible: false,
     deposit: {
       fee: 0,
       minAmount: 0
@@ -616,7 +616,7 @@
     txLink: 'https://etherscan.io/tx/#{txid}',
     addressLink: 'https://etherscan.io/token/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48?a={address}',
     caseSensitive: false,
-    visible: true,
+    visible: false,
     deposit: {
       fee: 0,
       minAmount: 0
@@ -640,7 +640,7 @@
     txLink: 'https://etherscan.io/tx/#{txid}',
     addressLink: 'https://etherscan.io/token/0xe0b7927c4af23765cb51314a0e0521a9645f0e2a?a={address}',
     caseSensitive: false,
-    visible: true,
+    visible: false,
     deposit: {
       fee: 0,
       minAmount: 0
@@ -664,7 +664,7 @@
     txLink: 'https://etherscan.io/tx/#{txid}',
     addressLink: 'https://etherscan.io/token/0xa4bdb11dc0a2bec88d24a3aa1e6bb17201112ebe?a={address}',
     caseSensitive: false,
-    visible: true,
+    visible: false,
     deposit: {
       fee: 0,
       minAmount: 0
@@ -688,7 +688,7 @@
     txLink: 'https://etherscan.io/tx/#{txid}',
     addressLink: 'https://etherscan.io/token/0x0f5d2fb29fb7d3cfee444a200298f468908cc942?a={address}',
     caseSensitive: false,
-    visible: true,
+    visible: false,
     deposit: {
       fee: 0,
       minAmount: 0
@@ -700,19 +700,19 @@
   },
   {
     id: 32,
-    name: 'Palladium',
-    symbol: 'pld',
+    name: 'Binance Coin',
+    symbol: 'bnb',
     feeSymbol: 'eth',
     type: 'coin',
     precision: 8,
-    baseFactor: 100000000,
+    baseFactor: 1000000000000000000,
     minConfirm: 1,
     maxConfirm: 3,
-    infoLink: 'https://etherscan.io/token/0x16757aa2e4c9ee118fb2549cd58a1d1c6722f8fb',
+    infoLink: 'https://etherscan.io/token/0xB8c77482e45F1F44dE1745F52C74426C631bDD52',
     txLink: 'https://etherscan.io/tx/#{txid}',
-    addressLink: 'https://etherscan.io/token/0x16757aa2e4c9ee118fb2549cd58a1d1c6722f8fb?a={address}',
+    addressLink: 'https://etherscan.io/token/0xB8c77482e45F1F44dE1745F52C74426C631bDD52?a={address}',
     caseSensitive: false,
-    visible: true,
+    visible: false,
     deposit: {
       fee: 0,
       minAmount: 0

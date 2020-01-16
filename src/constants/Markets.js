@@ -39,7 +39,7 @@ export const MARKETS = [
       min: 1
     },
     margin: false,
-    visible: true
+    visible: false
   },
   {
     id: 'ltcbtc',
@@ -102,7 +102,7 @@ export const MARKETS = [
       min: 1
     },
     margin: false,
-    visible: true
+    visible: false
   },
   {
     id: 'btcpax',
@@ -123,7 +123,7 @@ export const MARKETS = [
       min: 0.000001
     },
     margin: false,
-    visible: true
+    visible: false
   },
   {
     id: 'dashbtc',
@@ -144,7 +144,7 @@ export const MARKETS = [
       min: 0.001
     },
     margin: false,
-    visible: true
+    visible: false
   },
   {
     id: 'xmrbtc',
@@ -165,7 +165,7 @@ export const MARKETS = [
       min: 0.001
     },
     margin: false,
-    visible: true
+    visible: false
   },
   {
     id: 'neobtc',
@@ -186,7 +186,7 @@ export const MARKETS = [
       min: 0.01
     },
     margin: false,
-    visible: true
+    visible: false
   },
   {
     id: 'etcbtc',
@@ -207,7 +207,7 @@ export const MARKETS = [
       min: 0.01
     },
     margin: false,
-    visible: true
+    visible: false
   },
   {
     id: 'xembtc',
@@ -228,7 +228,7 @@ export const MARKETS = [
       min: 1
     },
     margin: false,
-    visible: true
+    visible: false
   },
   {
     id: 'dentbtc',
@@ -270,7 +270,7 @@ export const MARKETS = [
       min: 1
     },
     margin: false,
-    visible: true
+    visible: false
   },
   {
     id: 'omgbtc',
@@ -291,7 +291,7 @@ export const MARKETS = [
       min: 0.01
     },
     margin: false,
-    visible: true
+    visible: false
   },
   {
     id: 'btgbtc',
@@ -312,7 +312,7 @@ export const MARKETS = [
       min: 0.01
     },
     margin: false,
-    visible: true
+    visible: false
   },
   {
     id: 'repbtc',
@@ -333,7 +333,7 @@ export const MARKETS = [
       min: 0.001
     },
     margin: false,
-    visible: true
+    visible: false
   },
   {
     id: 'btctusd',
@@ -354,7 +354,7 @@ export const MARKETS = [
       min: 0.000001
     },
     margin: false,
-    visible: true
+    visible: false
   },
   {
     id: 'linkbtc',
@@ -375,7 +375,7 @@ export const MARKETS = [
       min: 1
     },
     margin: false,
-    visible: true
+    visible: false
   },
   {
     id: 'zrxbtc',
@@ -396,7 +396,7 @@ export const MARKETS = [
       min: 1
     },
     margin: false,
-    visible: true
+    visible: false
   },
   {
     id: 'bcdbtc',
@@ -417,7 +417,7 @@ export const MARKETS = [
       min: 1
     },
     margin: false,
-    visible: true
+    visible: false
   },
   {
     id: 'mcobtc',
@@ -438,7 +438,7 @@ export const MARKETS = [
       min: 0.01
     },
     margin: false,
-    visible: true
+    visible: false
   },
   {
     id: 'sntbtc',
@@ -459,7 +459,7 @@ export const MARKETS = [
       min: 1
     },
     margin: false,
-    visible: true
+    visible: false
   },
   {
     id: 'dgdbtc',
@@ -480,7 +480,7 @@ export const MARKETS = [
       min: 0.001
     },
     margin: false,
-    visible: true
+    visible: false
   },
   {
     id: 'btcusdc',
@@ -501,7 +501,7 @@ export const MARKETS = [
       min: 0.000001
     },
     margin: false,
-    visible: true
+    visible: false
   },
   {
     id: 'manabtc',
@@ -522,7 +522,7 @@ export const MARKETS = [
       min: 1
     },
     margin: false,
-    visible: true
+    visible: false
   },
   {
     id: 'btcusds',
@@ -543,7 +543,7 @@ export const MARKETS = [
       min: 0.000001
     },
     margin: false,
-    visible: true
+    visible: false
   },
   {
     id: 'gasbtc',
@@ -562,27 +562,6 @@ export const MARKETS = [
       currency: 'gas',
       fixed: 2,
       min: 0.01
-    },
-    margin: false,
-    visible: true
-  },
-  {
-    id: 'ngobtc',
-    code: 29,
-    name: 'NGO/BTC',
-    baseUnit: 'ngo',
-    quoteUnit: 'btc',
-    bid: {
-      fee: 0,
-      currency: 'btc',
-      fixed: 8,
-      min: 0
-    },
-    ask: {
-      fee: 0,
-      currency: 'ngo',
-      fixed: 2,
-      min: 0
     },
     margin: false,
     visible: false
@@ -648,7 +627,7 @@ export const MARKETS = [
       min: 0.1
     },
     margin: false,
-    visible: true
+    visible: false
   },
   {
     id: 'ltcusdt',
@@ -711,7 +690,7 @@ export const MARKETS = [
       min: 0.1
     },
     margin: false,
-    visible: true
+    visible: false
   },
   {
     id: 'paxusdt',
@@ -732,7 +711,7 @@ export const MARKETS = [
       min: 0.01
     },
     margin: false,
-    visible: true
+    visible: false
   },
   {
     id: 'dashusdt',
@@ -753,7 +732,7 @@ export const MARKETS = [
       min: 0.00001
     },
     margin: false,
-    visible: true
+    visible: false
   },
   {
     id: 'xmrusdt',
@@ -774,7 +753,7 @@ export const MARKETS = [
       min: 0.00001
     },
     margin: false,
-    visible: true
+    visible: false
   },
   {
     id: 'neousdt',
@@ -795,7 +774,7 @@ export const MARKETS = [
       min: 0.001
     },
     margin: false,
-    visible: true
+    visible: false
   },
   {
     id: 'etcusdt',
@@ -816,7 +795,7 @@ export const MARKETS = [
       min: 0.01
     },
     margin: false,
-    visible: true
+    visible: false
   },
   {
     id: 'batusdt',
@@ -837,7 +816,7 @@ export const MARKETS = [
       min: 0.01
     },
     margin: false,
-    visible: true
+    visible: false
   },
   {
     id: 'omgusdt',
@@ -858,7 +837,7 @@ export const MARKETS = [
       min: 0.01
     },
     margin: false,
-    visible: true
+    visible: false
   },
   {
     id: 'tusdusdt',
@@ -879,7 +858,7 @@ export const MARKETS = [
       min: 0.01
     },
     margin: false,
-    visible: true
+    visible: false
   },
   {
     id: 'linkusdt',
@@ -900,7 +879,7 @@ export const MARKETS = [
       min: 0.01
     },
     margin: false,
-    visible: true
+    visible: false
   },
   {
     id: 'zrxusdt',
@@ -921,7 +900,7 @@ export const MARKETS = [
       min: 0.01
     },
     margin: false,
-    visible: true
+    visible: false
   },
   {
     id: 'usdcusdt',
@@ -942,7 +921,7 @@ export const MARKETS = [
       min: 0.01
     },
     margin: false,
-    visible: true
+    visible: false
   },
   {
     id: 'usdsusdt',
@@ -963,6 +942,6 @@ export const MARKETS = [
       min: 0.01
     },
     margin: false,
-    visible: true
+    visible: false
   }
 ]

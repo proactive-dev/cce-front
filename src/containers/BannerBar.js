@@ -28,7 +28,6 @@ class BannerBar extends Component {
     const {banners} = this.props
     return (
       <Carousel
-        className="gx-bg-geekblue"
         style={{overflow: 'hidden', minWidth: '100%', width: 0}}
         autoplay
         dots={false}
@@ -40,7 +39,7 @@ class BannerBar extends Component {
         {
           banners.map((banner, index) =>
             <a href={banner.url} target='blank' key={index}>
-              <img className="gx-pt-2 gx-pb-2" style={{width: '96%', margin: '0 auto'}}
+              <img className="gx-pt-2 gx-pb-2" style={{width: '99%', margin: '0 auto'}}
                    src={require(`assets/images/banners/${banner.img}`)}
                    alt="banner"/>
             </a>

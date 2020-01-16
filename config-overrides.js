@@ -38,14 +38,14 @@ module.exports = override(
   addLessLoader({
     javascriptEnabled: true,
     modifyVars: {
-      '@primary-color': '#eb7f2c',
+      '@primary-color': '#f0b90b',
       '@secondary-color': '#F1D065',
       '@text-color': '#666',
       '@heading-color': '#333',
-      '@nav-dark-bg': '#0d253e',
+      '@nav-dark-bg': '#1E2126',
       '@header-text-color': '#bcbcbc',
-      '@layout-header-background': '#0d253e',
-      '@layout-footer-background': '#07131f',
+      '@layout-header-background': '#1E2126',
+      '@layout-footer-background': '#0b0e11',
       '@nav-dark-text-color': '#ffffff',
       '@hor-nav-text-color': '#bcbcbc',
       '@nav-header-selected-text-color': '#fff'
