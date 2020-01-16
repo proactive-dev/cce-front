@@ -128,7 +128,8 @@ class OrderEntry extends React.Component {
     let compareName = isBid ? market.quoteUnit : market.baseUnit
     let account = accounts.find(item => item.currency.code === compareName) || {}
     let balance = account.balance ? parseFloat(account.balance) : 0.0
-    if (balance < total) {
+    let useAmount = isBid ? total : amount
+    if (balance < useAmount) {
       this.setState({totalInvalid: true})
       return
     }

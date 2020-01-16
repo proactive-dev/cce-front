@@ -30,7 +30,7 @@ class SimpleTradeHistoryTable extends React.Component {
         dataIndex: 'volume',
         align: 'right',
         render: (value, record) => {
-          return <span>{getFixed(record.volume, market.bid.fixed)}</span>
+          return <span>{getFixed(record.volume, market.ask.fixed)}</span>
         }
       },
       {
