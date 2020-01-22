@@ -22,7 +22,7 @@ export const SUCCESS = 'success'
 export const ERROR = 'error'
 export const NOTIFICATION_TIMEOUT = 5 // seconds
 
-export const PRODUCTION_URL = 'https://cce.apolloit.biz/'
+export const PRODUCTION_URL = 'https://cce.apolloit.biz'
 export const HOST_URL = process.env.NODE_ENV === 'production' ? `${PRODUCTION_URL}:8443` : 'http://localhost:4000'
 export const SOCKET_URL = process.env.NODE_ENV === 'production' ? 'wss://cce.apolloit.biz:2096' : 'ws://localhost:8080'
 export const EX_URL = process.env.NODE_ENV === 'production' ? PRODUCTION_URL : 'http://localhost:3000'
