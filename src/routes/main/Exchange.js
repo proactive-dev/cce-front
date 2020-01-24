@@ -61,8 +61,7 @@ class Exchange extends React.Component {
   }
 
   onSelectMarket = (market) => {
-    this.initMarket(market)
-    this.props.history.push(`/${EXCHANGE}/${market}`)
+    window.location = `/${EXCHANGE}/${market}`
   }
 
   handleSocketEvent(event) {
@@ -103,7 +102,7 @@ class Exchange extends React.Component {
     }
   }
 
-  fetchOrders = (search, isOpenOrders = true) => {
+  fetchOrders = (search, isOpenOrders = false) => {
     getOrderHistory({page: 1, perPage: 5, search})
       .then(response => {
         const {orders} = response.data
@@ -128,7 +127,7 @@ class Exchange extends React.Component {
 
   fetchOpenOrders = () => {
     let search = 'state=100'
-    this.fetchOrders(search)
+    this.fetchOrders(search, true)
   }
 
   fetch24hOrders = (market = null) => {

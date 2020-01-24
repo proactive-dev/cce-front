@@ -32,6 +32,14 @@ export const G_AUTH_FAIL = 4020
 export const TFA_FAIL = 4021
 export const API_TOKEN_FAIL = 4023
 export const ID_DOC_SUBMIT_FAIL = 4024
+export const ORDER_CREATE_FAIL = 5001
+export const ORDER_CANCEL_FAIL = 5002
+export const T_ORDER_CREATE_FAIL = 5011
+export const T_ORDER_CANCEL_FAIL = 5012
+export const LOAN_CREATE_FAIL = 5021
+export const LOAN_UPDATE_FAIL = 5022
+export const LOAN_CANCEL_FAIL = 5023
+export const POSITION_UPDATE_FAIL = 5031
 
 export const MESSAGES = {
   LOGIN_FAIL: 'wrong.id.or.password',

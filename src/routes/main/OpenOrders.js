@@ -35,6 +35,11 @@ class OpenOrders extends React.Component {
     this.fetchData({page: pagination.current})
   }
 
+  refreshData = () => {
+    const {pagination} = this.state
+    this.fetchData({page: pagination.current})
+  }
+
   onChangeTable = (pagination, filters, sorter) => {
     this.setState({pagination, page: pagination.current})
     this.fetchData({page: pagination.current})
@@ -76,6 +81,7 @@ class OpenOrders extends React.Component {
             pagination={pagination}
             dataSource={orders}
             onChange={this.onChangeTable}
+            onRefresh={this.refreshData}
           />
         </Spin>
       </div>
